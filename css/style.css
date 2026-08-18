@@ -1,46 +1,111 @@
-/* ========================================
-   GENERAL
-   ======================================== */
+/* =========================================================
+   ATPL STUDY — MODERN AVIATION DESIGN
+   ========================================================= */
+
+
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
 
 body{
 
     margin:0;
 
-    font-family:Arial, sans-serif;
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
 
-    background:#f2f2f2;
+    background:
+        linear-gradient(
+            135deg,
+            #eef4fb 0%,
+            #f7f9fc 50%,
+            #e9f0f8 100%
+        );
 
+    color:#172033;
+
+    min-height:100vh;
 }
 
 
-/* ========================================
+/* =========================================================
    MAIN CONTAINER
-   ======================================== */
+   ========================================================= */
 
 .container{
 
     width:700px;
 
+    max-width:calc(100% - 30px);
+
     margin:40px auto;
 
-    background:white;
+    background:#ffffff;
 
-    padding:30px;
+    padding:35px;
 
-    border-radius:10px;
+    border-radius:18px;
 
-    box-shadow:0 0 10px gray;
+    box-shadow:
+        0 15px 40px rgba(20,45,80,0.12);
+
+    border:1px solid #e3eaf2;
 
 }
 
 
-/* ========================================
-   HEADINGS
-   ======================================== */
+/* =========================================================
+   MAIN TITLE
+   ========================================================= */
 
 h1{
 
     text-align:center;
+
+    margin-top:0;
+
+    margin-bottom:35px;
+
+    font-size:32px;
+
+    font-weight:800;
+
+    letter-spacing:2px;
+
+    color:#123b67;
+
+    position:relative;
+
+}
+
+
+/* Small aviation line under title */
+
+h1::after{
+
+    content:"";
+
+    display:block;
+
+    width:70px;
+
+    height:4px;
+
+    margin:12px auto 0;
+
+    border-radius:10px;
+
+    background:#1d78c1;
 
 }
 
@@ -49,209 +114,170 @@ h2{
 
     text-align:center;
 
+    color:#173f68;
+
+    margin-bottom:25px;
+
+    font-size:25px;
+
 }
 
 
-/* ========================================
-   SUBJECT
-   ======================================== */
+h3{
 
-#subject{
+    color:#244d72;
+
+}
+
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+#loginScreen{
 
     text-align:center;
 
-    font-size:20px;
+    max-width:430px;
 
-    font-weight:bold;
-
-    margin:15px;
+    margin:auto;
 
 }
 
 
-/* ========================================
-   QUESTION COUNTER
-   ======================================== */
+#loginScreen h2{
 
-#counter{
-
-    text-align:center;
-
-    font-size:18px;
+    margin-bottom:25px;
 
 }
 
 
-/* ========================================
-   QUESTION
-   ======================================== */
-
-.question{
-
-    font-size:22px;
-
-    margin:30px 0;
-
-}
-
-
-/* ========================================
-   ANSWER BUTTONS
-   ======================================== */
-
-.option{
+#loginScreen input{
 
     display:block;
 
     width:100%;
 
-    padding:15px;
+    padding:15px 16px;
 
-    margin:10px 0;
-
-    font-size:18px;
-
-    cursor:pointer;
-
-    border:1px solid #ccc;
-
-    background:white;
-
-    border-radius:5px;
-
-}
-
-
-.option:hover{
-
-    background:#eeeeee;
-
-}
-
-
-/* ========================================
-   CORRECT / WRONG
-   ======================================== */
-
-.correct{
-
-    background:green !important;
-
-    color:white;
-
-}
-
-
-.wrong{
-
-    background:red !important;
-
-    color:white;
-
-}
-
-
-/* ========================================
-   QUESTION NAVIGATION
-   ======================================== */
-
-.navigation{
-
-    display:flex;
-
-    gap:10px;
-
-    margin-top:25px;
-
-}
-
-
-.navigation button{
-
-    flex:1;
-
-    padding:15px;
+    margin:12px 0;
 
     font-size:16px;
 
-    cursor:pointer;
+    border:1px solid #d4dce7;
+
+    border-radius:10px;
+
+    background:#f9fbfd;
+
+    outline:none;
+
+    transition:0.2s;
 
 }
 
 
-/* ========================================
-   QUESTION NUMBER NAVIGATOR
-   ======================================== */
+#loginScreen input:focus{
 
-#navigator{
+    border-color:#2684c7;
 
-    margin:20px 0;
+    background:#ffffff;
 
-    display:flex;
-
-    flex-wrap:wrap;
-
-    gap:5px;
+    box-shadow:
+        0 0 0 3px rgba(38,132,199,0.12);
 
 }
 
 
-.navButton{
+/* =========================================================
+   TEXT INPUTS / TEXTAREA
+   ========================================================= */
 
-    width:40px;
+input,
+textarea,
+select{
 
-    height:35px;
-
-    cursor:pointer;
-
-    font-size:14px;
-
-}
-
-
-/* ========================================
-   NAVIGATOR STATUS
-   ======================================== */
-
-.notAttempted{
-
-    background-color:white;
-
-    color:black;
+    font-family:inherit;
 
 }
 
 
-.correct{
+textarea{
 
-    background-color:green;
+    width:100%;
 
-    color:white;
+    box-sizing:border-box;
 
-}
+    padding:14px;
 
+    border:1px solid #d4dce7;
 
-.wrong{
+    border-radius:10px;
 
-    background-color:red;
+    font-size:16px;
 
-    color:white;
+    resize:vertical;
 
-}
+    outline:none;
 
-
-.skipped{
-
-    background-color:orange;
-
-    color:white;
+    background:#f9fbfd;
 
 }
 
 
-/* ========================================
-   HOME / MODE BUTTONS
-   ======================================== */
+textarea:focus{
+
+    border-color:#2684c7;
+
+    background:#fff;
+
+    box-shadow:
+        0 0 0 3px rgba(38,132,199,0.12);
+
+}
+
+
+/* =========================================================
+   LOGIN MESSAGE
+   ========================================================= */
+
+#loginMessage,
+#accessRequestMessage{
+
+    text-align:center;
+
+    margin-top:18px;
+
+    font-weight:600;
+
+    line-height:1.5;
+
+}
+
+
+/* =========================================================
+   HOME SCREEN
+   ========================================================= */
+
+#homeScreen{
+
+    max-width:520px;
+
+    margin:auto;
+
+}
+
+
+#homeScreen h2{
+
+    margin-bottom:30px;
+
+}
+
+
+/* =========================================================
+   MODE BUTTONS
+   ========================================================= */
 
 .modeButton{
 
@@ -259,35 +285,161 @@ h2{
 
     width:100%;
 
-    padding:18px;
+    padding:16px 20px;
 
-    margin:15px 0;
+    margin:13px 0;
 
-    font-size:19px;
+    font-size:17px;
+
+    font-weight:600;
+
+    letter-spacing:0.2px;
 
     cursor:pointer;
 
     border:none;
 
-    border-radius:6px;
+    border-radius:11px;
 
-    background:#333;
+    background:
+        linear-gradient(
+            135deg,
+            #123f6b,
+            #1f72ad
+        );
 
     color:white;
+
+    box-shadow:
+        0 5px 12px rgba(25,80,125,0.16);
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        filter 0.15s ease;
 
 }
 
 
 .modeButton:hover{
 
-    background:#555;
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 8px 18px rgba(25,80,125,0.22);
+
+    filter:brightness(1.06);
 
 }
 
 
-/* ========================================
-   SETUP LABELS
-   ======================================== */
+.modeButton:active{
+
+    transform:translateY(0);
+
+}
+
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+.backButton{
+
+    display:block;
+
+    width:100%;
+
+    padding:14px 18px;
+
+    margin-top:15px;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    border:1px solid #d4dce5;
+
+    background:#f5f7fa;
+
+    color:#34465b;
+
+    border-radius:10px;
+
+    transition:0.2s;
+
+}
+
+
+.backButton:hover{
+
+    background:#e9edf2;
+
+    border-color:#c4ceda;
+
+}
+
+
+/* =========================================================
+   RESET BUTTON
+   ========================================================= */
+
+.resetButton{
+
+    display:block;
+
+    width:100%;
+
+    padding:14px;
+
+    margin:15px 0;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#fff3e8;
+
+    color:#b45309;
+
+    border:1px solid #fed7aa;
+
+    transition:0.2s;
+
+}
+
+
+.resetButton:hover{
+
+    background:#ffead5;
+
+    transform:translateY(-1px);
+
+}
+
+
+/* =========================================================
+   SETUP SCREENS
+   ========================================================= */
+
+#practiceSetup,
+#quizSetup,
+#combinedQuizSetup{
+
+    max-width:520px;
+
+    margin:auto;
+
+}
+
 
 label{
 
@@ -297,133 +449,299 @@ label{
 
     margin-bottom:8px;
 
-    font-size:17px;
+    font-size:15px;
+
+    font-weight:700;
+
+    color:#40546b;
 
 }
 
 
-/* ========================================
+/* =========================================================
    SELECT BOXES
-   ======================================== */
+   ========================================================= */
 
 #subjectSelect,
 #practiceSubjectSelect,
 #questionCount,
-#combinedQuestionCount{
+#combinedQuestionCount,
+#searchSubject{
 
     width:100%;
 
-    padding:12px;
+    padding:14px 15px;
 
     font-size:16px;
 
-}
+    border:1px solid #d4dce7;
 
+    border-radius:10px;
 
-/* ========================================
-   BACK BUTTON
-   ======================================== */
+    background:#f9fbfd;
 
-.backButton{
+    color:#172033;
 
-    display:block;
-
-    width:100%;
-
-    padding:14px;
-
-    margin-top:15px;
-
-    font-size:16px;
+    outline:none;
 
     cursor:pointer;
 
-    border:1px solid #ccc;
+}
 
-    background:#f2f2f2;
 
-    border-radius:5px;
+#subjectSelect:focus,
+#practiceSubjectSelect:focus,
+#questionCount:focus,
+#combinedQuestionCount:focus,
+#searchSubject:focus{
+
+    border-color:#2684c7;
+
+    box-shadow:
+        0 0 0 3px rgba(38,132,199,0.1);
 
 }
 
 
-.backButton:hover{
+/* =========================================================
+   RESET SECTION
+   ========================================================= */
 
-    background:#ddd;
+#resetProgressSection{
+
+    margin-top:28px;
+
+    padding:20px;
+
+    border-radius:12px;
+
+    background:#f8fafc;
+
+    border:1px solid #e1e7ee;
 
 }
 
 
-/* ========================================
+#resetProgressSection hr{
+
+    display:none;
+
+}
+
+
+#resetProgressSection h3{
+
+    margin-top:0;
+
+    margin-bottom:8px;
+
+}
+
+
+#resetProgressSection p{
+
+    color:#68778a;
+
+    line-height:1.5;
+
+    font-size:14px;
+
+}
+
+
+/* =========================================================
    AVAILABLE QUESTIONS
-   ======================================== */
+   ========================================================= */
 
 .availableQuestions{
 
     text-align:center;
 
-    font-size:18px;
+    font-size:17px;
 
     margin:20px 0;
 
+    padding:14px;
+
+    border-radius:10px;
+
+    background:#edf6ff;
+
+    color:#24577f;
+
+    border:1px solid #d5eafa;
+
 }
 
 
-/* ========================================
-   RESULTS
-   ======================================== */
+/* =========================================================
+   QUESTION SCREEN
+   ========================================================= */
 
-#resultScore{
+#quizScreen{
 
-    text-align:center;
+    width:100%;
 
 }
 
 
-#resultDetails{
+#subject{
 
     text-align:center;
 
     font-size:18px;
 
-    margin:20px;
+    font-weight:800;
+
+    color:#1d6193;
+
+    margin:5px 0 10px;
+
+    text-transform:uppercase;
+
+    letter-spacing:0.8px;
 
 }
-/* =========================
-   LOGIN SCREEN
-   ========================= */
 
-#loginScreen{
+
+#counter{
+
     text-align:center;
+
+    font-size:15px;
+
+    color:#718096;
+
+    margin-bottom:20px;
+
+    font-weight:600;
+
 }
 
-#loginScreen input{
 
-    display:block;
+/* =========================================================
+   QUESTION NAVIGATOR
+   ========================================================= */
 
-    width:100%;
+#navigator{
 
-    box-sizing:border-box;
+    margin:20px 0;
 
     padding:15px;
 
-    margin:10px 0;
+    display:flex;
 
-    font-size:17px;
+    flex-wrap:wrap;
 
-    border:1px solid #ccc;
+    gap:7px;
 
-    border-radius:5px;
+    justify-content:center;
+
+    background:#f7f9fc;
+
+    border:1px solid #e4e9ef;
+
+    border-radius:12px;
+
 }
 
-#loginMessage{
 
-    text-align:center;
+.navButton{
 
-    margin-top:15px;
+    width:38px;
 
-    font-weight:bold;
+    height:36px;
+
+    cursor:pointer;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    border-radius:8px;
+
+    border:1px solid #d3dbe5;
+
+    transition:0.15s;
+
 }
+
+
+.navButton:hover{
+
+    transform:translateY(-1px);
+
+}
+
+
+/* =========================================================
+   NAVIGATOR STATUS
+   ========================================================= */
+
+.navButton.notAttempted{
+
+    background:#ffffff;
+
+    color:#39485a;
+
+}
+
+
+.navButton.correct{
+
+    background:#20a464;
+
+    color:#ffffff;
+
+    border-color:#20a464;
+
+}
+
+
+.navButton.wrong{
+
+    background:#dc4c4c;
+
+    color:#ffffff;
+
+    border-color:#dc4c4c;
+
+}
+
+
+.navButton.skipped{
+
+    background:#f2a52b;
+
+    color:#ffffff;
+
+    border-color:#f2a52b;
+
+}
+
+
+/* =========================================================
+   QUESTION
+   ========================================================= */
+
+.question{
+
+    font-size:22px;
+
+    line-height:1.55;
+
+    font-weight:600;
+
+    margin:30px 0 25px;
+
+    color:#172033;
+
+}
+
+
+/* =========================================================
+   QUESTION IMAGES
+   ========================================================= */
 
 .question-images{
 
@@ -431,18 +749,20 @@ label{
 
     flex-wrap:wrap;
 
-    gap:10px;
+    gap:15px;
 
     justify-content:center;
 
-    margin:15px 0;
+    margin:20px 0 25px;
+
 }
+
 
 .question-figure{
 
-    max-width:280px;
+    max-width:100%;
 
-    max-height:280px;
+    max-height:360px;
 
     width:auto;
 
@@ -450,20 +770,779 @@ label{
 
     object-fit:contain;
 
-    border:1px solid #ccc;
+    border:1px solid #d8e0e8;
 
-    border-radius:6px;
+    border-radius:10px;
 
     background:#fff;
 
-    padding:4px;
+    padding:6px;
 
     cursor:zoom-in;
 
-    box-shadow:0 1px 4px rgba(0,0,0,0.15);
+    box-shadow:
+        0 4px 12px rgba(0,0,0,0.08);
+
+    transition:0.2s;
+
 }
+
 
 .question-figure:hover{
 
-    box-shadow:0 2px 8px rgba(0,0,0,0.25);
+    transform:scale(1.015);
+
+    box-shadow:
+        0 7px 20px rgba(0,0,0,0.13);
+
+}
+
+
+/* =========================================================
+   ANSWERS
+   ========================================================= */
+
+#answers{
+
+    margin-top:20px;
+
+}
+
+
+.option{
+
+    display:block;
+
+    width:100%;
+
+    padding:17px 18px;
+
+    margin:12px 0;
+
+    font-size:17px;
+
+    line-height:1.4;
+
+    text-align:left;
+
+    cursor:pointer;
+
+    border:1px solid #d8e0e8;
+
+    background:#ffffff;
+
+    color:#243447;
+
+    border-radius:11px;
+
+    transition:
+        background 0.15s,
+        border 0.15s,
+        transform 0.15s,
+        box-shadow 0.15s;
+
+}
+
+
+.option:hover{
+
+    background:#f4f8fc;
+
+    border-color:#9db9d0;
+
+    transform:translateY(-1px);
+
+    box-shadow:
+        0 3px 8px rgba(0,0,0,0.06);
+
+}
+
+
+/* Correct / wrong */
+
+.option.correct{
+
+    background:#1fa463 !important;
+
+    color:white !important;
+
+    border-color:#1fa463 !important;
+
+}
+
+
+.option.wrong{
+
+    background:#dc4c4c !important;
+
+    color:white !important;
+
+    border-color:#dc4c4c !important;
+
+}
+
+
+/* =========================================================
+   MARK QUESTION
+   ========================================================= */
+
+.markButton{
+
+    display:block;
+
+    width:100%;
+
+    padding:13px;
+
+    margin:15px 0 20px;
+
+    border:1px solid #f0c75e;
+
+    border-radius:10px;
+
+    background:#fff9e6;
+
+    color:#8a6500;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:0.2s;
+
+}
+
+
+.markButton:hover{
+
+    background:#fff3c7;
+
+}
+
+
+.markButton.marked{
+
+    background:#ffe8a3;
+
+    color:#745300;
+
+    border-color:#e6b72e;
+
+}
+
+
+/* =========================================================
+   QUESTION NAVIGATION
+   ========================================================= */
+
+.navigation{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-top:28px;
+
+}
+
+
+.navigation button{
+
+    flex:1;
+
+    padding:14px;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#244d72;
+
+    color:white;
+
+    transition:0.2s;
+
+}
+
+
+.navigation button:hover{
+
+    background:#183b5c;
+
+    transform:translateY(-1px);
+
+}
+
+
+.navigation button:disabled{
+
+    opacity:0.5;
+
+    cursor:not-allowed;
+
+}
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+#searchScreen{
+
+    max-width:650px;
+
+    margin:auto;
+
+}
+
+
+#searchInput{
+
+    width:100%;
+
+    padding:15px;
+
+    font-size:16px;
+
+    border:1px solid #d4dce7;
+
+    border-radius:10px;
+
+    background:#f9fbfd;
+
+    outline:none;
+
+    margin-bottom:12px;
+
+}
+
+
+#searchInput:focus{
+
+    border-color:#2684c7;
+
+    box-shadow:
+        0 0 0 3px rgba(38,132,199,0.1);
+
+}
+
+
+#searchResults{
+
+    margin-top:25px;
+
+}
+
+
+#searchResults > div{
+
+    background:#ffffff !important;
+
+    border:1px solid #e1e7ee !important;
+
+    box-shadow:
+        0 3px 10px rgba(20,45,80,0.06);
+
+}
+
+
+/* =========================================================
+   MARKED QUESTIONS
+   ========================================================= */
+
+#markedScreen{
+
+    max-width:650px;
+
+    margin:auto;
+
+}
+
+
+#markedQuizButtons{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:10px;
+
+}
+
+
+#markedQuizButtons .modeButton{
+
+    margin:0;
+
+    font-size:15px;
+
+}
+
+
+#markedScreen hr{
+
+    border:none;
+
+    border-top:1px solid #e1e7ee;
+
+    margin:30px 0;
+
+}
+
+
+#markedQuestionsList > div{
+
+    background:#ffffff !important;
+
+    border:1px solid #e0e7ef !important;
+
+    box-shadow:
+        0 3px 10px rgba(20,45,80,0.06);
+
+    transition:0.2s;
+
+}
+
+
+#markedQuestionsList > div:hover{
+
+    transform:translateY(-1px);
+
+    box-shadow:
+        0 6px 15px rgba(20,45,80,0.09);
+
+}
+
+
+/* =========================================================
+   RESULTS
+   ========================================================= */
+
+#resultsScreen{
+
+    text-align:center;
+
+    max-width:500px;
+
+    margin:auto;
+
+}
+
+
+#resultsScreen h2{
+
+    margin-bottom:20px;
+
+}
+
+
+#resultScore{
+
+    padding:20px;
+
+    margin:15px 0;
+
+    background:#f3f8fd;
+
+    border:1px solid #dceaf6;
+
+    border-radius:14px;
+
+}
+
+
+#resultScore h1{
+
+    margin:0;
+
+    font-size:55px;
+
+    color:#1d6ca5;
+
+}
+
+
+#resultScore h1::after{
+
+    display:none;
+
+}
+
+
+#resultDetails{
+
+    font-size:17px;
+
+    line-height:1.7;
+
+    margin:20px;
+
+    color:#536579;
+
+}
+
+
+#redoWrongBtn{
+
+    margin-top:15px;
+
+}
+
+
+/* =========================================================
+   ADMIN
+   ========================================================= */
+
+#adminScreen{
+
+    max-width:650px;
+
+    margin:auto;
+
+}
+
+
+#adminScreen hr{
+
+    border:none;
+
+    border-top:1px solid #e1e7ee;
+
+    margin:30px 0;
+
+}
+
+
+#adminRequests > div,
+#approvedUsersList > div{
+
+    background:#ffffff !important;
+
+    border:1px solid #e0e7ef !important;
+
+    box-shadow:
+        0 3px 10px rgba(20,45,80,0.05);
+
+}
+
+
+#adminScreen h3{
+
+    margin-top:25px;
+
+}
+
+
+/* =========================================================
+   ACCESS REQUEST
+   ========================================================= */
+
+#accessRequestScreen{
+
+    max-width:500px;
+
+    margin:auto;
+
+}
+
+
+#accessRequestScreen input{
+
+    width:100%;
+
+    padding:14px;
+
+    margin:10px 0;
+
+    border:1px solid #d4dce7;
+
+    border-radius:10px;
+
+    font-size:16px;
+
+    outline:none;
+
+    background:#f9fbfd;
+
+}
+
+
+#accessRequestScreen input:focus{
+
+    border-color:#2684c7;
+
+    box-shadow:
+        0 0 0 3px rgba(38,132,199,0.1);
+
+}
+
+
+/* =========================================================
+   MOBILE RESPONSIVE
+   ========================================================= */
+
+@media (max-width:768px){
+
+    body{
+
+        background:#f4f7fa;
+
+    }
+
+
+    .container{
+
+        width:auto;
+
+        max-width:none;
+
+        margin:0;
+
+        min-height:100vh;
+
+        padding:22px 16px;
+
+        border-radius:0;
+
+        box-shadow:none;
+
+        border:none;
+
+    }
+
+
+    h1{
+
+        font-size:27px;
+
+        margin-bottom:28px;
+
+    }
+
+
+    h2{
+
+        font-size:22px;
+
+    }
+
+
+    .modeButton{
+
+        padding:15px;
+
+        font-size:16px;
+
+    }
+
+
+    .question{
+
+        font-size:19px;
+
+        line-height:1.5;
+
+        margin:25px 0 20px;
+
+    }
+
+
+    .option{
+
+        padding:15px;
+
+        font-size:16px;
+
+    }
+
+
+    .navigation{
+
+        gap:7px;
+
+    }
+
+
+    .navigation button{
+
+        padding:13px 7px;
+
+        font-size:13px;
+
+    }
+
+
+    .navButton{
+
+        width:35px;
+
+        height:34px;
+
+        font-size:12px;
+
+    }
+
+
+    #navigator{
+
+        padding:12px;
+
+        gap:5px;
+
+    }
+
+
+    #markedQuizButtons{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    #markedQuizButtons .modeButton{
+
+        padding:14px;
+
+    }
+
+
+    .question-figure{
+
+        max-width:100%;
+
+        max-height:300px;
+
+    }
+
+
+    #resultScore h1{
+
+        font-size:48px;
+
+    }
+
+}
+
+
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
+
+@media (max-width:430px){
+
+    .container{
+
+        padding:18px 12px;
+
+    }
+
+
+    h1{
+
+        font-size:24px;
+
+    }
+
+
+    h2{
+
+        font-size:20px;
+
+    }
+
+
+    .question{
+
+        font-size:18px;
+
+    }
+
+
+    .navigation{
+
+        flex-direction:column;
+
+    }
+
+
+    .navigation button{
+
+        width:100%;
+
+        font-size:15px;
+
+    }
+
+
+    #subject{
+
+        font-size:16px;
+
+    }
+
+
+    #counter{
+
+        font-size:14px;
+
+    }
+
+
+    .option{
+
+        font-size:15px;
+
+        padding:14px;
+
+    }
+
+
+    .modeButton{
+
+        font-size:15px;
+
+    }
+
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+
+::-webkit-scrollbar-track{
+
+    background:#edf1f5;
+
+}
+
+
+::-webkit-scrollbar-thumb{
+
+    background:#b7c4d1;
+
+    border-radius:10px;
+
+}
+
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#91a3b5;
+
 }
