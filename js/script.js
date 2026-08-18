@@ -1,6 +1,6 @@
 // ========================================
 // ATPL STUDY PLATFORM
-// COMPLETE VERSION
+// COMPLETE SCRIPT
 // ========================================
 
 
@@ -20,25 +20,15 @@ let markedQuestionIds = new Set();
 // ========================================
 
 const subjectNames = {
-
-    meteorology:
-        "Meteorology",
-
-    airlaw:
-        "Air Law",
-
-    operational:
-        "Operational Procedures"
-
+    meteorology: "Meteorology",
+    airlaw: "Air Law",
+    operational: "Operational Procedures"
 };
 
-
 const subjectFiles = [
-
     "meteorology",
     "airlaw",
     "operational"
-
 ];
 
 
@@ -49,7 +39,6 @@ const subjectFiles = [
 function showOnly(screenId) {
 
     const screens = [
-
         "loginScreen",
         "accessRequestScreen",
         "homeScreen",
@@ -61,36 +50,23 @@ function showOnly(screenId) {
         "markedScreen",
         "quizScreen",
         "resultsScreen"
-
     ];
 
+    screens.forEach(function (id) {
 
-    screens.forEach(function(id) {
-
-        const element =
-            document.getElementById(id);
+        const element = document.getElementById(id);
 
         if (element) {
-
-            element.style.display =
-                "none";
-
+            element.style.display = "none";
         }
 
     });
 
-
-    const selected =
-        document.getElementById(screenId);
-
+    const selected = document.getElementById(screenId);
 
     if (selected) {
-
-        selected.style.display =
-            "block";
-
+        selected.style.display = "block";
     }
-
 }
 
 
@@ -98,15 +74,243 @@ function showOnly(screenId) {
 // PRACTICE BUTTON
 // ========================================
 
-document.getElementById(
-    "practiceBtn"
-).onclick = function() {
+document.getElementById("practiceBtn").onclick = function () {
 
-    showOnly(
-        "practiceSetup"
-    );
+    showOnly("practiceSetup");
+
+    updateResetButton();
 
 };
+
+
+// ========================================
+// PRACTICE SUBJECT CHANGE
+// ========================================
+
+const practiceSubjectSelect =
+    document.getElementById("practiceSubjectSelect");
+
+if (practiceSubjectSelect) {
+
+    practiceSubjectSelect.addEventListener(
+        "change",
+        function () {
+
+            updateResetButton();
+
+        }
+    );
+
+}
+
+
+// ========================================
+// UPDATE RESET BUTTON
+// ========================================
+
+function updateResetButton() {
+
+    const select =
+        document.getElementById(
+            "practiceSubjectSelect"
+        );
+
+    const resetContainer =
+        document.getElementById(
+            "resetProgressContainer"
+        );
+
+    const resetButton =
+        document.getElementById(
+            "resetProgressBtn"
+        );
+
+    if (!select || !resetContainer || !resetButton) {
+        return;
+    }
+
+    const subject =
+        select.value;
+
+    resetButton.innerHTML =
+        "🔄 Reset " +
+        subjectNames[subject] +
+        " Progress";
+
+    resetButton.dataset.subject =
+        subject;
+
+    resetContainer.style.display =
+        "block";
+}
+
+
+// ========================================
+// RESET PROGRESS BUTTON
+// ========================================
+
+const resetProgressBtn =
+    document.getElementById(
+        "resetProgressBtn"
+    );
+
+if (resetProgressBtn) {
+
+    resetProgressBtn.onclick =
+        async function () {
+
+            const subject =
+                this.dataset.subject;
+
+            if (!subject) {
+                return;
+            }
+
+            await resetSubjectProgress(
+                subject
+            );
+
+        };
+
+}
+
+
+// ========================================
+// RESET SUBJECT PROGRESS
+// ========================================
+
+async function resetSubjectProgress(
+    subject
+) {
+
+    const subjectName =
+        subjectNames[subject];
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to reset your " +
+            subjectName +
+            " progress?\n\n" +
+            "Your correct, wrong and skipped progress " +
+            "for this subject will be deleted.\n\n" +
+            "Your marked questions will NOT be deleted."
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+
+        const {
+            data: {
+                user
+            }
+        } =
+            await supabaseClient.auth.getUser();
+
+        if (!user) {
+
+            alert(
+                "Please log in first."
+            );
+
+            return;
+
+        }
+
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from("progress")
+                .delete()
+                .eq(
+                    "user_id",
+                    user.id
+                )
+                .eq(
+                    "subject",
+                    subject
+                );
+
+
+        if (error) {
+
+            console.error(
+                "Reset progress error:",
+                error
+            );
+
+            alert(
+                "Unable to reset " +
+                subjectName +
+                " progress.\n\n" +
+                error.message
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            subjectName +
+            " progress has been reset successfully.\n\n" +
+            "Marked questions were not deleted."
+        );
+
+
+        // If currently inside this subject,
+        // reset the visible navigator as well.
+
+        if (
+            questions.length &&
+            questions.some(
+                function (question) {
+
+                    return question.subject === subject;
+
+                }
+            )
+        ) {
+
+            questions.forEach(
+                function (question, index) {
+
+                    if (
+                        question.subject === subject
+                    ) {
+
+                        status[index] =
+                            "notAttempted";
+
+                    }
+
+                }
+            );
+
+            createNavigator();
+
+            showQuestion();
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Unexpected reset error:",
+            error
+        );
+
+        alert(
+            "Unable to reset progress."
+        );
+
+    }
+
+}
 
 
 // ========================================
@@ -115,7 +319,8 @@ document.getElementById(
 
 document.getElementById(
     "startPracticeBtn"
-).onclick = function() {
+).onclick =
+async function () {
 
     quizMode = false;
 
@@ -124,13 +329,11 @@ document.getElementById(
             "practiceSubjectSelect"
         ).value;
 
-
     showOnly(
         "quizScreen"
     );
 
-
-    loadPracticeQuestions(
+    await loadPracticeQuestions(
         subjectFile
     );
 
@@ -143,7 +346,8 @@ document.getElementById(
 
 document.getElementById(
     "practiceBackBtn"
-).onclick = function() {
+).onclick =
+function () {
 
     showOnly(
         "homeScreen"
@@ -153,12 +357,13 @@ document.getElementById(
 
 
 // ========================================
-// SUBJECT QUIZ
+// SUBJECT QUIZ BUTTON
 // ========================================
 
 document.getElementById(
     "subjectQuizBtn"
-).onclick = function() {
+).onclick =
+function () {
 
     showOnly(
         "quizSetup"
@@ -173,27 +378,24 @@ document.getElementById(
 
 document.getElementById(
     "startQuizBtn"
-).onclick = function() {
+).onclick =
+function () {
 
     quizMode = true;
-
 
     const subjectFile =
         document.getElementById(
             "subjectSelect"
         ).value;
 
-
     const numberOfQuestions =
         document.getElementById(
             "questionCount"
         ).value;
 
-
     showOnly(
         "quizScreen"
     );
-
 
     loadSubjectQuiz(
         subjectFile,
@@ -209,7 +411,8 @@ document.getElementById(
 
 document.getElementById(
     "backHomeBtn"
-).onclick = function() {
+).onclick =
+function () {
 
     showOnly(
         "homeScreen"
@@ -224,12 +427,12 @@ document.getElementById(
 
 document.getElementById(
     "combinedQuizBtn"
-).onclick = function() {
+).onclick =
+function () {
 
     showOnly(
         "combinedQuizSetup"
     );
-
 
     loadCombinedQuestionCount();
 
@@ -242,7 +445,8 @@ document.getElementById(
 
 document.getElementById(
     "combinedBackBtn"
-).onclick = function() {
+).onclick =
+function () {
 
     showOnly(
         "homeScreen"
@@ -259,12 +463,10 @@ async function loadCombinedQuestionCount() {
 
     let totalQuestions = 0;
 
-
     try {
 
         for (
-            const file
-            of subjectFiles
+            const file of subjectFiles
         ) {
 
             const response =
@@ -273,7 +475,6 @@ async function loadCombinedQuestionCount() {
                     file +
                     ".json"
                 );
-
 
             if (!response.ok) {
 
@@ -285,10 +486,8 @@ async function loadCombinedQuestionCount() {
 
             }
 
-
             const data =
                 await response.json();
-
 
             totalQuestions +=
                 data.length;
@@ -299,9 +498,7 @@ async function loadCombinedQuestionCount() {
         document.getElementById(
             "availableQuestions"
         ).innerHTML =
-
-            "Available questions: " +
-            "<strong>" +
+            "Available questions: <strong>" +
             totalQuestions +
             "</strong>";
 
@@ -310,14 +507,12 @@ async function loadCombinedQuestionCount() {
             totalQuestions
         );
 
-
     } catch (error) {
 
         console.error(
             "Combined question count error:",
             error
         );
-
 
         document.getElementById(
             "availableQuestions"
@@ -342,16 +537,14 @@ function updateCombinedQuestionOptions(
             "combinedQuestionCount"
         );
 
-
     if (!select) {
         return;
     }
 
-
     select.querySelectorAll(
         "option"
     ).forEach(
-        function(option) {
+        function (option) {
 
             if (
                 option.value === "all"
@@ -359,13 +552,11 @@ function updateCombinedQuestionOptions(
                 return;
             }
 
-
             const number =
                 parseInt(
                     option.value,
                     10
                 );
-
 
             option.disabled =
                 number > totalQuestions;
@@ -382,13 +573,13 @@ function updateCombinedQuestionOptions(
 
 document.getElementById(
     "startCombinedBtn"
-).onclick = function() {
+).onclick =
+function () {
 
     const questionCount =
         document.getElementById(
             "combinedQuestionCount"
         ).value;
-
 
     loadCombinedQuiz(
         questionCount
@@ -414,7 +605,6 @@ async function loadPracticeQuestions(
                 ".json"
             );
 
-
         if (!response.ok) {
 
             throw new Error(
@@ -425,15 +615,14 @@ async function loadPracticeQuestions(
 
         }
 
-
         questions =
             await response.json();
 
 
-        // Force correct subject
+        // FORCE CORRECT SUBJECT
 
         questions.forEach(
-            function(question) {
+            function (question) {
 
                 question.subject =
                     subjectFile;
@@ -449,7 +638,6 @@ async function loadPracticeQuestions(
                 "notAttempted"
             );
 
-
         current = 0;
 
 
@@ -463,17 +651,13 @@ async function loadPracticeQuestions(
 
         await loadMarkedQuestions();
 
-
         createNavigator();
 
-
         showQuestion();
-
 
         await loadSavedProgress(
             subjectFile
         );
-
 
     } catch (error) {
 
@@ -481,7 +665,6 @@ async function loadPracticeQuestions(
             "Practice loading error:",
             error
         );
-
 
         alert(
             "Error loading " +
@@ -514,7 +697,6 @@ async function loadSubjectQuiz(
                 ".json"
             );
 
-
         if (!response.ok) {
 
             throw new Error(
@@ -525,13 +707,12 @@ async function loadSubjectQuiz(
 
         }
 
-
         let allQuestions =
             await response.json();
 
 
         allQuestions.forEach(
-            function(question) {
+            function (question) {
 
                 question.subject =
                     subjectFile;
@@ -540,25 +721,21 @@ async function loadSubjectQuiz(
         );
 
 
-        // Randomize
+        // RANDOMIZE
 
         allQuestions.sort(
-            function() {
+            function () {
 
-                return (
-                    Math.random() -
-                    0.5
-                );
+                return Math.random() - 0.5;
 
             }
         );
 
 
-        // Select number
+        // SELECT NUMBER
 
         if (
-            numberOfQuestions ===
-            "all"
+            numberOfQuestions === "all"
         ) {
 
             questions =
@@ -585,14 +762,12 @@ async function loadSubjectQuiz(
                 "notAttempted"
             );
 
-
         current = 0;
 
 
         document.getElementById(
             "subject"
         ).innerHTML =
-
             subjectNames[
                 subjectFile
             ] +
@@ -601,12 +776,9 @@ async function loadSubjectQuiz(
 
         await loadMarkedQuestions();
 
-
         createNavigator();
 
-
         showQuestion();
-
 
     } catch (error) {
 
@@ -614,7 +786,6 @@ async function loadSubjectQuiz(
             "Subject quiz loading error:",
             error
         );
-
 
         alert(
             "Error loading " +
@@ -639,12 +810,10 @@ async function loadCombinedQuiz(
 
     const combinedQuestions = [];
 
-
     try {
 
         for (
-            const file
-            of subjectFiles
+            const file of subjectFiles
         ) {
 
             const response =
@@ -653,7 +822,6 @@ async function loadCombinedQuiz(
                     file +
                     ".json"
                 );
-
 
             if (!response.ok) {
 
@@ -665,17 +833,15 @@ async function loadCombinedQuiz(
 
             }
 
-
             const data =
                 await response.json();
 
 
             data.forEach(
-                function(question) {
+                function (question) {
 
                     question.subject =
                         file;
-
 
                     combinedQuestions.push(
                         question
@@ -688,12 +854,9 @@ async function loadCombinedQuiz(
 
 
         combinedQuestions.sort(
-            function() {
+            function () {
 
-                return (
-                    Math.random() -
-                    0.5
-                );
+                return Math.random() - 0.5;
 
             }
         );
@@ -727,9 +890,7 @@ async function loadCombinedQuiz(
                 "notAttempted"
             );
 
-
         current = 0;
-
 
         quizMode = true;
 
@@ -747,12 +908,9 @@ async function loadCombinedQuiz(
 
         await loadMarkedQuestions();
 
-
         createNavigator();
 
-
         showQuestion();
-
 
     } catch (error) {
 
@@ -760,7 +918,6 @@ async function loadCombinedQuiz(
             "Combined quiz error:",
             error
         );
-
 
         alert(
             "Error loading combined quiz."
@@ -772,7 +929,7 @@ async function loadCombinedQuiz(
 
 
 // ========================================
-// CREATE QUESTION NAVIGATOR
+// CREATE NAVIGATOR
 // ========================================
 
 function createNavigator() {
@@ -782,17 +939,15 @@ function createNavigator() {
             "navigator"
         );
 
-
     if (!nav) {
         return;
     }
-
 
     nav.innerHTML = "";
 
 
     questions.forEach(
-        function(
+        function (
             question,
             index
         ) {
@@ -802,10 +957,8 @@ function createNavigator() {
                     "button"
                 );
 
-
             button.innerHTML =
                 index + 1;
-
 
             button.className =
                 "navButton " +
@@ -813,11 +966,10 @@ function createNavigator() {
 
 
             button.onclick =
-                function() {
+                function () {
 
                     current =
                         index;
-
 
                     showQuestion();
 
@@ -840,7 +992,9 @@ function createNavigator() {
 
 function showQuestion() {
 
-    if (!questions.length) {
+    if (
+        !questions.length
+    ) {
         return;
     }
 
@@ -852,9 +1006,10 @@ function showQuestion() {
     document.getElementById(
         "counter"
     ).innerHTML =
-
         "Question " +
-        (current + 1) +
+        (
+            current + 1
+        ) +
         " of " +
         questions.length;
 
@@ -897,8 +1052,8 @@ function showQuestion() {
             "questionImages"
         );
 
-
-    questionImages.innerHTML = "";
+    questionImages.innerHTML =
+        "";
 
 
     if (
@@ -910,32 +1065,28 @@ function showQuestion() {
     ) {
 
         question.images.forEach(
-            function(src) {
+            function (src) {
 
                 const img =
                     document.createElement(
                         "img"
                     );
 
-
                 img.src =
                     src;
-
 
                 img.alt =
                     "Question figure";
 
-
                 img.className =
                     "question-figure";
-
 
                 img.loading =
                     "lazy";
 
 
                 img.onerror =
-                    function() {
+                    function () {
 
                         console.error(
                             "Image failed to load:",
@@ -946,7 +1097,7 @@ function showQuestion() {
 
 
                 img.onclick =
-                    function() {
+                    function () {
 
                         window.open(
                             src,
@@ -987,8 +1138,8 @@ function showQuestion() {
             "answers"
         );
 
-
-    answers.innerHTML = "";
+    answers.innerHTML =
+        "";
 
 
     if (
@@ -1007,7 +1158,7 @@ function showQuestion() {
 
 
     question.options.forEach(
-        function(
+        function (
             option,
             index
         ) {
@@ -1017,14 +1168,14 @@ function showQuestion() {
                     "button"
                 );
 
-
             button.className =
                 "option";
-
 
             button.innerHTML =
                 option;
 
+
+            // CORRECT
 
             if (
                 status[current] ===
@@ -1045,6 +1196,8 @@ function showQuestion() {
             }
 
 
+            // WRONG
+
             if (
                 status[current] ===
                 "wrong"
@@ -1064,8 +1217,10 @@ function showQuestion() {
             }
 
 
+            // ANSWER CLICK
+
             button.onclick =
-                async function() {
+                async function () {
 
                     if (
                         status[current] ===
@@ -1091,10 +1246,8 @@ function showQuestion() {
                             "correct"
                         );
 
-
                         status[current] =
                             "correct";
-
 
                         questionStatus =
                             "correct";
@@ -1105,10 +1258,8 @@ function showQuestion() {
                             "wrong"
                         );
 
-
                         status[current] =
                             "wrong";
-
 
                         questionStatus =
                             "wrong";
@@ -1160,13 +1311,13 @@ function showQuestion() {
 
 
 // ========================================
-// MARK QUESTION BUTTON
+// MARK QUESTION
 // ========================================
 
 document.getElementById(
     "markQuestionBtn"
 ).onclick =
-async function() {
+async function () {
 
     await toggleMarkQuestion();
 
@@ -1179,7 +1330,9 @@ async function() {
 
 async function toggleMarkQuestion() {
 
-    if (!questions.length) {
+    if (
+        !questions.length
+    ) {
         return;
     }
 
@@ -1255,11 +1408,9 @@ async function toggleMarkQuestion() {
                     error
                 );
 
-
                 alert(
                     "Unable to unmark question."
                 );
-
 
                 return;
 
@@ -1271,7 +1422,6 @@ async function toggleMarkQuestion() {
                     question.id
                 )
             );
-
 
         } else {
 
@@ -1307,12 +1457,10 @@ async function toggleMarkQuestion() {
                     error
                 );
 
-
                 alert(
                     "Unable to mark question: " +
                     error.message
                 );
-
 
                 return;
 
@@ -1329,7 +1477,6 @@ async function toggleMarkQuestion() {
 
 
         updateMarkButton();
-
 
     } catch (error) {
 
@@ -1354,14 +1501,11 @@ function updateMarkButton() {
             "markQuestionBtn"
         );
 
-
     if (
         !button ||
         !questions.length
     ) {
-
         return;
-
     }
 
 
@@ -1380,7 +1524,6 @@ function updateMarkButton() {
         button.innerHTML =
             "⭐ Unmark Question";
 
-
         button.classList.add(
             "marked"
         );
@@ -1389,7 +1532,6 @@ function updateMarkButton() {
 
         button.innerHTML =
             "⭐ Mark Question";
-
 
         button.classList.remove(
             "marked"
@@ -1449,7 +1591,6 @@ async function loadMarkedQuestions() {
                 error
             );
 
-
             return;
 
         }
@@ -1458,7 +1599,7 @@ async function loadMarkedQuestions() {
         if (data) {
 
             data.forEach(
-                function(record) {
+                function (record) {
 
                     markedQuestionIds.add(
                         String(
@@ -1484,18 +1625,17 @@ async function loadMarkedQuestions() {
 
 
 // ========================================
-// MARKED QUESTIONS BUTTON
+// MARKED BUTTON
 // ========================================
 
 document.getElementById(
     "markedBtn"
 ).onclick =
-async function() {
+async function () {
 
     showOnly(
         "markedScreen"
     );
-
 
     await displayMarkedQuestions();
 
@@ -1533,7 +1673,6 @@ async function displayMarkedQuestions() {
             container.innerHTML =
                 "Please log in.";
 
-
             return;
 
         }
@@ -1569,10 +1708,8 @@ async function displayMarkedQuestions() {
                 error
             );
 
-
             container.innerHTML =
                 "Unable to load marked questions.";
-
 
             return;
 
@@ -1586,7 +1723,6 @@ async function displayMarkedQuestions() {
 
             container.innerHTML =
                 "<p>You have no marked questions.</p>";
-
 
             return;
 
@@ -1619,11 +1755,10 @@ async function displayMarkedQuestions() {
 
 
             subjectQuestions.forEach(
-                function(question) {
+                function (question) {
 
                     question.subject =
                         subjectFile;
-
 
                     allQuestions.push(
                         question
@@ -1635,21 +1770,22 @@ async function displayMarkedQuestions() {
         }
 
 
-        container.innerHTML = "";
+        container.innerHTML =
+            "";
 
 
         data.forEach(
-            function(marked) {
+            function (marked) {
 
                 const question =
                     allQuestions.find(
-                        function(q) {
+                        function (q) {
 
-                            return (
-                                String(q.id) ===
-                                String(
-                                    marked.question_id
-                                )
+                            return String(
+                                q.id
+                            ) ===
+                            String(
+                                marked.question_id
                             );
 
                         }
@@ -1665,14 +1801,11 @@ async function displayMarkedQuestions() {
                 box.style.border =
                     "1px solid #ccc";
 
-
                 box.style.padding =
                     "15px";
 
-
                 box.style.marginBottom =
                     "10px";
-
 
                 box.style.borderRadius =
                     "8px";
@@ -1681,7 +1814,6 @@ async function displayMarkedQuestions() {
                 if (question) {
 
                     box.innerHTML =
-
                         "<strong>" +
                         escapeHTML(
                             subjectNames[
@@ -1689,19 +1821,13 @@ async function displayMarkedQuestions() {
                             ]
                         ) +
                         "</strong>" +
-
                         "<br><br>" +
-
                         "<strong>Question:</strong><br>" +
-
                         escapeHTML(
                             question.question
                         ) +
-
                         "<br><br>" +
-
                         "<strong>Question ID:</strong> " +
-
                         escapeHTML(
                             question.id
                         );
@@ -1716,29 +1842,24 @@ async function displayMarkedQuestions() {
                     openButton.innerHTML =
                         "Open Question";
 
-
                     openButton.className =
                         "modeButton";
 
 
                     openButton.onclick =
-                        function() {
+                        function () {
 
                             questions = [
                                 question
                             ];
 
-
                             status = [
                                 "notAttempted"
                             ];
 
-
                             current = 0;
 
-
                             quizMode = false;
-
 
                             showOnly(
                                 "quizScreen"
@@ -1747,7 +1868,7 @@ async function displayMarkedQuestions() {
 
                             loadMarkedQuestions()
                                 .then(
-                                    function() {
+                                    function () {
 
                                         document.getElementById(
                                             "subject"
@@ -1756,9 +1877,7 @@ async function displayMarkedQuestions() {
                                                 question.subject
                                             ];
 
-
                                         createNavigator();
-
 
                                         showQuestion();
 
@@ -1777,18 +1896,16 @@ async function displayMarkedQuestions() {
                     unmarkButton.innerHTML =
                         "Unmark";
 
-
                     unmarkButton.className =
                         "backButton";
 
 
                     unmarkButton.onclick =
-                        async function() {
+                        async function () {
 
                             await unmarkById(
                                 marked.question_id
                             );
-
 
                             await displayMarkedQuestions();
 
@@ -1801,11 +1918,9 @@ async function displayMarkedQuestions() {
                         )
                     );
 
-
                     box.appendChild(
                         openButton
                     );
-
 
                     box.appendChild(
                         unmarkButton
@@ -1814,13 +1929,9 @@ async function displayMarkedQuestions() {
                 } else {
 
                     box.innerHTML =
-
                         "<strong>Question not found</strong>" +
-
                         "<br>" +
-
                         "Question ID: " +
-
                         escapeHTML(
                             marked.question_id
                         );
@@ -1842,7 +1953,6 @@ async function displayMarkedQuestions() {
             "Unexpected marked list error:",
             error
         );
-
 
         container.innerHTML =
             "Unable to load marked questions.";
@@ -1900,7 +2010,6 @@ async function unmarkById(
                 error
             );
 
-
             return;
 
         }
@@ -1911,7 +2020,6 @@ async function unmarkById(
                 questionId
             )
         );
-
 
     } catch (error) {
 
@@ -1932,7 +2040,7 @@ async function unmarkById(
 document.getElementById(
     "searchBtn"
 ).onclick =
-function() {
+function () {
 
     showOnly(
         "searchScreen"
@@ -1942,13 +2050,13 @@ function() {
 
 
 // ========================================
-// SEARCH QUESTIONS
+// SEARCH BUTTON ACTION
 // ========================================
 
 document.getElementById(
     "searchQuestionsBtn"
 ).onclick =
-async function() {
+async function () {
 
     await searchQuestions();
 
@@ -1956,7 +2064,7 @@ async function() {
 
 
 // ========================================
-// SEARCH FUNCTION
+// SEARCH QUESTIONS
 // ========================================
 
 async function searchQuestions() {
@@ -1999,9 +2107,7 @@ async function searchQuestions() {
                 selectedSubject !== "all" &&
                 selectedSubject !== subjectFile
             ) {
-
                 continue;
-
             }
 
 
@@ -2020,7 +2126,6 @@ async function searchQuestions() {
                     subjectFile
                 );
 
-
                 continue;
 
             }
@@ -2031,11 +2136,10 @@ async function searchQuestions() {
 
 
             data.forEach(
-                function(question) {
+                function (question) {
 
                     question.subject =
                         subjectFile;
-
 
                     allQuestions.push(
                         question
@@ -2049,7 +2153,7 @@ async function searchQuestions() {
 
         const filtered =
             allQuestions.filter(
-                function(question) {
+                function (question) {
 
                     if (!searchText) {
                         return true;
@@ -2076,15 +2180,12 @@ async function searchQuestions() {
 
 
                     return (
-
                         questionText.includes(
                             searchText
                         ) ||
-
                         optionsText.includes(
                             searchText
                         )
-
                     );
 
                 }
@@ -2098,21 +2199,19 @@ async function searchQuestions() {
             results.innerHTML =
                 "<p>No questions found.</p>";
 
-
             return;
 
         }
 
 
         results.innerHTML =
-
             "<p><strong>" +
             filtered.length +
             "</strong> questions found.</p>";
 
 
         filtered.forEach(
-            function(question) {
+            function (question) {
 
                 const box =
                     document.createElement(
@@ -2123,21 +2222,17 @@ async function searchQuestions() {
                 box.style.border =
                     "1px solid #ccc";
 
-
                 box.style.padding =
                     "15px";
 
-
                 box.style.marginBottom =
                     "10px";
-
 
                 box.style.borderRadius =
                     "8px";
 
 
                 box.innerHTML =
-
                     "<strong>" +
                     escapeHTML(
                         subjectNames[
@@ -2145,9 +2240,7 @@ async function searchQuestions() {
                         ]
                     ) +
                     "</strong>" +
-
                     "<br><br>" +
-
                     escapeHTML(
                         question.question
                     );
@@ -2162,26 +2255,22 @@ async function searchQuestions() {
                 openButton.innerHTML =
                     "Open Question";
 
-
                 openButton.className =
                     "modeButton";
 
 
                 openButton.onclick =
-                    function() {
+                    function () {
 
                         questions = [
                             question
                         ];
 
-
                         status = [
                             "notAttempted"
                         ];
 
-
                         current = 0;
-
 
                         quizMode = false;
 
@@ -2193,7 +2282,7 @@ async function searchQuestions() {
 
                         loadMarkedQuestions()
                             .then(
-                                function() {
+                                function () {
 
                                     document.getElementById(
                                         "subject"
@@ -2202,9 +2291,7 @@ async function searchQuestions() {
                                             question.subject
                                         ];
 
-
                                     createNavigator();
-
 
                                     showQuestion();
 
@@ -2241,7 +2328,6 @@ async function searchQuestions() {
             error
         );
 
-
         results.innerHTML =
             "Unable to search questions.";
 
@@ -2257,7 +2343,7 @@ async function searchQuestions() {
 document.getElementById(
     "searchBackBtn"
 ).onclick =
-function() {
+function () {
 
     showOnly(
         "homeScreen"
@@ -2273,7 +2359,7 @@ function() {
 document.getElementById(
     "markedBackBtn"
 ).onclick =
-function() {
+function () {
 
     showOnly(
         "homeScreen"
@@ -2283,13 +2369,13 @@ function() {
 
 
 // ========================================
-// NEXT BUTTON
+// NEXT
 // ========================================
 
 document.getElementById(
     "nextBtn"
 ).onclick =
-function() {
+function () {
 
     if (
         current <
@@ -2314,13 +2400,13 @@ function() {
 
 
 // ========================================
-// PREVIOUS BUTTON
+// PREVIOUS
 // ========================================
 
 document.getElementById(
     "prevBtn"
 ).onclick =
-function() {
+function () {
 
     if (
         current > 0
@@ -2336,15 +2422,17 @@ function() {
 
 
 // ========================================
-// SKIP BUTTON
+// SKIP
 // ========================================
 
 document.getElementById(
     "skipBtn"
 ).onclick =
-async function() {
+async function () {
 
-    if (!questions.length) {
+    if (
+        !questions.length
+    ) {
         return;
     }
 
@@ -2378,18 +2466,17 @@ async function() {
 
 
 // ========================================
-// BACK TO MENU
+// QUESTION BACK
 // ========================================
 
 document.getElementById(
     "questionBackBtn"
 ).onclick =
-function() {
+function () {
 
     showOnly(
         "homeScreen"
     );
-
 
     checkAdminAccess();
 
@@ -2408,32 +2495,24 @@ function showResults() {
 
 
     status.forEach(
-        function(result) {
+        function (result) {
 
             if (
                 result === "correct"
             ) {
-
                 correct++;
-
             }
-
 
             if (
                 result === "wrong"
             ) {
-
                 wrong++;
-
             }
-
 
             if (
                 result === "skipped"
             ) {
-
                 skipped++;
-
             }
 
         }
@@ -2466,7 +2545,6 @@ function showResults() {
     document.getElementById(
         "resultScore"
     ).innerHTML =
-
         "<h1>" +
         percentage +
         "%</h1>";
@@ -2475,19 +2553,15 @@ function showResults() {
     document.getElementById(
         "resultDetails"
     ).innerHTML =
-
         "<p>Correct: " +
         correct +
         "</p>" +
-
         "<p>Wrong: " +
         wrong +
         "</p>" +
-
         "<p>Skipped: " +
         skipped +
         "</p>" +
-
         "<p>Total Questions: " +
         total +
         "</p>";
@@ -2496,21 +2570,19 @@ function showResults() {
 
 
 // ========================================
-// REVIEW ANSWERS
+// REVIEW
 // ========================================
 
 document.getElementById(
     "reviewBtn"
 ).onclick =
-function() {
+function () {
 
     current = 0;
-
 
     showOnly(
         "quizScreen"
     );
-
 
     showQuestion();
 
@@ -2524,12 +2596,11 @@ function() {
 document.getElementById(
     "resultsHomeBtn"
 ).onclick =
-function() {
+function () {
 
     showOnly(
         "homeScreen"
     );
-
 
     checkAdminAccess();
 
@@ -2543,7 +2614,7 @@ function() {
 document.getElementById(
     "signupBtn"
 ).onclick =
-async function() {
+async function () {
 
     const email =
         document.getElementById(
@@ -2571,7 +2642,6 @@ async function() {
         message.innerHTML =
             "Please enter your email and password.";
 
-
         return;
 
     }
@@ -2583,7 +2653,6 @@ async function() {
 
         message.innerHTML =
             "Password must be at least 6 characters.";
-
 
         return;
 
@@ -2617,10 +2686,8 @@ async function() {
                 error
             );
 
-
             message.innerHTML =
                 error.message;
-
 
             return;
 
@@ -2630,14 +2697,12 @@ async function() {
         message.innerHTML =
             "Account created successfully. You can now log in.";
 
-
     } catch (error) {
 
         console.error(
             "Unexpected signup error:",
             error
         );
-
 
         message.innerHTML =
             "Unable to create account.";
@@ -2654,7 +2719,7 @@ async function() {
 document.getElementById(
     "loginBtn"
 ).onclick =
-async function() {
+async function () {
 
     const email =
         document.getElementById(
@@ -2681,7 +2746,6 @@ async function() {
 
         message.innerHTML =
             "Please enter your email and password.";
-
 
         return;
 
@@ -2717,10 +2781,8 @@ async function() {
                 error
             );
 
-
             message.innerHTML =
                 error.message;
-
 
             return;
 
@@ -2734,7 +2796,6 @@ async function() {
 
             message.innerHTML =
                 "Login failed.";
-
 
             return;
 
@@ -2766,13 +2827,10 @@ async function() {
                 approvalError
             );
 
-
             await supabaseClient.auth.signOut();
-
 
             message.innerHTML =
                 "Unable to verify account approval.";
-
 
             return;
 
@@ -2783,10 +2841,8 @@ async function() {
 
             await supabaseClient.auth.signOut();
 
-
             message.innerHTML =
                 "Your account has not been approved yet. Please request access.";
-
 
             return;
 
@@ -2804,14 +2860,12 @@ async function() {
 
         await checkAdminAccess();
 
-
     } catch (error) {
 
         console.error(
             "Unexpected login error:",
             error
         );
-
 
         message.innerHTML =
             "Login failed. Please try again.";
@@ -2852,7 +2906,6 @@ async function saveProgress(
                 "Question has no ID:",
                 question
             );
-
 
             return;
 
@@ -2896,7 +2949,6 @@ async function saveProgress(
                 "Progress lookup error:",
                 findError
             );
-
 
             return;
 
@@ -2943,7 +2995,6 @@ async function saveProgress(
 
             }
 
-
         } else {
 
             const {
@@ -2983,7 +3034,6 @@ async function saveProgress(
             }
 
         }
-
 
     } catch (error) {
 
@@ -3048,7 +3098,6 @@ async function loadSavedProgress(
                 error
             );
 
-
             return;
 
         }
@@ -3057,22 +3106,19 @@ async function loadSavedProgress(
         if (data) {
 
             data.forEach(
-                function(record) {
+                function (record) {
 
                     const index =
                         questions.findIndex(
-                            function(question) {
+                            function (question) {
 
                                 return (
-
                                     String(
                                         question.id
                                     ) ===
-
                                     String(
                                         record.question_id
                                     )
-
                                 );
 
                             }
@@ -3096,7 +3142,6 @@ async function loadSavedProgress(
 
         createNavigator();
 
-
     } catch (error) {
 
         console.error(
@@ -3110,308 +3155,13 @@ async function loadSavedProgress(
 
 
 // ========================================
-// RESET PROGRESS
-// ========================================
-
-const resetSubjectSelect =
-    document.getElementById(
-        "resetSubjectSelect"
-    );
-
-
-const resetProgressBtn =
-    document.getElementById(
-        "resetProgressBtn"
-    );
-
-
-const resetProgressMessage =
-    document.getElementById(
-        "resetProgressMessage"
-    );
-
-
-// ========================================
-// UPDATE RESET BUTTON
-// ========================================
-
-function updateResetProgressButton() {
-
-    if (
-        !resetSubjectSelect ||
-        !resetProgressBtn
-    ) {
-
-        return;
-
-    }
-
-
-    const subject =
-        resetSubjectSelect.value;
-
-
-    const subjectName =
-        subjectNames[
-            subject
-        ];
-
-
-    resetProgressBtn.innerHTML =
-        "🔄 Reset " +
-        subjectName +
-        " Progress";
-
-
-    if (resetProgressMessage) {
-
-        resetProgressMessage.innerHTML =
-            "";
-
-    }
-
-}
-
-
-// ========================================
-// RESET SUBJECT SELECTOR
-// ========================================
-
-if (resetSubjectSelect) {
-
-    resetSubjectSelect.addEventListener(
-        "change",
-        function() {
-
-            updateResetProgressButton();
-
-        }
-    );
-
-}
-
-
-// ========================================
-// RESET PROGRESS BUTTON
-// ========================================
-
-if (resetProgressBtn) {
-
-    resetProgressBtn.onclick =
-        async function() {
-
-            const subject =
-                resetSubjectSelect.value;
-
-
-            const subjectName =
-                subjectNames[
-                    subject
-                ];
-
-
-            const confirmed =
-                confirm(
-
-                    "Are you sure you want to reset all saved progress for " +
-                    subjectName +
-                    "?\n\n" +
-
-                    "Your marked questions will NOT be deleted."
-
-                );
-
-
-            if (!confirmed) {
-                return;
-            }
-
-
-            resetProgressBtn.disabled =
-                true;
-
-
-            resetProgressBtn.innerHTML =
-                "Resetting...";
-
-
-            if (resetProgressMessage) {
-
-                resetProgressMessage.innerHTML =
-
-                    "Resetting " +
-                    subjectName +
-                    " progress...";
-
-            }
-
-
-            try {
-
-                const {
-                    data: {
-                        user
-                    }
-                } =
-                    await supabaseClient.auth.getUser();
-
-
-                if (!user) {
-
-                    alert(
-                        "Please log in first."
-                    );
-
-
-                    resetProgressBtn.disabled =
-                        false;
-
-
-                    updateResetProgressButton();
-
-
-                    return;
-
-                }
-
-
-                // ========================================
-                // DELETE ONLY PROGRESS
-                // DO NOT TOUCH MARKED QUESTIONS
-                // ========================================
-
-                const {
-                    error
-                } =
-                    await supabaseClient
-                        .from(
-                            "progress"
-                        )
-                        .delete()
-                        .eq(
-                            "user_id",
-                            user.id
-                        )
-                        .eq(
-                            "subject",
-                            subject
-                        );
-
-
-                if (error) {
-
-                    console.error(
-                        "Reset progress error:",
-                        error
-                    );
-
-
-                    if (resetProgressMessage) {
-
-                        resetProgressMessage.innerHTML =
-
-                            "❌ Unable to reset " +
-                            subjectName +
-                            " progress.";
-
-                    }
-
-
-                    alert(
-
-                        "Unable to reset progress:\n\n" +
-                        error.message
-
-                    );
-
-
-                    resetProgressBtn.disabled =
-                        false;
-
-
-                    updateResetProgressButton();
-
-
-                    return;
-
-                }
-
-
-                // ========================================
-                // SUCCESS
-                // ========================================
-
-                if (resetProgressMessage) {
-
-                    resetProgressMessage.innerHTML =
-
-                        "✅ " +
-                        subjectName +
-                        " progress has been reset. " +
-                        "Marked questions were not deleted.";
-
-                }
-
-
-                alert(
-
-                    subjectName +
-                    " progress has been reset successfully.\n\n" +
-
-                    "Your marked questions were not deleted."
-
-                );
-
-
-                resetProgressBtn.disabled =
-                    false;
-
-
-                updateResetProgressButton();
-
-
-            } catch (error) {
-
-                console.error(
-                    "Unexpected reset error:",
-                    error
-                );
-
-
-                if (resetProgressMessage) {
-
-                    resetProgressMessage.innerHTML =
-                        "❌ An unexpected error occurred.";
-
-                }
-
-
-                alert(
-                    "Unable to reset progress."
-                );
-
-
-                resetProgressBtn.disabled =
-                    false;
-
-
-                updateResetProgressButton();
-
-            }
-
-        };
-
-}
-
-
-// ========================================
 // REQUEST ACCESS
 // ========================================
 
 document.getElementById(
     "requestAccessBtn"
 ).onclick =
-function() {
+function () {
 
     showOnly(
         "accessRequestScreen"
@@ -3427,7 +3177,7 @@ function() {
 document.getElementById(
     "backToLoginBtn"
 ).onclick =
-function() {
+function () {
 
     showOnly(
         "loginScreen"
@@ -3443,7 +3193,7 @@ function() {
 document.getElementById(
     "submitAccessRequestBtn"
 ).onclick =
-async function() {
+async function () {
 
     const name =
         document.getElementById(
@@ -3476,7 +3226,6 @@ async function() {
 
         message.innerHTML =
             "Please enter your name and email.";
-
 
         return;
 
@@ -3517,10 +3266,8 @@ async function() {
                 error
             );
 
-
             message.innerHTML =
                 "Unable to submit request. Please try again.";
-
 
             return;
 
@@ -3552,7 +3299,6 @@ async function() {
             "Unexpected request error:",
             error
         );
-
 
         message.innerHTML =
             "Unable to submit request. Please try again.";
@@ -3629,7 +3375,6 @@ async function checkAdminAccess() {
                 adminError
             );
 
-
             return;
 
         }
@@ -3641,7 +3386,6 @@ async function checkAdminAccess() {
                 "block";
 
         }
-
 
     } catch (error) {
 
@@ -3656,21 +3400,19 @@ async function checkAdminAccess() {
 
 
 // ========================================
-// OPEN ADMIN DASHBOARD
+// ADMIN DASHBOARD
 // ========================================
 
 document.getElementById(
     "adminBtn"
 ).onclick =
-async function() {
+async function () {
 
     showOnly(
         "adminScreen"
     );
 
-
     await loadAdminRequests();
-
 
     await loadApprovedUsers();
 
@@ -3684,12 +3426,11 @@ async function() {
 document.getElementById(
     "adminBackBtn"
 ).onclick =
-function() {
+function () {
 
     showOnly(
         "homeScreen"
     );
-
 
     checkAdminAccess();
 
@@ -3738,10 +3479,8 @@ async function loadAdminRequests() {
                 error
             );
 
-
             container.innerHTML =
                 "Unable to load access requests.";
-
 
             return;
 
@@ -3756,7 +3495,6 @@ async function loadAdminRequests() {
             container.innerHTML =
                 "No access requests.";
 
-
             return;
 
         }
@@ -3767,7 +3505,7 @@ async function loadAdminRequests() {
 
 
         data.forEach(
-            function(request) {
+            function (request) {
 
                 const box =
                     document.createElement(
@@ -3778,49 +3516,37 @@ async function loadAdminRequests() {
                 box.style.border =
                     "1px solid #ccc";
 
-
                 box.style.padding =
                     "15px";
 
-
                 box.style.marginBottom =
                     "10px";
-
 
                 box.style.borderRadius =
                     "8px";
 
 
                 box.innerHTML =
-
                     "<strong>Name:</strong> " +
                     escapeHTML(
                         request.name
                     ) +
-
                     "<br>" +
-
                     "<strong>Email:</strong> " +
                     escapeHTML(
                         request.email
                     ) +
-
                     "<br>" +
-
                     "<strong>Reason:</strong> " +
                     escapeHTML(
                         request.reason ||
                         "Not provided"
                     ) +
-
                     "<br>" +
-
                     "<strong>Date:</strong> " +
-
                     new Date(
                         request.created_at
                     ).toLocaleString() +
-
                     "<br><br>";
 
 
@@ -3833,13 +3559,12 @@ async function loadAdminRequests() {
                 approveButton.innerHTML =
                     "Approve";
 
-
                 approveButton.className =
                     "modeButton";
 
 
                 approveButton.onclick =
-                    function() {
+                    function () {
 
                         approveUser(
                             request
@@ -3857,13 +3582,12 @@ async function loadAdminRequests() {
                 rejectButton.innerHTML =
                     "Reject";
 
-
                 rejectButton.className =
                     "backButton";
 
 
                 rejectButton.onclick =
-                    function() {
+                    function () {
 
                         rejectRequest(
                             request
@@ -3875,7 +3599,6 @@ async function loadAdminRequests() {
                 box.appendChild(
                     approveButton
                 );
-
 
                 box.appendChild(
                     rejectButton
@@ -3896,7 +3619,6 @@ async function loadAdminRequests() {
             "Unexpected admin request error:",
             error
         );
-
 
         container.innerHTML =
             "Unable to load access requests.";
@@ -3921,9 +3643,7 @@ async function approveUser(
             "?"
         )
     ) {
-
         return;
-
     }
 
 
@@ -3957,12 +3677,10 @@ async function approveUser(
                 error
             );
 
-
             alert(
                 "Unable to approve user: " +
                 error.message
             );
-
 
             return;
 
@@ -4000,7 +3718,6 @@ async function approveUser(
 
         await loadAdminRequests();
 
-
         await loadApprovedUsers();
 
 
@@ -4010,7 +3727,6 @@ async function approveUser(
             "Unexpected approval error:",
             error
         );
-
 
         alert(
             "Unable to approve user."
@@ -4034,9 +3750,7 @@ async function rejectRequest(
             "Reject this access request?"
         )
     ) {
-
         return;
-
     }
 
 
@@ -4063,12 +3777,10 @@ async function rejectRequest(
                 error
             );
 
-
             alert(
                 "Unable to reject request: " +
                 error.message
             );
-
 
             return;
 
@@ -4084,7 +3796,6 @@ async function rejectRequest(
             "Unexpected reject error:",
             error
         );
-
 
         alert(
             "Unable to reject request."
@@ -4137,10 +3848,8 @@ async function loadApprovedUsers() {
                 error
             );
 
-
             container.innerHTML =
                 "Unable to load approved users.";
-
 
             return;
 
@@ -4155,7 +3864,6 @@ async function loadApprovedUsers() {
             container.innerHTML =
                 "No approved users.";
 
-
             return;
 
         }
@@ -4166,7 +3874,7 @@ async function loadApprovedUsers() {
 
 
         data.forEach(
-            function(user) {
+            function (user) {
 
                 const box =
                     document.createElement(
@@ -4177,31 +3885,24 @@ async function loadApprovedUsers() {
                 box.style.border =
                     "1px solid #ccc";
 
-
                 box.style.padding =
                     "10px";
 
-
                 box.style.marginBottom =
                     "8px";
-
 
                 box.style.borderRadius =
                     "8px";
 
 
                 box.innerHTML =
-
                     "<strong>" +
                     escapeHTML(
                         user.email
                     ) +
                     "</strong>" +
-
                     "<br>" +
-
                     "Approved: " +
-
                     new Date(
                         user.approved_at ||
                         user.created_at
@@ -4222,7 +3923,6 @@ async function loadApprovedUsers() {
             "Unexpected approved users error:",
             error
         );
-
 
         container.innerHTML =
             "Unable to load approved users.";
@@ -4251,27 +3951,22 @@ function escapeHTML(
 
 
     return String(value)
-
         .replace(
             /&/g,
             "&amp;"
         )
-
         .replace(
             /</g,
             "&lt;"
         )
-
         .replace(
             />/g,
             "&gt;"
         )
-
         .replace(
             /"/g,
             "&quot;"
         )
-
         .replace(
             /'/g,
             "&#039;"
@@ -4281,19 +3976,11 @@ function escapeHTML(
 
 
 // ========================================
-// INITIAL RESET BUTTON
-// ========================================
-
-updateResetProgressButton();
-
-
-// ========================================
 // INITIAL SCREEN
 // ========================================
 
 showOnly(
     "loginScreen"
 );
-
 
 checkAdminAccess();
