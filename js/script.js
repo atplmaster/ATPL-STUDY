@@ -1,6 +1,6 @@
 // ========================================
 // ATPL STUDY PLATFORM
-// CLEAN STABLE VERSION
+// COMPLETE STABLE VERSION
 // ========================================
 
 
@@ -12,6 +12,7 @@ let questions = [];
 let current = 0;
 let status = [];
 let quizMode = false;
+let markedQuestions = new Set();
 
 
 // ========================================
@@ -323,6 +324,9 @@ async function loadPracticeQuestions(subjectFile) {
 
         current = 0;
 
+        markedQuestions =
+            new Set();
+
         document.getElementById(
             "subject"
         ).innerHTML =
@@ -333,6 +337,10 @@ async function loadPracticeQuestions(subjectFile) {
         showQuestion();
 
         await loadSavedProgress(subjectFile);
+
+        await loadMarkedQuestions(subjectFile);
+
+        updateMarkButton();
 
     } catch (error) {
 
@@ -384,15 +392,11 @@ async function loadSubjectQuiz(
 
         });
 
-        // Randomize questions
-
         allQuestions.sort(function () {
 
             return Math.random() - 0.5;
 
         });
-
-        // Select number of questions
 
         if (numberOfQuestions === "all") {
 
@@ -418,6 +422,9 @@ async function loadSubjectQuiz(
 
         current = 0;
 
+        markedQuestions =
+            new Set();
+
         document.getElementById(
             "subject"
         ).innerHTML =
@@ -427,6 +434,10 @@ async function loadSubjectQuiz(
         createNavigator();
 
         showQuestion();
+
+        await loadMarkedQuestions(subjectFile);
+
+        updateMarkButton();
 
     } catch (error) {
 
@@ -485,15 +496,11 @@ async function loadCombinedQuiz(questionCount) {
 
         }
 
-        // Randomize all questions
-
         combinedQuestions.sort(function () {
 
             return Math.random() - 0.5;
 
         });
-
-        // Select number of questions
 
         if (questionCount === "all") {
 
@@ -521,6 +528,9 @@ async function loadCombinedQuiz(questionCount) {
 
         quizMode = true;
 
+        markedQuestions =
+            new Set();
+
         showOnly("quizScreen");
 
         document.getElementById(
@@ -531,6 +541,10 @@ async function loadCombinedQuiz(questionCount) {
         createNavigator();
 
         showQuestion();
+
+        await loadAllMarkedQuestions();
+
+        updateMarkButton();
 
     } catch (error) {
 
@@ -576,9 +590,23 @@ function createNavigator() {
             button.innerHTML =
                 index + 1;
 
-            button.className =
+            let classes =
                 "navButton " +
                 status[index];
+
+            if (
+                question.id &&
+                markedQuestions.has(
+                    String(question.id)
+                )
+            ) {
+
+                classes += " marked";
+
+            }
+
+            button.className =
+                classes;
 
             button.onclick =
                 function () {
@@ -589,7 +617,9 @@ function createNavigator() {
 
                 };
 
-            nav.appendChild(button);
+            nav.appendChild(
+                button
+            );
 
         }
     );
@@ -644,13 +674,25 @@ function showQuestion() {
                     );
 
                 img.src = src;
-                img.alt = "Question figure";
-                img.className = "question-figure";
-                img.loading = "lazy";
 
-                img.onclick = function () {
-                    window.open(src, "_blank");
-                };
+                img.alt =
+                    "Question figure";
+
+                img.className =
+                    "question-figure";
+
+                img.loading =
+                    "lazy";
+
+                img.onclick =
+                    function () {
+
+                        window.open(
+                            src,
+                            "_blank"
+                        );
+
+                    };
 
                 questionImages.appendChild(
                     img
@@ -659,11 +701,13 @@ function showQuestion() {
             }
         );
 
-        questionImages.style.display = "flex";
+        questionImages.style.display =
+            "flex";
 
     } else {
 
-        questionImages.style.display = "none";
+        questionImages.style.display =
+            "none";
 
     }
 
@@ -688,12 +732,15 @@ function showQuestion() {
             button.innerHTML =
                 option;
 
-            // If already answered,
-            // show the previous result
+            if (
+                status[current] ===
+                "correct"
+            ) {
 
-            if (status[current] === "correct") {
-
-                if (index === question.answer) {
+                if (
+                    index ===
+                    question.answer
+                ) {
 
                     button.classList.add(
                         "correct"
@@ -703,9 +750,15 @@ function showQuestion() {
 
             }
 
-            if (status[current] === "wrong") {
+            if (
+                status[current] ===
+                "wrong"
+            ) {
 
-                if (index === question.answer) {
+                if (
+                    index ===
+                    question.answer
+                ) {
 
                     button.classList.add(
                         "correct"
@@ -717,8 +770,6 @@ function showQuestion() {
 
             button.onclick =
                 async function () {
-
-                    // Do not answer twice
 
                     if (
                         status[current] ===
@@ -760,8 +811,6 @@ function showQuestion() {
                         questionStatus =
                             "wrong";
 
-                        // Show correct answer
-
                         const allButtons =
                             answers.querySelectorAll(
                                 ".option"
@@ -799,6 +848,379 @@ function showQuestion() {
 
         }
     );
+
+    updateMarkButton();
+
+}
+
+
+// ========================================
+// MARK BUTTON
+// ========================================
+
+const markQuestionBtn =
+    document.getElementById(
+        "markQuestionBtn"
+    );
+
+if (markQuestionBtn) {
+
+    markQuestionBtn.onclick =
+        async function () {
+
+            await toggleMarkQuestion();
+
+        };
+
+}
+
+
+// ========================================
+// UPDATE MARK BUTTON
+// ========================================
+
+function updateMarkButton() {
+
+    const button =
+        document.getElementById(
+            "markQuestionBtn"
+        );
+
+    if (!button || !questions.length) {
+        return;
+    }
+
+    const question =
+        questions[current];
+
+    if (!question || !question.id) {
+        return;
+    }
+
+    if (
+        markedQuestions.has(
+            String(question.id)
+        )
+    ) {
+
+        button.innerHTML =
+            "🔖 Marked — Click to Unmark";
+
+        button.classList.add(
+            "markedQuestion"
+        );
+
+    } else {
+
+        button.innerHTML =
+            "🔖 Mark Question";
+
+        button.classList.remove(
+            "markedQuestion"
+        );
+
+    }
+
+}
+
+
+// ========================================
+// TOGGLE MARK QUESTION
+// ========================================
+
+async function toggleMarkQuestion() {
+
+    if (!questions.length) {
+        return;
+    }
+
+    const question =
+        questions[current];
+
+    if (!question || !question.id) {
+
+        alert(
+            "This question does not have a valid ID."
+        );
+
+        return;
+
+    }
+
+    try {
+
+        const {
+            data: {
+                user
+            }
+        } =
+            await supabaseClient.auth.getUser();
+
+        if (!user) {
+
+            alert(
+                "Please log in first."
+            );
+
+            return;
+
+        }
+
+        const questionId =
+            String(question.id);
+
+        const subject =
+            question.subject ||
+            "unknown";
+
+        const alreadyMarked =
+            markedQuestions.has(
+                questionId
+            );
+
+        if (alreadyMarked) {
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("marked_questions")
+                    .delete()
+                    .eq(
+                        "user_id",
+                        user.id
+                    )
+                    .eq(
+                        "question_id",
+                        questionId
+                    );
+
+            if (error) {
+
+                console.error(
+                    "Unmark question error:",
+                    error
+                );
+
+                alert(
+                    "Unable to unmark question."
+                );
+
+                return;
+
+            }
+
+            markedQuestions.delete(
+                questionId
+            );
+
+        } else {
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("marked_questions")
+                    .insert({
+
+                        user_id:
+                            user.id,
+
+                        question_id:
+                            questionId,
+
+                        subject:
+                            subject,
+
+                        marked_at:
+                            new Date().toISOString()
+
+                    });
+
+            if (error) {
+
+                console.error(
+                    "Mark question error:",
+                    error
+                );
+
+                alert(
+                    "Unable to mark question: " +
+                    error.message
+                );
+
+                return;
+
+            }
+
+            markedQuestions.add(
+                questionId
+            );
+
+        }
+
+        updateMarkButton();
+
+        createNavigator();
+
+    } catch (error) {
+
+        console.error(
+            "Unexpected mark error:",
+            error
+        );
+
+        alert(
+            "Unable to update marked question."
+        );
+
+    }
+
+}
+
+
+// ========================================
+// LOAD MARKED QUESTIONS FOR SUBJECT
+// ========================================
+
+async function loadMarkedQuestions(subject) {
+
+    try {
+
+        const {
+            data: {
+                user
+            }
+        } =
+            await supabaseClient.auth.getUser();
+
+        if (!user) {
+            return;
+        }
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("marked_questions")
+                .select("question_id")
+                .eq(
+                    "user_id",
+                    user.id
+                )
+                .eq(
+                    "subject",
+                    subject
+                );
+
+        if (error) {
+
+            console.error(
+                "Marked questions loading error:",
+                error
+            );
+
+            return;
+
+        }
+
+        markedQuestions =
+            new Set(
+                (data || []).map(
+                    function (record) {
+
+                        return String(
+                            record.question_id
+                        );
+
+                    }
+                )
+            );
+
+        createNavigator();
+
+        updateMarkButton();
+
+    } catch (error) {
+
+        console.error(
+            "Unexpected marked questions error:",
+            error
+        );
+
+    }
+
+}
+
+
+// ========================================
+// LOAD ALL MARKED QUESTIONS
+// ========================================
+
+async function loadAllMarkedQuestions() {
+
+    try {
+
+        const {
+            data: {
+                user
+            }
+        } =
+            await supabaseClient.auth.getUser();
+
+        if (!user) {
+            return;
+        }
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("marked_questions")
+                .select("question_id")
+                .eq(
+                    "user_id",
+                    user.id
+                );
+
+        if (error) {
+
+            console.error(
+                "All marked questions loading error:",
+                error
+            );
+
+            return;
+
+        }
+
+        markedQuestions =
+            new Set(
+                (data || []).map(
+                    function (record) {
+
+                        return String(
+                            record.question_id
+                        );
+
+                    }
+                )
+            );
+
+        createNavigator();
+
+        updateMarkButton();
+
+    } catch (error) {
+
+        console.error(
+            "Unexpected marked questions error:",
+            error
+        );
+
+    }
 
 }
 
@@ -855,10 +1277,23 @@ function () {
 // ========================================
 
 document.getElementById("skipBtn").onclick =
-function () {
+async function () {
+
+    const question =
+        questions[current];
 
     status[current] =
         "skipped";
+
+    if (question) {
+
+        await saveProgress(
+            question,
+            current,
+            "skipped"
+        );
+
+    }
 
     if (
         current <
@@ -1155,10 +1590,6 @@ async function () {
 
         }
 
-        // ========================================
-        // CHECK APPROVAL
-        // ========================================
-
         const {
             data: approvedUser,
             error: approvalError
@@ -1433,8 +1864,8 @@ async function loadSavedProgress(subject) {
                             function (question) {
 
                                 return (
-                                    question.id ===
-                                    record.question_id
+                                    String(question.id) ===
+                                    String(record.question_id)
                                 );
 
                             }
@@ -1717,7 +2148,7 @@ function () {
 
 
 // ========================================
-// LOAD ACCESS REQUESTS
+// LOAD PENDING ACCESS REQUESTS
 // ========================================
 
 async function loadAdminRequests() {
@@ -1733,18 +2164,18 @@ async function loadAdminRequests() {
     try {
 
         const {
-    data,
-    error
-} =
-    await supabaseClient
-        .from("approved_users")
-        .select("*")
-        .order(
-            "approved_at",
-            {
-                ascending: false
-            }
-        );
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("access_requests")
+                .select("*")
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
 
         if (error) {
 
@@ -1763,7 +2194,7 @@ async function loadAdminRequests() {
         if (!data || data.length === 0) {
 
             container.innerHTML =
-                "No access requests.";
+                "No pending access requests.";
 
             return;
 
@@ -1908,7 +2339,13 @@ async function approveUser(request) {
                 .insert({
 
                     email:
-                        request.email
+                        request.email,
+
+                    name:
+                        request.name,
+
+                    reason:
+                        request.reason
 
                 });
 
@@ -2059,7 +2496,7 @@ async function loadApprovedUsers() {
                 .from("approved_users")
                 .select("*")
                 .order(
-                    "created_at",
+                    "approved_at",
                     {
                         ascending: false
                     }
@@ -2111,16 +2548,16 @@ async function loadApprovedUsers() {
                     "8px";
 
                 box.innerHTML =
-    "<strong>" +
-    escapeHTML(
-        user.email
-    ) +
-    "</strong>" +
-    "<br>" +
-    "Approved: " +
-    new Date(
-        user.approved_at
-    ).toLocaleString();
+                    "<strong>" +
+                    escapeHTML(
+                        user.email
+                    ) +
+                    "</strong>" +
+                    "<br>" +
+                    "Approved: " +
+                    new Date(
+                        user.approved_at
+                    ).toLocaleString();
 
                 container.appendChild(
                     box
