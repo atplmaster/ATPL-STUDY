@@ -20,9 +20,9 @@
 <h1>ATPL STUDY</h1>
 
 
-<!-- =========================
+<!-- =====================================================
      LOGIN SCREEN
-     ========================= -->
+     ===================================================== -->
 
 <div id="loginScreen">
 
@@ -66,9 +66,9 @@
 </div>
 
 
-<!-- =========================
+<!-- =====================================================
      ACCESS REQUEST SCREEN
-     ========================= -->
+     ===================================================== -->
 
 <div
     id="accessRequestScreen"
@@ -114,9 +114,9 @@
 </div>
 
 
-<!-- =========================
+<!-- =====================================================
      HOME SCREEN
-     ========================= -->
+     ===================================================== -->
 
 <div
     id="homeScreen"
@@ -160,6 +160,15 @@
         ⭐ Marked Questions
     </button>
 
+    <!-- NEW PROGRESS BUTTON -->
+
+    <button
+        id="progressBtn"
+        class="modeButton"
+    >
+        📊 My Progress
+    </button>
+
     <button
         id="adminBtn"
         class="modeButton"
@@ -171,9 +180,115 @@
 </div>
 
 
-<!-- =========================
+<!-- =====================================================
+     PROGRESS DASHBOARD
+     ===================================================== -->
+
+<div
+    id="progressScreen"
+    style="display:none;"
+>
+
+    <h2>📊 My ATPL Progress</h2>
+
+    <p id="progressLoading">
+        Loading your progress...
+    </p>
+
+
+    <!-- OVERALL PROGRESS -->
+
+    <div
+        id="overallProgressCard"
+        class="progressCard"
+    >
+
+        <h3>📊 Overall Progress</h3>
+
+        <div id="overallProgressContent">
+            Loading...
+        </div>
+
+    </div>
+
+
+    <!-- SUBJECT PROGRESS -->
+
+    <div
+        id="subjectProgressCard"
+        class="progressCard"
+    >
+
+        <h3>📚 Progress by Subject</h3>
+
+        <div id="subjectProgressContent">
+            Loading...
+        </div>
+
+    </div>
+
+
+    <!-- STRONGEST / WEAKEST -->
+
+    <div
+        id="performanceCard"
+        class="progressCard"
+    >
+
+        <h3>🏆 Performance</h3>
+
+        <div id="performanceContent">
+            Loading...
+        </div>
+
+    </div>
+
+
+    <!-- WRONG QUESTIONS -->
+
+    <div
+        id="wrongQuestionsCard"
+        class="progressCard"
+    >
+
+        <h3>🔴 Wrong Questions</h3>
+
+        <div id="wrongQuestionsContent">
+            Loading...
+        </div>
+
+    </div>
+
+
+    <!-- MASTERED -->
+
+    <div
+        id="masteredQuestionsCard"
+        class="progressCard"
+    >
+
+        <h3>🏆 Mastered Questions</h3>
+
+        <div id="masteredQuestionsContent">
+            Loading...
+        </div>
+
+    </div>
+
+
+    <button
+        id="progressBackBtn"
+        class="backButton"
+    >
+        ← Back to Home
+    </button>
+
+</div>
+
+
+<!-- =====================================================
      ADMIN DASHBOARD
-     ========================= -->
+     ===================================================== -->
 
 <div
     id="adminScreen"
@@ -208,9 +323,9 @@
 </div>
 
 
-<!-- =========================
+<!-- =====================================================
      PRACTICE SETUP
-     ========================= -->
+     ===================================================== -->
 
 <div
     id="practiceSetup"
@@ -247,7 +362,7 @@
     </button>
 
 
-    <!-- RESET ONLY APPEARS AFTER SUBJECT IS SELECTED -->
+    <!-- RESET -->
 
     <div
         id="resetProgressSection"
@@ -283,9 +398,9 @@
 </div>
 
 
-<!-- =========================
+<!-- =====================================================
      SUBJECT QUIZ SETUP
-     ========================= -->
+     ===================================================== -->
 
 <div
     id="quizSetup"
@@ -346,9 +461,9 @@
 </div>
 
 
-<!-- =========================
+<!-- =====================================================
      COMBINED QUIZ SETUP
-     ========================= -->
+     ===================================================== -->
 
 <div
     id="combinedQuizSetup"
@@ -396,9 +511,9 @@
 </div>
 
 
-<!-- =========================
+<!-- =====================================================
      SEARCH SCREEN
-     ========================= -->
+     ===================================================== -->
 
 <div
     id="searchScreen"
@@ -452,9 +567,9 @@
 </div>
 
 
-<!-- =========================
-     MARKED QUESTIONS SCREEN
-     ========================= -->
+<!-- =====================================================
+     MARKED QUESTIONS
+     ===================================================== -->
 
 <div
     id="markedScreen"
@@ -467,8 +582,6 @@
         Choose a marked-question quiz:
     </p>
 
-
-    <!-- MARKED QUESTION QUIZZES ARE HERE -->
 
     <div id="markedQuizButtons">
 
@@ -521,9 +634,9 @@
 </div>
 
 
-<!-- =========================
+<!-- =====================================================
      QUESTION SCREEN
-     ========================= -->
+     ===================================================== -->
 
 <div
     id="quizScreen"
@@ -583,9 +696,9 @@
 </div>
 
 
-<!-- =========================
+<!-- =====================================================
      RESULTS SCREEN
-     ========================= -->
+     ===================================================== -->
 
 <div
     id="resultsScreen"
@@ -598,8 +711,6 @@
 
     <div id="resultDetails"></div>
 
-
-    <!-- REDO WRONG QUESTIONS -->
 
     <button
         id="redoWrongBtn"
@@ -629,9 +740,9 @@
 </div>
 
 
-<!-- =========================
+<!-- =====================================================
      SUPABASE
-     ========================= -->
+     ===================================================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
