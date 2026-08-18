@@ -1,12 +1,12 @@
-// =====================================================
+// ========================================
 // ATPL STUDY PLATFORM
 // COMPLETE VERSION
-// =====================================================
+// ========================================
 
 
-// =====================================================
+// ========================================
 // GLOBAL VARIABLES
-// =====================================================
+// ========================================
 
 let questions = [];
 let current = 0;
@@ -18,18 +18,23 @@ let markedQuestionIds = new Set();
 
 let wrongQuestions = [];
 
+let currentQuizType = "";
 
-// =====================================================
+
+// ========================================
 // SUBJECTS
-// =====================================================
+// ========================================
 
 const subjectNames = {
 
-    meteorology: "Meteorology",
+    meteorology:
+        "Meteorology",
 
-    airlaw: "Air Law",
+    airlaw:
+        "Air Law",
 
-    operational: "Operational Procedures"
+    operational:
+        "Operational Procedures"
 
 };
 
@@ -37,44 +42,30 @@ const subjectNames = {
 const subjectFiles = [
 
     "meteorology",
-
     "airlaw",
-
     "operational"
 
 ];
 
 
-// =====================================================
+// ========================================
 // SCREEN CONTROL
-// =====================================================
+// ========================================
 
 function showOnly(screenId) {
 
     const screens = [
 
         "loginScreen",
-
         "accessRequestScreen",
-
         "homeScreen",
-
         "adminScreen",
-
         "practiceSetup",
-
         "quizSetup",
-
         "combinedQuizSetup",
-
-        "markedQuizSetup",
-
         "searchScreen",
-
         "markedScreen",
-
         "quizScreen",
-
         "resultsScreen"
 
     ];
@@ -87,7 +78,8 @@ function showOnly(screenId) {
 
         if (element) {
 
-            element.style.display = "none";
+            element.style.display =
+                "none";
 
         }
 
@@ -97,53 +89,55 @@ function showOnly(screenId) {
     const selected =
         document.getElementById(screenId);
 
+
     if (selected) {
 
-        selected.style.display = "block";
+        selected.style.display =
+            "block";
 
     }
 
 }
 
 
-// =====================================================
+// ========================================
 // PRACTICE BUTTON
-// =====================================================
+// ========================================
 
 document.getElementById(
     "practiceBtn"
 ).onclick = function() {
 
-    showOnly("practiceSetup");
+    showOnly(
+        "practiceSetup"
+    );
 
-    updateResetSection();
+    updateResetButton();
 
 };
 
 
-// =====================================================
-// PRACTICE SUBJECT CHANGE
-// =====================================================
+// ========================================
+// PRACTICE SUBJECT CHANGED
+// ========================================
 
 document.getElementById(
     "practiceSubjectSelect"
-).onchange = function() {
+).addEventListener(
+    "change",
+    function() {
 
-    updateResetSection();
+        updateResetButton();
 
-};
+    }
+);
 
 
-// =====================================================
-// UPDATE RESET SECTION
-// =====================================================
+// ========================================
+// UPDATE RESET BUTTON
+// ========================================
 
-function updateResetSection() {
-
-    const subject =
-        document.getElementById(
-            "practiceSubjectSelect"
-        ).value;
+function updateResetButton() {
 
     const section =
         document.getElementById(
@@ -156,16 +150,29 @@ function updateResetSection() {
         );
 
 
-    if (!subject) {
+    const select =
+        document.getElementById(
+            "practiceSubjectSelect"
+        );
 
-        section.style.display = "none";
+
+    if (
+        !section ||
+        !button ||
+        !select
+    ) {
 
         return;
 
     }
 
 
-    section.style.display = "block";
+    const subject =
+        select.value;
+
+
+    section.style.display =
+        "block";
 
 
     button.innerHTML =
@@ -176,9 +183,9 @@ function updateResetSection() {
 }
 
 
-// =====================================================
+// ========================================
 // RESET PROGRESS
-// =====================================================
+// ========================================
 
 document.getElementById(
     "resetProgressBtn"
@@ -190,19 +197,12 @@ document.getElementById(
         ).value;
 
 
-    if (!subject) {
-
-        return;
-
-    }
-
-
     const confirmed =
         confirm(
             "Reset all saved progress for " +
             subjectNames[subject] +
             "?\n\n" +
-            "Marked questions will NOT be deleted."
+            "Your marked questions will NOT be deleted."
         );
 
 
@@ -220,7 +220,9 @@ document.getElementById(
                 user
             }
         } =
-            await supabaseClient.auth.getUser();
+            await supabaseClient
+                .auth
+                .getUser();
 
 
         if (!user) {
@@ -273,7 +275,7 @@ document.getElementById(
         );
 
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(
             "Unexpected reset error:",
@@ -289,13 +291,19 @@ document.getElementById(
 };
 
 
-// =====================================================
+// ========================================
 // START PRACTICE
-// =====================================================
+// ========================================
 
 document.getElementById(
     "startPracticeBtn"
 ).onclick = function() {
+
+    quizMode = false;
+
+    currentQuizType =
+        "practice";
+
 
     const subjectFile =
         document.getElementById(
@@ -303,20 +311,10 @@ document.getElementById(
         ).value;
 
 
-    if (!subjectFile) {
+    showOnly(
+        "quizScreen"
+    );
 
-        alert(
-            "Please select a subject first."
-        );
-
-        return;
-
-    }
-
-
-    quizMode = false;
-
-    showOnly("quizScreen");
 
     loadPracticeQuestions(
         subjectFile
@@ -325,41 +323,48 @@ document.getElementById(
 };
 
 
-// =====================================================
+// ========================================
 // PRACTICE BACK
-// =====================================================
+// ========================================
 
 document.getElementById(
     "practiceBackBtn"
 ).onclick = function() {
 
-    showOnly("homeScreen");
+    showOnly(
+        "homeScreen"
+    );
 
 };
 
 
-// =====================================================
+// ========================================
 // SUBJECT QUIZ
-// =====================================================
+// ========================================
 
 document.getElementById(
     "subjectQuizBtn"
 ).onclick = function() {
 
-    showOnly("quizSetup");
+    showOnly(
+        "quizSetup"
+    );
 
 };
 
 
-// =====================================================
+// ========================================
 // START SUBJECT QUIZ
-// =====================================================
+// ========================================
 
 document.getElementById(
     "startQuizBtn"
 ).onclick = function() {
 
     quizMode = true;
+
+    currentQuizType =
+        "subject";
 
 
     const subjectFile =
@@ -374,7 +379,9 @@ document.getElementById(
         ).value;
 
 
-    showOnly("quizScreen");
+    showOnly(
+        "quizScreen"
+    );
 
 
     loadSubjectQuiz(
@@ -385,22 +392,24 @@ document.getElementById(
 };
 
 
-// =====================================================
+// ========================================
 // SUBJECT QUIZ BACK
-// =====================================================
+// ========================================
 
 document.getElementById(
     "backHomeBtn"
 ).onclick = function() {
 
-    showOnly("homeScreen");
+    showOnly(
+        "homeScreen"
+    );
 
 };
 
 
-// =====================================================
+// ========================================
 // COMBINED QUIZ
-// =====================================================
+// ========================================
 
 document.getElementById(
     "combinedQuizBtn"
@@ -410,27 +419,30 @@ document.getElementById(
         "combinedQuizSetup"
     );
 
+
     loadCombinedQuestionCount();
 
 };
 
 
-// =====================================================
+// ========================================
 // COMBINED BACK
-// =====================================================
+// ========================================
 
 document.getElementById(
     "combinedBackBtn"
 ).onclick = function() {
 
-    showOnly("homeScreen");
+    showOnly(
+        "homeScreen"
+    );
 
 };
 
 
-// =====================================================
+// ========================================
 // LOAD COMBINED QUESTION COUNT
-// =====================================================
+// ========================================
 
 async function loadCombinedQuestionCount() {
 
@@ -486,7 +498,7 @@ async function loadCombinedQuestionCount() {
         );
 
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(
             "Combined question count error:",
@@ -504,9 +516,9 @@ async function loadCombinedQuestionCount() {
 }
 
 
-// =====================================================
+// ========================================
 // UPDATE COMBINED OPTIONS
-// =====================================================
+// ========================================
 
 function updateCombinedQuestionOptions(
     totalQuestions
@@ -525,37 +537,39 @@ function updateCombinedQuestionOptions(
     }
 
 
-    select.querySelectorAll(
-        "option"
-    ).forEach(function(option) {
+    select
+        .querySelectorAll("option")
+        .forEach(function(option) {
 
-        if (
-            option.value === "all"
-        ) {
+            if (
+                option.value ===
+                "all"
+            ) {
 
-            return;
+                return;
 
-        }
-
-
-        const number =
-            parseInt(
-                option.value,
-                10
-            );
+            }
 
 
-        option.disabled =
-            number > totalQuestions;
+            const number =
+                parseInt(
+                    option.value,
+                    10
+                );
 
-    });
+
+            option.disabled =
+                number >
+                totalQuestions;
+
+        });
 
 }
 
 
-// =====================================================
+// ========================================
 // START COMBINED QUIZ
-// =====================================================
+// ========================================
 
 document.getElementById(
     "startCombinedBtn"
@@ -567,6 +581,10 @@ document.getElementById(
         ).value;
 
 
+    currentQuizType =
+        "combined";
+
+
     loadCombinedQuiz(
         questionCount
     );
@@ -574,9 +592,9 @@ document.getElementById(
 };
 
 
-// =====================================================
+// ========================================
 // LOAD PRACTICE QUESTIONS
-// =====================================================
+// ========================================
 
 async function loadPracticeQuestions(
     subjectFile
@@ -641,6 +659,7 @@ async function loadPracticeQuestions(
 
         createNavigator();
 
+
         showQuestion();
 
 
@@ -649,7 +668,7 @@ async function loadPracticeQuestions(
         );
 
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(
             "Practice loading error:",
@@ -670,9 +689,9 @@ async function loadPracticeQuestions(
 }
 
 
-// =====================================================
+// ========================================
 // LOAD SUBJECT QUIZ
-// =====================================================
+// ========================================
 
 async function loadSubjectQuiz(
     subjectFile,
@@ -717,14 +736,18 @@ async function loadSubjectQuiz(
         allQuestions.sort(
             function() {
 
-                return Math.random() - 0.5;
+                return (
+                    Math.random() -
+                    0.5
+                );
 
             }
         );
 
 
         if (
-            numberOfQuestions === "all"
+            numberOfQuestions ===
+            "all"
         ) {
 
             questions =
@@ -769,10 +792,11 @@ async function loadSubjectQuiz(
 
         createNavigator();
 
+
         showQuestion();
 
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(
             "Subject quiz loading error:",
@@ -793,9 +817,9 @@ async function loadSubjectQuiz(
 }
 
 
-// =====================================================
+// ========================================
 // LOAD COMBINED QUIZ
-// =====================================================
+// ========================================
 
 async function loadCombinedQuiz(
     questionCount
@@ -854,14 +878,18 @@ async function loadCombinedQuiz(
         combinedQuestions.sort(
             function() {
 
-                return Math.random() - 0.5;
+                return (
+                    Math.random() -
+                    0.5
+                );
 
             }
         );
 
 
         if (
-            questionCount === "all"
+            questionCount ===
+            "all"
         ) {
 
             questions =
@@ -891,6 +919,7 @@ async function loadCombinedQuiz(
 
         current = 0;
 
+
         quizMode = true;
 
 
@@ -910,10 +939,11 @@ async function loadCombinedQuiz(
 
         createNavigator();
 
+
         showQuestion();
 
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(
             "Combined quiz error:",
@@ -930,9 +960,9 @@ async function loadCombinedQuiz(
 }
 
 
-// =====================================================
+// ========================================
 // CREATE QUESTION NAVIGATOR
-// =====================================================
+// ========================================
 
 function createNavigator() {
 
@@ -995,13 +1025,15 @@ function createNavigator() {
 }
 
 
-// =====================================================
+// ========================================
 // SHOW QUESTION
-// =====================================================
+// ========================================
 
 function showQuestion() {
 
-    if (!questions.length) {
+    if (
+        !questions.length
+    ) {
 
         return;
 
@@ -1048,13 +1080,18 @@ function showQuestion() {
         question.question;
 
 
+    // ====================================
+    // IMAGES
+    // ====================================
+
     const questionImages =
         document.getElementById(
             "questionImages"
         );
 
 
-    questionImages.innerHTML = "";
+    questionImages.innerHTML =
+        "";
 
 
     if (
@@ -1134,13 +1171,18 @@ function showQuestion() {
     updateMarkButton();
 
 
+    // ====================================
+    // ANSWERS
+    // ====================================
+
     const answers =
         document.getElementById(
             "answers"
         );
 
 
-    answers.innerHTML = "";
+    answers.innerHTML =
+        "";
 
 
     if (
@@ -1311,9 +1353,9 @@ function showQuestion() {
 }
 
 
-// =====================================================
+// ========================================
 // MARK QUESTION
-// =====================================================
+// ========================================
 
 document.getElementById(
     "markQuestionBtn"
@@ -1325,13 +1367,15 @@ async function() {
 };
 
 
-// =====================================================
+// ========================================
 // TOGGLE MARK
-// =====================================================
+// ========================================
 
 async function toggleMarkQuestion() {
 
-    if (!questions.length) {
+    if (
+        !questions.length
+    ) {
 
         return;
 
@@ -1360,7 +1404,9 @@ async function toggleMarkQuestion() {
                 user
             }
         } =
-            await supabaseClient.auth.getUser();
+            await supabaseClient
+                .auth
+                .getUser();
 
 
         if (!user) {
@@ -1414,6 +1460,7 @@ async function toggleMarkQuestion() {
                     "Unable to unmark question."
                 );
 
+
                 return;
 
             }
@@ -1446,7 +1493,8 @@ async function toggleMarkQuestion() {
                             question.subject,
 
                         marked_at:
-                            new Date().toISOString()
+                            new Date()
+                                .toISOString()
 
                     });
 
@@ -1463,6 +1511,7 @@ async function toggleMarkQuestion() {
                     "Unable to mark question: " +
                     error.message
                 );
+
 
                 return;
 
@@ -1481,7 +1530,7 @@ async function toggleMarkQuestion() {
         updateMarkButton();
 
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(
             "Unexpected marking error:",
@@ -1493,9 +1542,9 @@ async function toggleMarkQuestion() {
 }
 
 
-// =====================================================
+// ========================================
 // UPDATE MARK BUTTON
-// =====================================================
+// ========================================
 
 function updateMarkButton() {
 
@@ -1550,9 +1599,9 @@ function updateMarkButton() {
 }
 
 
-// =====================================================
-// LOAD MARKED QUESTIONS
-// =====================================================
+// ========================================
+// LOAD MARKED QUESTION IDs
+// ========================================
 
 async function loadMarkedQuestions() {
 
@@ -1567,7 +1616,9 @@ async function loadMarkedQuestions() {
                 user
             }
         } =
-            await supabaseClient.auth.getUser();
+            await supabaseClient
+                .auth
+                .getUser();
 
 
         if (!user) {
@@ -1622,7 +1673,7 @@ async function loadMarkedQuestions() {
 
         }
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(
             "Unexpected marked loading error:",
@@ -1634,9 +1685,9 @@ async function loadMarkedQuestions() {
 }
 
 
-// =====================================================
+// ========================================
 // MARKED QUESTIONS BUTTON
-// =====================================================
+// ========================================
 
 document.getElementById(
     "markedBtn"
@@ -1653,44 +1704,11 @@ async function() {
 };
 
 
-// =====================================================
-// MARKED QUIZ BUTTON
-// =====================================================
+// ========================================
+// LOAD ALL QUESTIONS FROM FILES
+// ========================================
 
-document.getElementById(
-    "markedQuizBtn"
-).onclick =
-async function() {
-
-    showOnly(
-        "markedQuizSetup"
-    );
-
-
-    await updateMarkedQuizAvailable();
-
-};
-
-
-// =====================================================
-// MARKED QUIZ SUBJECT CHANGE
-// =====================================================
-
-document.getElementById(
-    "markedQuizSubject"
-).onchange =
-async function() {
-
-    await updateMarkedQuizAvailable();
-
-};
-
-
-// =====================================================
-// LOAD ALL QUESTION FILES
-// =====================================================
-
-async function loadAllQuestions() {
+async function loadAllQuestionFiles() {
 
     const allQuestions = [];
 
@@ -1740,10 +1758,10 @@ async function loadAllQuestions() {
                 }
             );
 
-        } catch (error) {
+        } catch(error) {
 
             console.error(
-                "Error loading " +
+                "Question file error:",
                 subjectFile,
                 error
             );
@@ -1758,430 +1776,9 @@ async function loadAllQuestions() {
 }
 
 
-// =====================================================
-// UPDATE MARKED QUIZ AVAILABLE COUNT
-// =====================================================
-
-async function updateMarkedQuizAvailable() {
-
-    const display =
-        document.getElementById(
-            "markedQuizAvailable"
-        );
-
-
-    display.innerHTML =
-        "Loading marked questions...";
-
-
-    try {
-
-        const {
-            data: {
-                user
-            }
-        } =
-            await supabaseClient.auth.getUser();
-
-
-        if (!user) {
-
-            display.innerHTML =
-                "Please log in.";
-
-            return;
-
-        }
-
-
-        const selectedSubject =
-            document.getElementById(
-                "markedQuizSubject"
-            ).value;
-
-
-        let query =
-            supabaseClient
-                .from(
-                    "marked_questions"
-                )
-                .select(
-                    "question_id,subject"
-                )
-                .eq(
-                    "user_id",
-                    user.id
-                );
-
-
-        if (
-            selectedSubject !== "all"
-        ) {
-
-            query =
-                query.eq(
-                    "subject",
-                    selectedSubject
-                );
-
-        }
-
-
-        const {
-            data,
-            error
-        } =
-            await query;
-
-
-        if (error) {
-
-            console.error(
-                "Marked quiz count error:",
-                error
-            );
-
-
-            display.innerHTML =
-                "Unable to load marked questions.";
-
-            return;
-
-        }
-
-
-        const count =
-            data ?
-            data.length :
-            0;
-
-
-        display.innerHTML =
-            "Available marked questions: <strong>" +
-            count +
-            "</strong>";
-
-
-        updateMarkedQuizOptions(
-            count
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Unexpected marked count error:",
-            error
-        );
-
-
-        display.innerHTML =
-            "Unable to load marked questions.";
-
-    }
-
-}
-
-
-// =====================================================
-// UPDATE MARKED QUIZ OPTIONS
-// =====================================================
-
-function updateMarkedQuizOptions(
-    total
-) {
-
-    const select =
-        document.getElementById(
-            "markedQuizCount"
-        );
-
-
-    if (!select) {
-
-        return;
-
-    }
-
-
-    select.querySelectorAll(
-        "option"
-    ).forEach(
-        function(option) {
-
-            if (
-                option.value === "all"
-            ) {
-
-                return;
-
-            }
-
-
-            const number =
-                parseInt(
-                    option.value,
-                    10
-                );
-
-
-            option.disabled =
-                number > total;
-
-        }
-    );
-
-}
-
-
-// =====================================================
-// START MARKED QUIZ
-// =====================================================
-
-document.getElementById(
-    "startMarkedQuizBtn"
-).onclick =
-async function() {
-
-    await startMarkedQuiz();
-
-};
-
-
-// =====================================================
-// START MARKED QUIZ FUNCTION
-// =====================================================
-
-async function startMarkedQuiz() {
-
-    try {
-
-        const {
-            data: {
-                user
-            }
-        } =
-            await supabaseClient.auth.getUser();
-
-
-        if (!user) {
-
-            alert(
-                "Please log in first."
-            );
-
-            return;
-
-        }
-
-
-        const selectedSubject =
-            document.getElementById(
-                "markedQuizSubject"
-            ).value;
-
-
-        const count =
-            document.getElementById(
-                "markedQuizCount"
-            ).value;
-
-
-        let query =
-            supabaseClient
-                .from(
-                    "marked_questions"
-                )
-                .select(
-                    "question_id,subject"
-                )
-                .eq(
-                    "user_id",
-                    user.id
-                );
-
-
-        if (
-            selectedSubject !== "all"
-        ) {
-
-            query =
-                query.eq(
-                    "subject",
-                    selectedSubject
-                );
-
-        }
-
-
-        const {
-            data: marked,
-            error
-        } =
-            await query;
-
-
-        if (error) {
-
-            console.error(
-                "Marked quiz loading error:",
-                error
-            );
-
-
-            alert(
-                "Unable to load marked questions."
-            );
-
-            return;
-
-        }
-
-
-        if (
-            !marked ||
-            marked.length === 0
-        ) {
-
-            alert(
-                "There are no marked questions for this selection."
-            );
-
-            return;
-
-        }
-
-
-        const allQuestions =
-            await loadAllQuestions();
-
-
-        let markedQuestions =
-            marked.map(
-                function(record) {
-
-                    return allQuestions.find(
-                        function(question) {
-
-                            return String(
-                                question.id
-                            ) ===
-                            String(
-                                record.question_id
-                            );
-
-                        }
-                    );
-
-                }
-            ).filter(
-                function(question) {
-
-                    return question !== undefined;
-
-                }
-            );
-
-
-        if (
-            markedQuestions.length === 0
-        ) {
-
-            alert(
-                "The marked questions could not be found in the question files."
-            );
-
-            return;
-
-        }
-
-
-        markedQuestions.sort(
-            function() {
-
-                return Math.random() - 0.5;
-
-            }
-        );
-
-
-        if (
-            count !== "all"
-        ) {
-
-            markedQuestions =
-                markedQuestions.slice(
-                    0,
-                    parseInt(
-                        count,
-                        10
-                    )
-                );
-
-        }
-
-
-        questions =
-            markedQuestions;
-
-
-        status =
-            new Array(
-                questions.length
-            ).fill(
-                "notAttempted"
-            );
-
-
-        current = 0;
-
-        quizMode = true;
-
-
-        showOnly(
-            "quizScreen"
-        );
-
-
-        document.getElementById(
-            "subject"
-        ).innerHTML =
-            selectedSubject === "all"
-            ? "ALL MARKED QUESTIONS"
-            : subjectNames[
-                selectedSubject
-            ] +
-            " MARKED QUIZ";
-
-
-        await loadMarkedQuestions();
-
-
-        createNavigator();
-
-        showQuestion();
-
-
-    } catch (error) {
-
-        console.error(
-            "Unexpected marked quiz error:",
-            error
-        );
-
-
-        alert(
-            "Unable to start marked quiz."
-        );
-
-    }
-
-}
-
-
-// =====================================================
+// ========================================
 // DISPLAY MARKED QUESTIONS
-// =====================================================
+// ========================================
 
 async function displayMarkedQuestions() {
 
@@ -2202,7 +1799,9 @@ async function displayMarkedQuestions() {
                 user
             }
         } =
-            await supabaseClient.auth.getUser();
+            await supabaseClient
+                .auth
+                .getUser();
 
 
         if (!user) {
@@ -2254,6 +1853,11 @@ async function displayMarkedQuestions() {
         }
 
 
+        updateMarkedQuizButtons(
+            data || []
+        );
+
+
         if (
             !data ||
             data.length === 0
@@ -2268,10 +1872,11 @@ async function displayMarkedQuestions() {
 
 
         const allQuestions =
-            await loadAllQuestions();
+            await loadAllQuestionFiles();
 
 
-        container.innerHTML = "";
+        container.innerHTML =
+            "";
 
 
         data.forEach(
@@ -2283,8 +1888,7 @@ async function displayMarkedQuestions() {
 
                             return String(
                                 q.id
-                            ) ===
-                            String(
+                            ) === String(
                                 marked.question_id
                             );
 
@@ -2317,6 +1921,7 @@ async function displayMarkedQuestions() {
                 if (question) {
 
                     box.innerHTML =
+
                         "<strong>" +
                         escapeHTML(
                             subjectNames[
@@ -2324,10 +1929,21 @@ async function displayMarkedQuestions() {
                             ]
                         ) +
                         "</strong>" +
+
                         "<br><br>" +
+
                         "<strong>Question:</strong><br>" +
+
                         escapeHTML(
                             question.question
+                        ) +
+
+                        "<br><br>" +
+
+                        "<strong>Question ID:</strong> " +
+
+                        escapeHTML(
+                            question.id
                         );
 
 
@@ -2360,7 +1976,12 @@ async function displayMarkedQuestions() {
 
                             current = 0;
 
+
                             quizMode = false;
+
+
+                            currentQuizType =
+                                "marked-single";
 
 
                             showOnly(
@@ -2381,6 +2002,7 @@ async function displayMarkedQuestions() {
 
 
                                         createNavigator();
+
 
                                         showQuestion();
 
@@ -2433,12 +2055,17 @@ async function displayMarkedQuestions() {
                         unmarkButton
                     );
 
+
                 } else {
 
                     box.innerHTML =
+
                         "<strong>Question not found</strong>" +
+
                         "<br>" +
+
                         "Question ID: " +
+
                         escapeHTML(
                             marked.question_id
                         );
@@ -2454,7 +2081,7 @@ async function displayMarkedQuestions() {
         );
 
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(
             "Unexpected marked list error:",
@@ -2470,9 +2097,400 @@ async function displayMarkedQuestions() {
 }
 
 
-// =====================================================
-// UNMARK
-// =====================================================
+// ========================================
+// UPDATE MARKED QUIZ BUTTONS
+// ========================================
+
+function updateMarkedQuizButtons(
+    markedData
+) {
+
+    const allButton =
+        document.getElementById(
+            "allMarkedQuizBtn"
+        );
+
+
+    const metButton =
+        document.getElementById(
+            "meteorologyMarkedQuizBtn"
+        );
+
+
+    const airButton =
+        document.getElementById(
+            "airlawMarkedQuizBtn"
+        );
+
+
+    const opButton =
+        document.getElementById(
+            "operationalMarkedQuizBtn"
+        );
+
+
+    const counts = {
+
+        meteorology: 0,
+
+        airlaw: 0,
+
+        operational: 0
+
+    };
+
+
+    markedData.forEach(
+        function(item) {
+
+            if (
+                counts[
+                    item.subject
+                ] !== undefined
+            ) {
+
+                counts[
+                    item.subject
+                ]++;
+
+            }
+
+        }
+    );
+
+
+    const total =
+        markedData.length;
+
+
+    allButton.disabled =
+        total === 0;
+
+
+    metButton.disabled =
+        counts.meteorology === 0;
+
+
+    airButton.disabled =
+        counts.airlaw === 0;
+
+
+    opButton.disabled =
+        counts.operational === 0;
+
+
+    allButton.innerHTML =
+        "⭐ All Marked Questions (" +
+        total +
+        ")";
+
+
+    metButton.innerHTML =
+        "🌦️ Meteorology Marked Questions (" +
+        counts.meteorology +
+        ")";
+
+
+    airButton.innerHTML =
+        "⚖️ Air Law Marked Questions (" +
+        counts.airlaw +
+        ")";
+
+
+    opButton.innerHTML =
+        "✈️ Operational Procedures Marked Questions (" +
+        counts.operational +
+        ")";
+
+}
+
+
+// ========================================
+// ALL MARKED QUIZ
+// ========================================
+
+document.getElementById(
+    "allMarkedQuizBtn"
+).onclick =
+async function() {
+
+    await startMarkedQuiz(
+        "all"
+    );
+
+};
+
+
+// ========================================
+// METEOROLOGY MARKED QUIZ
+// ========================================
+
+document.getElementById(
+    "meteorologyMarkedQuizBtn"
+).onclick =
+async function() {
+
+    await startMarkedQuiz(
+        "meteorology"
+    );
+
+};
+
+
+// ========================================
+// AIR LAW MARKED QUIZ
+// ========================================
+
+document.getElementById(
+    "airlawMarkedQuizBtn"
+).onclick =
+async function() {
+
+    await startMarkedQuiz(
+        "airlaw"
+    );
+
+};
+
+
+// ========================================
+// OPERATIONAL MARKED QUIZ
+// ========================================
+
+document.getElementById(
+    "operationalMarkedQuizBtn"
+).onclick =
+async function() {
+
+    await startMarkedQuiz(
+        "operational"
+    );
+
+};
+
+
+// ========================================
+// START MARKED QUIZ
+// ========================================
+
+async function startMarkedQuiz(
+    selectedSubject
+) {
+
+    try {
+
+        const {
+            data: {
+                user
+            }
+        } =
+            await supabaseClient
+                .auth
+                .getUser();
+
+
+        if (!user) {
+
+            alert(
+                "Please log in first."
+            );
+
+            return;
+
+        }
+
+
+        const {
+            data: markedData,
+            error
+        } =
+            await supabaseClient
+                .from(
+                    "marked_questions"
+                )
+                .select(
+                    "question_id,subject"
+                )
+                .eq(
+                    "user_id",
+                    user.id
+                );
+
+
+        if (error) {
+
+            console.error(
+                "Marked quiz error:",
+                error
+            );
+
+
+            alert(
+                "Unable to load marked questions."
+            );
+
+            return;
+
+        }
+
+
+        let selectedMarked =
+            markedData || [];
+
+
+        if (
+            selectedSubject !==
+            "all"
+        ) {
+
+            selectedMarked =
+                selectedMarked.filter(
+                    function(item) {
+
+                        return (
+                            item.subject ===
+                            selectedSubject
+                        );
+
+                    }
+                );
+
+        }
+
+
+        if (
+            selectedMarked.length ===
+            0
+        ) {
+
+            alert(
+                "There are no marked questions in this selection."
+            );
+
+            return;
+
+        }
+
+
+        const allQuestions =
+            await loadAllQuestionFiles();
+
+
+        const selectedIds =
+            new Set(
+                selectedMarked.map(
+                    function(item) {
+
+                        return String(
+                            item.question_id
+                        );
+
+                    }
+                )
+            );
+
+
+        questions =
+            allQuestions.filter(
+                function(question) {
+
+                    return selectedIds.has(
+                        String(
+                            question.id
+                        )
+                    );
+
+                }
+            );
+
+
+        questions.sort(
+            function() {
+
+                return (
+                    Math.random() -
+                    0.5
+                );
+
+            }
+        );
+
+
+        status =
+            new Array(
+                questions.length
+            ).fill(
+                "notAttempted"
+            );
+
+
+        current = 0;
+
+
+        quizMode = true;
+
+
+        currentQuizType =
+            "marked";
+
+
+        showOnly(
+            "quizScreen"
+        );
+
+
+        if (
+            selectedSubject ===
+            "all"
+        ) {
+
+            document.getElementById(
+                "subject"
+            ).innerHTML =
+                "ALL MARKED QUESTIONS";
+
+        } else {
+
+            document.getElementById(
+                "subject"
+            ).innerHTML =
+                subjectNames[
+                    selectedSubject
+                ] +
+                " MARKED QUESTIONS";
+
+        }
+
+
+        await loadMarkedQuestions();
+
+
+        createNavigator();
+
+
+        showQuestion();
+
+
+    } catch(error) {
+
+        console.error(
+            "Start marked quiz error:",
+            error
+        );
+
+
+        alert(
+            "Unable to start marked quiz."
+        );
+
+    }
+
+}
+
+
+// ========================================
+// UNMARK FROM LIST
+// ========================================
 
 async function unmarkById(
     questionId
@@ -2485,7 +2503,9 @@ async function unmarkById(
                 user
             }
         } =
-            await supabaseClient.auth.getUser();
+            await supabaseClient
+                .auth
+                .getUser();
 
 
         if (!user) {
@@ -2532,7 +2552,7 @@ async function unmarkById(
         );
 
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(
             "Unexpected unmark error:",
@@ -2544,9 +2564,9 @@ async function unmarkById(
 }
 
 
-// =====================================================
-// SEARCH
-// =====================================================
+// ========================================
+// SEARCH BUTTON
+// ========================================
 
 document.getElementById(
     "searchBtn"
@@ -2560,6 +2580,10 @@ function() {
 };
 
 
+// ========================================
+// SEARCH
+// ========================================
+
 document.getElementById(
     "searchQuestionsBtn"
 ).onclick =
@@ -2569,6 +2593,10 @@ async function() {
 
 };
 
+
+// ========================================
+// SEARCH FUNCTION
+// ========================================
 
 async function searchQuestions() {
 
@@ -2607,8 +2635,10 @@ async function searchQuestions() {
         ) {
 
             if (
-                selectedSubject !== "all" &&
-                selectedSubject !== subjectFile
+                selectedSubject !==
+                "all" &&
+                selectedSubject !==
+                subjectFile
             ) {
 
                 continue;
@@ -2625,6 +2655,11 @@ async function searchQuestions() {
 
 
             if (!response.ok) {
+
+                console.error(
+                    "Could not load:",
+                    subjectFile
+                );
 
                 continue;
 
@@ -2674,21 +2709,26 @@ async function searchQuestions() {
                         Array.isArray(
                             question.options
                         )
-                        ?
-                        question.options
-                            .join(" ")
-                            .toLowerCase()
-                        :
-                        "";
+                            ?
+                            question.options
+                                .join(" ")
+                                .toLowerCase()
+                            :
+                            "";
 
 
                     return (
+
                         questionText.includes(
                             searchText
-                        ) ||
+                        )
+
+                        ||
+
                         optionsText.includes(
                             searchText
                         )
+
                     );
 
                 }
@@ -2696,7 +2736,8 @@ async function searchQuestions() {
 
 
         if (
-            filtered.length === 0
+            filtered.length ===
+            0
         ) {
 
             results.innerHTML =
@@ -2739,6 +2780,7 @@ async function searchQuestions() {
 
 
                 box.innerHTML =
+
                     "<strong>" +
                     escapeHTML(
                         subjectNames[
@@ -2746,7 +2788,9 @@ async function searchQuestions() {
                         ]
                     ) +
                     "</strong>" +
+
                     "<br><br>" +
+
                     escapeHTML(
                         question.question
                     );
@@ -2781,7 +2825,12 @@ async function searchQuestions() {
 
                         current = 0;
 
+
                         quizMode = false;
+
+
+                        currentQuizType =
+                            "search";
 
 
                         showOnly(
@@ -2802,6 +2851,7 @@ async function searchQuestions() {
 
 
                                     createNavigator();
+
 
                                     showQuestion();
 
@@ -2831,7 +2881,7 @@ async function searchQuestions() {
         );
 
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(
             "Search error:",
@@ -2847,9 +2897,9 @@ async function searchQuestions() {
 }
 
 
-// =====================================================
-// BACK BUTTONS
-// =====================================================
+// ========================================
+// SEARCH BACK
+// ========================================
 
 document.getElementById(
     "searchBackBtn"
@@ -2863,6 +2913,10 @@ function() {
 };
 
 
+// ========================================
+// MARKED BACK
+// ========================================
+
 document.getElementById(
     "markedBackBtn"
 ).onclick =
@@ -2875,21 +2929,9 @@ function() {
 };
 
 
-document.getElementById(
-    "markedQuizBackBtn"
-).onclick =
-function() {
-
-    showOnly(
-        "homeScreen"
-    );
-
-};
-
-
-// =====================================================
+// ========================================
 // NEXT
-// =====================================================
+// ========================================
 
 document.getElementById(
     "nextBtn"
@@ -2902,6 +2944,7 @@ function() {
     ) {
 
         current++;
+
 
         showQuestion();
 
@@ -2918,9 +2961,9 @@ function() {
 };
 
 
-// =====================================================
+// ========================================
 // PREVIOUS
-// =====================================================
+// ========================================
 
 document.getElementById(
     "prevBtn"
@@ -2933,6 +2976,7 @@ function() {
 
         current--;
 
+
         showQuestion();
 
     }
@@ -2940,16 +2984,18 @@ function() {
 };
 
 
-// =====================================================
+// ========================================
 // SKIP
-// =====================================================
+// ========================================
 
 document.getElementById(
     "skipBtn"
 ).onclick =
 async function() {
 
-    if (!questions.length) {
+    if (
+        !questions.length
+    ) {
 
         return;
 
@@ -2974,6 +3020,7 @@ async function() {
 
         current++;
 
+
         showQuestion();
 
     }
@@ -2984,9 +3031,9 @@ async function() {
 };
 
 
-// =====================================================
+// ========================================
 // BACK TO MENU
-// =====================================================
+// ========================================
 
 document.getElementById(
     "questionBackBtn"
@@ -3003,9 +3050,9 @@ function() {
 };
 
 
-// =====================================================
+// ========================================
 // SHOW RESULTS
-// =====================================================
+// ========================================
 
 function showResults() {
 
@@ -3020,10 +3067,14 @@ function showResults() {
 
 
     status.forEach(
-        function(result, index) {
+        function(
+            result,
+            index
+        ) {
 
             if (
-                result === "correct"
+                result ===
+                "correct"
             ) {
 
                 correct++;
@@ -3032,7 +3083,8 @@ function showResults() {
 
 
             if (
-                result === "wrong"
+                result ===
+                "wrong"
             ) {
 
                 wrong++;
@@ -3046,7 +3098,8 @@ function showResults() {
 
 
             if (
-                result === "skipped"
+                result ===
+                "skipped"
             ) {
 
                 skipped++;
@@ -3063,16 +3116,20 @@ function showResults() {
 
     const percentage =
         total > 0
-        ?
-        Math.round(
-            (
-                correct /
-                total
-            ) *
-            100
-        )
-        :
-        0;
+
+            ?
+
+            Math.round(
+                (
+                    correct /
+                    total
+                ) *
+                100
+            )
+
+            :
+
+            0;
 
 
     showOnly(
@@ -3083,6 +3140,7 @@ function showResults() {
     document.getElementById(
         "resultScore"
     ).innerHTML =
+
         "<h1>" +
         percentage +
         "%</h1>";
@@ -3091,6 +3149,7 @@ function showResults() {
     document.getElementById(
         "resultDetails"
     ).innerHTML =
+
         "<p>Correct: " +
         correct +
         "</p>" +
@@ -3115,35 +3174,32 @@ function showResults() {
 
 
     if (
-        wrongQuestions.length === 0
+        wrongQuestions.length >
+        0
     ) {
 
-        redoButton.disabled =
-            true;
+        redoButton.style.display =
+            "block";
 
 
         redoButton.innerHTML =
-            "✓ No Wrong Questions";
+            "🔁 Redo Wrong Questions (" +
+            wrongQuestions.length +
+            ")";
 
     } else {
 
-        redoButton.disabled =
-            false;
-
-
-        redoButton.innerHTML =
-            "🔄 Redo " +
-            wrongQuestions.length +
-            " Wrong Questions";
+        redoButton.style.display =
+            "none";
 
     }
 
 }
 
 
-// =====================================================
+// ========================================
 // REDO WRONG QUESTIONS
-// =====================================================
+// ========================================
 
 document.getElementById(
     "redoWrongBtn"
@@ -3151,13 +3207,9 @@ document.getElementById(
 function() {
 
     if (
-        !wrongQuestions ||
-        wrongQuestions.length === 0
+        wrongQuestions.length ===
+        0
     ) {
-
-        alert(
-            "There are no wrong questions to redo."
-        );
 
         return;
 
@@ -3182,10 +3234,8 @@ function() {
     quizMode = true;
 
 
-    document.getElementById(
-        "subject"
-    ).innerHTML =
-        "REDO WRONG QUESTIONS";
+    currentQuizType =
+        "redo-wrong";
 
 
     showOnly(
@@ -3193,16 +3243,23 @@ function() {
     );
 
 
+    document.getElementById(
+        "subject"
+    ).innerHTML =
+        "🔁 REDO WRONG QUESTIONS";
+
+
     createNavigator();
+
 
     showQuestion();
 
 };
 
 
-// =====================================================
+// ========================================
 // REVIEW ANSWERS
-// =====================================================
+// ========================================
 
 document.getElementById(
     "reviewBtn"
@@ -3222,9 +3279,9 @@ function() {
 };
 
 
-// =====================================================
+// ========================================
 // RESULTS HOME
-// =====================================================
+// ========================================
 
 document.getElementById(
     "resultsHomeBtn"
@@ -3241,9 +3298,9 @@ function() {
 };
 
 
-// =====================================================
+// ========================================
 // CREATE ACCOUNT
-// =====================================================
+// ========================================
 
 document.getElementById(
     "signupBtn"
@@ -3302,21 +3359,30 @@ async function() {
         const {
             error
         } =
-            await supabaseClient.auth.signUp({
+            await supabaseClient
+                .auth
+                .signUp({
 
-                email:
-                    email,
+                    email:
+                        email,
 
-                password:
-                    password
+                    password:
+                        password
 
-            });
+                });
 
 
         if (error) {
 
+            console.error(
+                "Signup error:",
+                error
+            );
+
+
             message.innerHTML =
                 error.message;
+
 
             return;
 
@@ -3327,10 +3393,10 @@ async function() {
             "Account created successfully. You can now log in.";
 
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(
-            "Signup error:",
+            "Unexpected signup error:",
             error
         );
 
@@ -3343,9 +3409,9 @@ async function() {
 };
 
 
-// =====================================================
+// ========================================
 // LOGIN
-// =====================================================
+// ========================================
 
 document.getElementById(
     "loginBtn"
@@ -3393,7 +3459,8 @@ async function() {
             data,
             error
         } =
-            await supabaseClient.auth
+            await supabaseClient
+                .auth
                 .signInWithPassword({
 
                     email:
@@ -3407,8 +3474,15 @@ async function() {
 
         if (error) {
 
+            console.error(
+                "Login error:",
+                error
+            );
+
+
             message.innerHTML =
                 error.message;
+
 
             return;
 
@@ -3422,6 +3496,7 @@ async function() {
 
             message.innerHTML =
                 "Login failed.";
+
 
             return;
 
@@ -3448,11 +3523,20 @@ async function() {
 
         if (approvalError) {
 
-            await supabaseClient.auth.signOut();
+            console.error(
+                "Approval check error:",
+                approvalError
+            );
+
+
+            await supabaseClient
+                .auth
+                .signOut();
 
 
             message.innerHTML =
                 "Unable to verify account approval.";
+
 
             return;
 
@@ -3461,11 +3545,14 @@ async function() {
 
         if (!approvedUser) {
 
-            await supabaseClient.auth.signOut();
+            await supabaseClient
+                .auth
+                .signOut();
 
 
             message.innerHTML =
                 "Your account has not been approved yet. Please request access.";
+
 
             return;
 
@@ -3484,10 +3571,10 @@ async function() {
         await checkAdminAccess();
 
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(
-            "Login error:",
+            "Unexpected login error:",
             error
         );
 
@@ -3500,9 +3587,9 @@ async function() {
 };
 
 
-// =====================================================
+// ========================================
 // SAVE PROGRESS
-// =====================================================
+// ========================================
 
 async function saveProgress(
     question,
@@ -3517,7 +3604,9 @@ async function saveProgress(
                 user
             }
         } =
-            await supabaseClient.auth.getUser();
+            await supabaseClient
+                .auth
+                .getUser();
 
 
         if (!user) {
@@ -3533,6 +3622,7 @@ async function saveProgress(
                 "Question has no ID:",
                 question
             );
+
 
             return;
 
@@ -3577,6 +3667,7 @@ async function saveProgress(
                 findError
             );
 
+
             return;
 
         }
@@ -3603,7 +3694,8 @@ async function saveProgress(
                             questionStatus,
 
                         updated_at:
-                            new Date().toISOString()
+                            new Date()
+                                .toISOString()
 
                     })
                     .eq(
@@ -3661,8 +3753,7 @@ async function saveProgress(
 
         }
 
-
-    } catch (error) {
+    } catch(error) {
 
         console.error(
             "Unexpected progress error:",
@@ -3674,9 +3765,9 @@ async function saveProgress(
 }
 
 
-// =====================================================
+// ========================================
 // LOAD SAVED PROGRESS
-// =====================================================
+// ========================================
 
 async function loadSavedProgress(
     subject
@@ -3689,7 +3780,9 @@ async function loadSavedProgress(
                 user
             }
         } =
-            await supabaseClient.auth.getUser();
+            await supabaseClient
+                .auth
+                .getUser();
 
 
         if (!user) {
@@ -3727,6 +3820,7 @@ async function loadSavedProgress(
                 error
             );
 
+
             return;
 
         }
@@ -3741,11 +3835,16 @@ async function loadSavedProgress(
                         questions.findIndex(
                             function(question) {
 
-                                return String(
-                                    question.id
-                                ) ===
-                                String(
-                                    record.question_id
+                                return (
+
+                                    String(
+                                        question.id
+                                    ) ===
+
+                                    String(
+                                        record.question_id
+                                    )
+
                                 );
 
                             }
@@ -3770,7 +3869,7 @@ async function loadSavedProgress(
         createNavigator();
 
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(
             "Unexpected progress loading error:",
@@ -3782,9 +3881,9 @@ async function loadSavedProgress(
 }
 
 
-// =====================================================
+// ========================================
 // REQUEST ACCESS
-// =====================================================
+// ========================================
 
 document.getElementById(
     "requestAccessBtn"
@@ -3798,9 +3897,9 @@ function() {
 };
 
 
-// =====================================================
+// ========================================
 // BACK TO LOGIN
-// =====================================================
+// ========================================
 
 document.getElementById(
     "backToLoginBtn"
@@ -3814,9 +3913,9 @@ function() {
 };
 
 
-// =====================================================
+// ========================================
 // SUBMIT ACCESS REQUEST
-// =====================================================
+// ========================================
 
 document.getElementById(
     "submitAccessRequestBtn"
@@ -3855,6 +3954,7 @@ async function() {
         message.innerHTML =
             "Please enter your name and email.";
 
+
         return;
 
     }
@@ -3889,8 +3989,15 @@ async function() {
 
         if (error) {
 
+            console.error(
+                "Access request error:",
+                error
+            );
+
+
             message.innerHTML =
                 "Unable to submit request. Please try again.";
+
 
             return;
 
@@ -3916,10 +4023,10 @@ async function() {
         ).value = "";
 
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(
-            "Access request error:",
+            "Unexpected request error:",
             error
         );
 
@@ -3932,9 +4039,9 @@ async function() {
 };
 
 
-// =====================================================
+// ========================================
 // CHECK ADMIN ACCESS
-// =====================================================
+// ========================================
 
 async function checkAdminAccess() {
 
@@ -3963,7 +4070,9 @@ async function checkAdminAccess() {
             },
             error
         } =
-            await supabaseClient.auth.getUser();
+            await supabaseClient
+                .auth
+                .getUser();
 
 
         if (
@@ -4001,6 +4110,7 @@ async function checkAdminAccess() {
                 adminError
             );
 
+
             return;
 
         }
@@ -4014,10 +4124,10 @@ async function checkAdminAccess() {
         }
 
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(
-            "Admin check error:",
+            "Unexpected admin check error:",
             error
         );
 
@@ -4026,9 +4136,9 @@ async function checkAdminAccess() {
 }
 
 
-// =====================================================
-// OPEN ADMIN DASHBOARD
-// =====================================================
+// ========================================
+// OPEN ADMIN
+// ========================================
 
 document.getElementById(
     "adminBtn"
@@ -4042,14 +4152,15 @@ async function() {
 
     await loadAdminRequests();
 
+
     await loadApprovedUsers();
 
 };
 
 
-// =====================================================
+// ========================================
 // ADMIN BACK
-// =====================================================
+// ========================================
 
 document.getElementById(
     "adminBackBtn"
@@ -4066,9 +4177,9 @@ function() {
 };
 
 
-// =====================================================
+// ========================================
 // LOAD ACCESS REQUESTS
-// =====================================================
+// ========================================
 
 async function loadAdminRequests() {
 
@@ -4112,6 +4223,7 @@ async function loadAdminRequests() {
             container.innerHTML =
                 "Unable to load access requests.";
 
+
             return;
 
         }
@@ -4125,12 +4237,14 @@ async function loadAdminRequests() {
             container.innerHTML =
                 "No access requests.";
 
+
             return;
 
         }
 
 
-        container.innerHTML = "";
+        container.innerHTML =
+            "";
 
 
         data.forEach(
@@ -4159,16 +4273,19 @@ async function loadAdminRequests() {
 
 
                 box.innerHTML =
+
                     "<strong>Name:</strong> " +
                     escapeHTML(
                         request.name
                     ) +
+
                     "<br>" +
 
                     "<strong>Email:</strong> " +
                     escapeHTML(
                         request.email
                     ) +
+
                     "<br>" +
 
                     "<strong>Reason:</strong> " +
@@ -4176,12 +4293,14 @@ async function loadAdminRequests() {
                         request.reason ||
                         "Not provided"
                     ) +
+
                     "<br>" +
 
                     "<strong>Date:</strong> " +
                     new Date(
                         request.created_at
                     ).toLocaleString() +
+
                     "<br><br>";
 
 
@@ -4251,10 +4370,10 @@ async function loadAdminRequests() {
         );
 
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(
-            "Admin request error:",
+            "Unexpected admin request error:",
             error
         );
 
@@ -4267,9 +4386,9 @@ async function loadAdminRequests() {
 }
 
 
-// =====================================================
+// ========================================
 // APPROVE USER
-// =====================================================
+// ========================================
 
 async function approveUser(
     request
@@ -4313,25 +4432,45 @@ async function approveUser(
 
         if (error) {
 
+            console.error(
+                "Approval error:",
+                error
+            );
+
+
             alert(
                 "Unable to approve user: " +
                 error.message
             );
+
 
             return;
 
         }
 
 
-        await supabaseClient
-            .from(
-                "access_requests"
-            )
-            .delete()
-            .eq(
-                "id",
-                request.id
+        const {
+            error: deleteError
+        } =
+            await supabaseClient
+                .from(
+                    "access_requests"
+                )
+                .delete()
+                .eq(
+                    "id",
+                    request.id
+                );
+
+
+        if (deleteError) {
+
+            console.error(
+                "Delete request error:",
+                deleteError
             );
+
+        }
 
 
         alert(
@@ -4341,13 +4480,14 @@ async function approveUser(
 
         await loadAdminRequests();
 
+
         await loadApprovedUsers();
 
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(
-            "Approval error:",
+            "Unexpected approval error:",
             error
         );
 
@@ -4361,9 +4501,9 @@ async function approveUser(
 }
 
 
-// =====================================================
+// ========================================
 // REJECT REQUEST
-// =====================================================
+// ========================================
 
 async function rejectRequest(
     request
@@ -4398,10 +4538,17 @@ async function rejectRequest(
 
         if (error) {
 
+            console.error(
+                "Reject error:",
+                error
+            );
+
+
             alert(
                 "Unable to reject request: " +
                 error.message
             );
+
 
             return;
 
@@ -4411,10 +4558,10 @@ async function rejectRequest(
         await loadAdminRequests();
 
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(
-            "Reject error:",
+            "Unexpected reject error:",
             error
         );
 
@@ -4428,9 +4575,9 @@ async function rejectRequest(
 }
 
 
-// =====================================================
+// ========================================
 // LOAD APPROVED USERS
-// =====================================================
+// ========================================
 
 async function loadApprovedUsers() {
 
@@ -4465,8 +4612,15 @@ async function loadApprovedUsers() {
 
         if (error) {
 
+            console.error(
+                "Approved users error:",
+                error
+            );
+
+
             container.innerHTML =
                 "Unable to load approved users.";
+
 
             return;
 
@@ -4481,12 +4635,14 @@ async function loadApprovedUsers() {
             container.innerHTML =
                 "No approved users.";
 
+
             return;
 
         }
 
 
-        container.innerHTML = "";
+        container.innerHTML =
+            "";
 
 
         data.forEach(
@@ -4515,13 +4671,17 @@ async function loadApprovedUsers() {
 
 
                 box.innerHTML =
+
                     "<strong>" +
                     escapeHTML(
                         user.email
                     ) +
                     "</strong>" +
+
                     "<br>" +
+
                     "Approved: " +
+
                     new Date(
                         user.approved_at ||
                         user.created_at
@@ -4536,10 +4696,10 @@ async function loadApprovedUsers() {
         );
 
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(
-            "Approved users error:",
+            "Unexpected approved users error:",
             error
         );
 
@@ -4552,9 +4712,9 @@ async function loadApprovedUsers() {
 }
 
 
-// =====================================================
+// ========================================
 // ESCAPE HTML
-// =====================================================
+// ========================================
 
 function escapeHTML(
     value
@@ -4571,22 +4731,27 @@ function escapeHTML(
 
 
     return String(value)
+
         .replace(
             /&/g,
             "&amp;"
         )
+
         .replace(
             /</g,
             "&lt;"
         )
+
         .replace(
             />/g,
             "&gt;"
         )
+
         .replace(
             /"/g,
             "&quot;"
         )
+
         .replace(
             /'/g,
             "&#039;"
@@ -4595,9 +4760,9 @@ function escapeHTML(
 }
 
 
-// =====================================================
+// ========================================
 // INITIAL SCREEN
-// =====================================================
+// ========================================
 
 showOnly(
     "loginScreen"
