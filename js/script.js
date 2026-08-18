@@ -1,6 +1,6 @@
 // ========================================
 // ATPL STUDY PLATFORM
-// FULL VERSION
+// COMPLETE VERSION
 // ========================================
 
 
@@ -13,7 +13,7 @@ let current = 0;
 let status = [];
 let quizMode = false;
 
-let currentSubject = null;
+let currentSubject = "";
 
 
 // ========================================
@@ -21,22 +21,15 @@ let currentSubject = null;
 // ========================================
 
 const subjectNames = {
-
     meteorology: "Meteorology",
-
     airlaw: "Air Law",
-
     operational: "Operational Procedures"
-
 };
 
-
 const subjectFiles = [
-
     "meteorology",
     "airlaw",
     "operational"
-
 ];
 
 
@@ -47,7 +40,6 @@ const subjectFiles = [
 function showOnly(screenId) {
 
     const screens = [
-
         "loginScreen",
         "accessRequestScreen",
         "homeScreen",
@@ -59,96 +51,61 @@ function showOnly(screenId) {
         "markedScreen",
         "quizScreen",
         "resultsScreen"
-
     ];
-
 
     screens.forEach(function(id) {
 
-        const element =
-            document.getElementById(id);
+        const element = document.getElementById(id);
 
         if (element) {
-
             element.style.display = "none";
-
         }
 
     });
 
-
-    const selected =
-        document.getElementById(screenId);
+    const selected = document.getElementById(screenId);
 
     if (selected) {
-
         selected.style.display = "block";
-
     }
 
 }
 
 
 // ========================================
-// HOME
+// HOME - PRACTICE
 // ========================================
 
-document.getElementById(
-    "practiceBtn"
-).onclick = function() {
+document.getElementById("practiceBtn").onclick = function() {
 
     showOnly("practiceSetup");
 
 };
 
 
-document.getElementById(
-    "subjectQuizBtn"
-).onclick = function() {
-
-    showOnly("quizSetup");
-
-};
-
-
-document.getElementById(
-    "combinedQuizBtn"
-).onclick = function() {
-
-    showOnly("combinedQuizSetup");
-
-    loadCombinedQuestionCount();
-
-};
-
-
 // ========================================
-// PRACTICE
+// START PRACTICE
 // ========================================
 
-document.getElementById(
-    "startPracticeBtn"
-).onclick = function() {
+document.getElementById("startPracticeBtn").onclick = function() {
 
     quizMode = false;
 
     const subjectFile =
-        document.getElementById(
-            "practiceSubjectSelect"
-        ).value;
+        document.getElementById("practiceSubjectSelect").value;
 
     showOnly("quizScreen");
 
-    loadPracticeQuestions(
-        subjectFile
-    );
+    loadPracticeQuestions(subjectFile);
 
 };
 
 
-document.getElementById(
-    "practiceBackBtn"
-).onclick = function() {
+// ========================================
+// PRACTICE BACK
+// ========================================
+
+document.getElementById("practiceBackBtn").onclick = function() {
 
     showOnly("homeScreen");
 
@@ -159,21 +116,26 @@ document.getElementById(
 // SUBJECT QUIZ
 // ========================================
 
-document.getElementById(
-    "startQuizBtn"
-).onclick = function() {
+document.getElementById("subjectQuizBtn").onclick = function() {
+
+    showOnly("quizSetup");
+
+};
+
+
+// ========================================
+// START SUBJECT QUIZ
+// ========================================
+
+document.getElementById("startQuizBtn").onclick = function() {
 
     quizMode = true;
 
     const subjectFile =
-        document.getElementById(
-            "subjectSelect"
-        ).value;
+        document.getElementById("subjectSelect").value;
 
     const numberOfQuestions =
-        document.getElementById(
-            "questionCount"
-        ).value;
+        document.getElementById("questionCount").value;
 
     showOnly("quizScreen");
 
@@ -185,9 +147,11 @@ document.getElementById(
 };
 
 
-document.getElementById(
-    "backHomeBtn"
-).onclick = function() {
+// ========================================
+// SUBJECT QUIZ BACK
+// ========================================
+
+document.getElementById("backHomeBtn").onclick = function() {
 
     showOnly("homeScreen");
 
@@ -195,7 +159,31 @@ document.getElementById(
 
 
 // ========================================
-// COMBINED QUESTION COUNT
+// COMBINED QUIZ
+// ========================================
+
+document.getElementById("combinedQuizBtn").onclick = function() {
+
+    showOnly("combinedQuizSetup");
+
+    loadCombinedQuestionCount();
+
+};
+
+
+// ========================================
+// COMBINED BACK
+// ========================================
+
+document.getElementById("combinedBackBtn").onclick = function() {
+
+    showOnly("homeScreen");
+
+};
+
+
+// ========================================
+// LOAD COMBINED QUESTION COUNT
 // ========================================
 
 async function loadCombinedQuestionCount() {
@@ -207,16 +195,12 @@ async function loadCombinedQuestionCount() {
         for (const file of subjectFiles) {
 
             const response =
-                await fetch(
-                    "data/" + file + ".json"
-                );
+                await fetch("data/" + file + ".json");
 
             if (!response.ok) {
 
                 throw new Error(
-                    "Unable to load " +
-                    file +
-                    ".json"
+                    "Unable to load " + file + ".json"
                 );
 
             }
@@ -224,11 +208,9 @@ async function loadCombinedQuestionCount() {
             const data =
                 await response.json();
 
-            totalQuestions +=
-                data.length;
+            totalQuestions += data.length;
 
         }
-
 
         document.getElementById(
             "availableQuestions"
@@ -237,13 +219,11 @@ async function loadCombinedQuestionCount() {
             totalQuestions +
             "</strong>";
 
-
         updateCombinedQuestionOptions(
             totalQuestions
         );
 
-
-    } catch(error) {
+    } catch (error) {
 
         console.error(
             "Combined question count error:",
@@ -261,12 +241,10 @@ async function loadCombinedQuestionCount() {
 
 
 // ========================================
-// COMBINED OPTIONS
+// UPDATE COMBINED OPTIONS
 // ========================================
 
-function updateCombinedQuestionOptions(
-    totalQuestions
-) {
+function updateCombinedQuestionOptions(totalQuestions) {
 
     const select =
         document.getElementById(
@@ -277,25 +255,21 @@ function updateCombinedQuestionOptions(
         return;
     }
 
+    select.querySelectorAll("option").forEach(
+        function(option) {
 
-    select.querySelectorAll(
-        "option"
-    ).forEach(function(option) {
+            if (option.value === "all") {
+                return;
+            }
 
-        if (option.value === "all") {
-            return;
+            const number =
+                parseInt(option.value, 10);
+
+            option.disabled =
+                number > totalQuestions;
+
         }
-
-        const number =
-            parseInt(
-                option.value,
-                10
-            );
-
-        option.disabled =
-            number > totalQuestions;
-
-    });
+    );
 
 }
 
@@ -304,27 +278,14 @@ function updateCombinedQuestionOptions(
 // START COMBINED QUIZ
 // ========================================
 
-document.getElementById(
-    "startCombinedBtn"
-).onclick = function() {
+document.getElementById("startCombinedBtn").onclick = function() {
 
     const questionCount =
         document.getElementById(
             "combinedQuestionCount"
         ).value;
 
-    loadCombinedQuiz(
-        questionCount
-    );
-
-};
-
-
-document.getElementById(
-    "combinedBackBtn"
-).onclick = function() {
-
-    showOnly("homeScreen");
+    loadCombinedQuiz(questionCount);
 
 };
 
@@ -333,19 +294,16 @@ document.getElementById(
 // LOAD PRACTICE QUESTIONS
 // ========================================
 
-async function loadPracticeQuestions(
-    subjectFile
-) {
+async function loadPracticeQuestions(subjectFile) {
 
     try {
 
+        currentSubject = subjectFile;
+
         const response =
             await fetch(
-                "data/" +
-                subjectFile +
-                ".json"
+                "data/" + subjectFile + ".json"
             );
-
 
         if (!response.ok) {
 
@@ -355,54 +313,34 @@ async function loadPracticeQuestions(
 
         }
 
-
         questions =
             await response.json();
 
+        questions.forEach(function(question) {
 
-        questions.forEach(
-            function(question) {
+            question.subject =
+                subjectFile;
 
-                question.subject =
-                    subjectFile;
-
-            }
-        );
-
-
-        currentSubject =
-            subjectFile;
-
+        });
 
         status =
-            new Array(
-                questions.length
-            ).fill(
-                "notAttempted"
-            );
-
+            new Array(questions.length)
+                .fill("notAttempted");
 
         current = 0;
-
 
         document.getElementById(
             "subject"
         ).innerHTML =
-            subjectNames[
-                subjectFile
-            ];
-
+            subjectNames[subjectFile];
 
         createNavigator();
 
         showQuestion();
 
-        await loadSavedProgress(
-            subjectFile
-        );
+        await loadSavedProgress(subjectFile);
 
-
-    } catch(error) {
+    } catch (error) {
 
         console.error(
             "Practice loading error:",
@@ -429,13 +367,12 @@ async function loadSubjectQuiz(
 
     try {
 
+        currentSubject = subjectFile;
+
         const response =
             await fetch(
-                "data/" +
-                subjectFile +
-                ".json"
+                "data/" + subjectFile + ".json"
             );
-
 
         if (!response.ok) {
 
@@ -445,34 +382,23 @@ async function loadSubjectQuiz(
 
         }
 
-
         let allQuestions =
             await response.json();
 
+        allQuestions.forEach(function(question) {
 
-        allQuestions.forEach(
-            function(question) {
+            question.subject =
+                subjectFile;
 
-                question.subject =
-                    subjectFile;
+        });
 
-            }
-        );
+        allQuestions.sort(function() {
 
+            return Math.random() - 0.5;
 
-        allQuestions.sort(
-            function() {
+        });
 
-                return Math.random() - 0.5;
-
-            }
-        );
-
-
-        if (
-            numberOfQuestions ===
-            "all"
-        ) {
+        if (numberOfQuestions === "all") {
 
             questions =
                 allQuestions;
@@ -490,40 +416,26 @@ async function loadSubjectQuiz(
 
         }
 
-
-        currentSubject =
-            subjectFile;
-
-
         status =
-            new Array(
-                questions.length
-            ).fill(
-                "notAttempted"
-            );
-
+            new Array(questions.length)
+                .fill("notAttempted");
 
         current = 0;
-
 
         document.getElementById(
             "subject"
         ).innerHTML =
-            subjectNames[
-                subjectFile
-            ] +
+            subjectNames[subjectFile] +
             " QUIZ";
-
 
         createNavigator();
 
         showQuestion();
 
-
-    } catch(error) {
+    } catch (error) {
 
         console.error(
-            "Subject quiz error:",
+            "Subject quiz loading error:",
             error
         );
 
@@ -540,12 +452,9 @@ async function loadSubjectQuiz(
 // LOAD COMBINED QUIZ
 // ========================================
 
-async function loadCombinedQuiz(
-    questionCount
-) {
+async function loadCombinedQuiz(questionCount) {
 
     const combinedQuestions = [];
-
 
     try {
 
@@ -553,11 +462,8 @@ async function loadCombinedQuiz(
 
             const response =
                 await fetch(
-                    "data/" +
-                    file +
-                    ".json"
+                    "data/" + file + ".json"
                 );
-
 
             if (!response.ok) {
 
@@ -569,40 +475,29 @@ async function loadCombinedQuiz(
 
             }
 
-
             const data =
                 await response.json();
 
+            data.forEach(function(question) {
 
-            data.forEach(
-                function(question) {
+                question.subject =
+                    file;
 
-                    question.subject =
-                        file;
+                combinedQuestions.push(
+                    question
+                );
 
-                    combinedQuestions.push(
-                        question
-                    );
-
-                }
-            );
+            });
 
         }
 
+        combinedQuestions.sort(function() {
 
-        combinedQuestions.sort(
-            function() {
+            return Math.random() - 0.5;
 
-                return Math.random() - 0.5;
+        });
 
-            }
-        );
-
-
-        if (
-            questionCount ===
-            "all"
-        ) {
+        if (questionCount === "all") {
 
             questions =
                 combinedQuestions;
@@ -620,35 +515,26 @@ async function loadCombinedQuiz(
 
         }
 
-
         status =
-            new Array(
-                questions.length
-            ).fill(
-                "notAttempted"
-            );
-
+            new Array(questions.length)
+                .fill("notAttempted");
 
         current = 0;
 
         quizMode = true;
 
-
         showOnly("quizScreen");
-
 
         document.getElementById(
             "subject"
         ).innerHTML =
             "COMBINED ATPL QUIZ";
 
-
         createNavigator();
 
         showQuestion();
 
-
-    } catch(error) {
+    } catch (error) {
 
         console.error(
             "Combined quiz error:",
@@ -665,7 +551,7 @@ async function loadCombinedQuiz(
 
 
 // ========================================
-// QUESTION NAVIGATOR
+// CREATE QUESTION NAVIGATOR
 // ========================================
 
 function createNavigator() {
@@ -675,14 +561,11 @@ function createNavigator() {
             "navigator"
         );
 
-
     if (!nav) {
         return;
     }
 
-
     nav.innerHTML = "";
-
 
     questions.forEach(
         function(question, index) {
@@ -692,26 +575,21 @@ function createNavigator() {
                     "button"
                 );
 
-
             button.innerHTML =
                 index + 1;
-
 
             button.className =
                 "navButton " +
                 status[index];
 
-
             button.onclick =
                 function() {
 
-                    current =
-                        index;
+                    current = index;
 
                     showQuestion();
 
                 };
-
 
             nav.appendChild(
                 button
@@ -727,16 +605,14 @@ function createNavigator() {
 // SHOW QUESTION
 // ========================================
 
-function showQuestion() {
+async function showQuestion() {
 
     if (!questions.length) {
         return;
     }
 
-
     const question =
         questions[current];
-
 
     document.getElementById(
         "counter"
@@ -747,21 +623,24 @@ function showQuestion() {
         questions.length;
 
 
+    // ========================================
+    // QUESTION TEXT
+    // ========================================
+
     document.getElementById(
         "question"
     ).innerHTML =
         question.question;
 
 
-    // ====================================
-    // IMAGES
-    // ====================================
+    // ========================================
+    // QUESTION IMAGES
+    // ========================================
 
     const questionImages =
         document.getElementById(
             "questionImages"
         );
-
 
     questionImages.innerHTML = "";
 
@@ -779,9 +658,7 @@ function showQuestion() {
                         "img"
                     );
 
-
-                img.src =
-                    src;
+                img.src = src;
 
                 img.alt =
                     "Question figure";
@@ -792,6 +669,15 @@ function showQuestion() {
                 img.loading =
                     "lazy";
 
+                img.onerror =
+                    function() {
+
+                        console.error(
+                            "Image failed to load:",
+                            src
+                        );
+
+                    };
 
                 img.onclick =
                     function() {
@@ -803,7 +689,6 @@ function showQuestion() {
 
                     };
 
-
                 questionImages.appendChild(
                     img
                 );
@@ -811,10 +696,8 @@ function showQuestion() {
             }
         );
 
-
         questionImages.style.display =
             "flex";
-
 
     } else {
 
@@ -824,24 +707,23 @@ function showQuestion() {
     }
 
 
-    // ====================================
+    // ========================================
     // MARK BUTTON
-    // ====================================
+    // ========================================
 
-    updateMarkButton(
+    await updateMarkButton(
         question
     );
 
 
-    // ====================================
+    // ========================================
     // ANSWERS
-    // ====================================
+    // ========================================
 
     const answers =
         document.getElementById(
             "answers"
         );
-
 
     answers.innerHTML = "";
 
@@ -854,14 +736,16 @@ function showQuestion() {
                     "button"
                 );
 
-
             button.className =
                 "option";
-
 
             button.innerHTML =
                 option;
 
+
+            // ========================================
+            // SHOW PREVIOUS ANSWER
+            // ========================================
 
             if (
                 status[current] ===
@@ -901,6 +785,10 @@ function showQuestion() {
             }
 
 
+            // ========================================
+            // ANSWER CLICK
+            // ========================================
+
             button.onclick =
                 async function() {
 
@@ -928,14 +816,11 @@ function showQuestion() {
                             "correct"
                         );
 
-
                         status[current] =
                             "correct";
 
-
                         questionStatus =
                             "correct";
-
 
                     } else {
 
@@ -943,10 +828,8 @@ function showQuestion() {
                             "wrong"
                         );
 
-
                         status[current] =
                             "wrong";
-
 
                         questionStatus =
                             "wrong";
@@ -998,298 +881,13 @@ function showQuestion() {
 
 
 // ========================================
-// MARK BUTTON
-// ========================================
-
-function updateMarkButton(
-    question
-) {
-
-    const button =
-        document.getElementById(
-            "markQuestionBtn"
-        );
-
-
-    if (!button) {
-        return;
-    }
-
-
-    if (
-        question._marked === true
-    ) {
-
-        button.innerHTML =
-            "⭐ Unmark Question";
-
-    } else {
-
-        button.innerHTML =
-            "☆ Mark Question";
-
-    }
-
-}
-
-
-// ========================================
-// MARK / UNMARK QUESTION
-// ========================================
-
-document.getElementById(
-    "markQuestionBtn"
-).onclick =
-async function() {
-
-    if (!questions.length) {
-        return;
-    }
-
-
-    const question =
-        questions[current];
-
-
-    if (!question.id) {
-
-        alert(
-            "This question does not have an ID."
-        );
-
-        return;
-
-    }
-
-
-    try {
-
-        const {
-            data: {
-                user
-            }
-        } =
-            await supabaseClient.auth.getUser();
-
-
-        if (!user) {
-
-            alert(
-                "Please log in first."
-            );
-
-            return;
-
-        }
-
-
-        if (
-            question._marked === true
-        ) {
-
-            const {
-                error
-            } =
-                await supabaseClient
-                    .from(
-                        "marked_questions"
-                    )
-                    .delete()
-                    .eq(
-                        "user_id",
-                        user.id
-                    )
-                    .eq(
-                        "question_id",
-                        question.id
-                    );
-
-
-            if (error) {
-
-                console.error(
-                    "Unmark error:",
-                    error
-                );
-
-                alert(
-                    "Unable to unmark question."
-                );
-
-                return;
-
-            }
-
-
-            question._marked =
-                false;
-
-
-        } else {
-
-            const {
-                error
-            } =
-                await supabaseClient
-                    .from(
-                        "marked_questions"
-                    )
-                    .insert({
-
-                        user_id:
-                            user.id,
-
-                        question_id:
-                            question.id,
-
-                        subject:
-                            question.subject,
-
-                        marked_at:
-                            new Date()
-                                .toISOString()
-
-                    });
-
-
-            if (error) {
-
-                console.error(
-                    "Mark error:",
-                    error
-                );
-
-
-                // Duplicate mark protection
-
-                if (
-                    error.code ===
-                    "23505"
-                ) {
-
-                    question._marked =
-                        true;
-
-                } else {
-
-                    alert(
-                        "Unable to mark question."
-                    );
-
-                    return;
-
-                }
-
-            } else {
-
-                question._marked =
-                    true;
-
-            }
-
-        }
-
-
-        updateMarkButton(
-            question
-        );
-
-
-    } catch(error) {
-
-        console.error(
-            "Unexpected mark error:",
-            error
-        );
-
-    }
-
-};
-
-
-// ========================================
-// LOAD MARK STATUS
-// ========================================
-
-async function loadMarkStatus(
-    question
-) {
-
-    try {
-
-        const {
-            data: {
-                user
-            }
-        } =
-            await supabaseClient.auth.getUser();
-
-
-        if (!user || !question.id) {
-            return;
-        }
-
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .from(
-                    "marked_questions"
-                )
-                .select("id")
-                .eq(
-                    "user_id",
-                    user.id
-                )
-                .eq(
-                    "question_id",
-                    question.id
-                )
-                .maybeSingle();
-
-
-        if (error) {
-
-            console.error(
-                "Mark status error:",
-                error
-            );
-
-            return;
-
-        }
-
-
-        question._marked =
-            !!data;
-
-
-        updateMarkButton(
-            question
-        );
-
-
-    } catch(error) {
-
-        console.error(
-            "Unexpected mark status error:",
-            error
-        );
-
-    }
-
-}
-
-
-// ========================================
-// NEXT
+// NEXT BUTTON
 // ========================================
 
 document.getElementById(
     "nextBtn"
-).onclick = function() {
+).onclick =
+function() {
 
     if (
         current <
@@ -1314,12 +912,13 @@ document.getElementById(
 
 
 // ========================================
-// PREVIOUS
+// PREVIOUS BUTTON
 // ========================================
 
 document.getElementById(
     "prevBtn"
-).onclick = function() {
+).onclick =
+function() {
 
     if (current > 0) {
 
@@ -1333,16 +932,16 @@ document.getElementById(
 
 
 // ========================================
-// SKIP
+// SKIP BUTTON
 // ========================================
 
 document.getElementById(
     "skipBtn"
-).onclick = function() {
+).onclick =
+function() {
 
     status[current] =
         "skipped";
-
 
     if (
         current <
@@ -1355,7 +954,6 @@ document.getElementById(
 
     }
 
-
     createNavigator();
 
 };
@@ -1367,7 +965,8 @@ document.getElementById(
 
 document.getElementById(
     "questionBackBtn"
-).onclick = function() {
+).onclick =
+function() {
 
     showOnly(
         "homeScreen"
@@ -1399,14 +998,12 @@ function showResults() {
                 correct++;
             }
 
-
             if (
                 result ===
                 "wrong"
             ) {
                 wrong++;
             }
-
 
             if (
                 result ===
@@ -1426,8 +1023,7 @@ function showResults() {
     const percentage =
         total > 0
             ? Math.round(
-                (correct /
-                    total) *
+                (correct / total) *
                 100
             )
             : 0;
@@ -1449,7 +1045,6 @@ function showResults() {
     document.getElementById(
         "resultDetails"
     ).innerHTML =
-
         "<p>Correct: " +
         correct +
         "</p>" +
@@ -1470,12 +1065,13 @@ function showResults() {
 
 
 // ========================================
-// REVIEW
+// REVIEW ANSWERS
 // ========================================
 
 document.getElementById(
     "reviewBtn"
-).onclick = function() {
+).onclick =
+function() {
 
     current = 0;
 
@@ -1494,13 +1090,271 @@ document.getElementById(
 
 document.getElementById(
     "resultsHomeBtn"
-).onclick = function() {
+).onclick =
+function() {
 
     showOnly(
         "homeScreen"
     );
 
     checkAdminAccess();
+
+};
+
+
+// ========================================
+// CREATE ACCOUNT
+// ========================================
+
+document.getElementById(
+    "signupBtn"
+).onclick =
+async function() {
+
+    const email =
+        document.getElementById(
+            "loginEmail"
+        ).value.trim();
+
+    const password =
+        document.getElementById(
+            "loginPassword"
+        ).value;
+
+    const message =
+        document.getElementById(
+            "loginMessage"
+        );
+
+
+    if (!email || !password) {
+
+        message.innerHTML =
+            "Please enter your email and password.";
+
+        return;
+
+    }
+
+
+    if (password.length < 6) {
+
+        message.innerHTML =
+            "Password must be at least 6 characters.";
+
+        return;
+
+    }
+
+
+    message.innerHTML =
+        "Creating account...";
+
+
+    try {
+
+        const {
+            error
+        } =
+            await supabaseClient.auth.signUp({
+
+                email:
+                    email,
+
+                password:
+                    password
+
+            });
+
+
+        if (error) {
+
+            console.error(
+                "Signup error:",
+                error
+            );
+
+            message.innerHTML =
+                error.message;
+
+            return;
+
+        }
+
+
+        message.innerHTML =
+            "Account created successfully. You can now log in.";
+
+
+    } catch (error) {
+
+        console.error(
+            "Unexpected signup error:",
+            error
+        );
+
+        message.innerHTML =
+            "Unable to create account.";
+
+    }
+
+};
+
+
+// ========================================
+// LOGIN
+// ========================================
+
+document.getElementById(
+    "loginBtn"
+).onclick =
+async function() {
+
+    const email =
+        document.getElementById(
+            "loginEmail"
+        ).value.trim();
+
+    const password =
+        document.getElementById(
+            "loginPassword"
+        ).value;
+
+    const message =
+        document.getElementById(
+            "loginMessage"
+        );
+
+
+    if (!email || !password) {
+
+        message.innerHTML =
+            "Please enter your email and password.";
+
+        return;
+
+    }
+
+
+    message.innerHTML =
+        "Logging in...";
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.auth.signInWithPassword({
+
+                email:
+                    email,
+
+                password:
+                    password
+
+            });
+
+
+        if (error) {
+
+            console.error(
+                "Login error:",
+                error
+            );
+
+            message.innerHTML =
+                error.message;
+
+            return;
+
+        }
+
+
+        if (
+            !data ||
+            !data.user
+        ) {
+
+            message.innerHTML =
+                "Login failed.";
+
+            return;
+
+        }
+
+
+        // ========================================
+        // CHECK APPROVAL
+        // ========================================
+
+        const {
+            data: approvedUser,
+            error: approvalError
+        } =
+            await supabaseClient
+                .from("approved_users")
+                .select("email")
+                .eq(
+                    "email",
+                    email
+                )
+                .maybeSingle();
+
+
+        if (approvalError) {
+
+            console.error(
+                "Approval check error:",
+                approvalError
+            );
+
+            await supabaseClient.auth.signOut();
+
+            message.innerHTML =
+                "Unable to verify account approval.";
+
+            return;
+
+        }
+
+
+        if (!approvedUser) {
+
+            await supabaseClient.auth.signOut();
+
+            message.innerHTML =
+                "Your account has not been approved yet. Please request access.";
+
+            return;
+
+        }
+
+
+        message.innerHTML =
+            "Login successful.";
+
+
+        showOnly(
+            "homeScreen"
+        );
+
+
+        await checkAdminAccess();
+
+
+    } catch (error) {
+
+        console.error(
+            "Unexpected login error:",
+            error
+        );
+
+        message.innerHTML =
+            "Login failed. Please try again.";
+
+    }
 
 };
 
@@ -1544,7 +1398,6 @@ async function saveProgress(
 
         const questionId =
             question.id;
-
 
         const subject =
             question.subject ||
@@ -1600,8 +1453,7 @@ async function saveProgress(
                             questionStatus,
 
                         updated_at:
-                            new Date()
-                                .toISOString()
+                            new Date().toISOString()
 
                     })
                     .eq(
@@ -1658,8 +1510,7 @@ async function saveProgress(
 
         }
 
-
-    } catch(error) {
+    } catch (error) {
 
         console.error(
             "Unexpected progress error:",
@@ -1675,9 +1526,7 @@ async function saveProgress(
 // LOAD SAVED PROGRESS
 // ========================================
 
-async function loadSavedProgress(
-    subject
-) {
+async function loadSavedProgress(subject) {
 
     try {
 
@@ -1759,7 +1608,7 @@ async function loadSavedProgress(
         createNavigator();
 
 
-    } catch(error) {
+    } catch (error) {
 
         console.error(
             "Unexpected progress loading error:",
@@ -1772,102 +1621,170 @@ async function loadSavedProgress(
 
 
 // ========================================
-// CREATE ACCOUNT
+// ⭐ MARK / UNMARK QUESTION
 // ========================================
 
 document.getElementById(
-    "signupBtn"
+    "markQuestionBtn"
 ).onclick =
 async function() {
 
-    const email =
-        document.getElementById(
-            "loginEmail"
-        ).value.trim();
-
-
-    const password =
-        document.getElementById(
-            "loginPassword"
-        ).value;
-
-
-    const message =
-        document.getElementById(
-            "loginMessage"
-        );
-
-
-    if (!email || !password) {
-
-        message.innerHTML =
-            "Please enter your email and password.";
-
+    if (!questions.length) {
         return;
-
     }
 
-
-    if (
-        password.length < 6
-    ) {
-
-        message.innerHTML =
-            "Password must be at least 6 characters.";
-
-        return;
-
-    }
-
-
-    message.innerHTML =
-        "Creating account...";
-
+    const question =
+        questions[current];
 
     try {
 
         const {
-            error
+            data: {
+                user
+            }
         } =
-            await supabaseClient.auth.signUp({
-
-                email:
-                    email,
-
-                password:
-                    password
-
-            });
+            await supabaseClient.auth.getUser();
 
 
-        if (error) {
+        if (!user) {
 
-            console.error(
-                "Signup error:",
-                error
+            alert(
+                "Please log in first."
             );
-
-            message.innerHTML =
-                error.message;
 
             return;
 
         }
 
 
-        message.innerHTML =
-            "Account created successfully. You can now log in.";
+        if (!question.id) {
+
+            alert(
+                "This question does not have an ID."
+            );
+
+            return;
+
+        }
 
 
-    } catch(error) {
+        const {
+            data: existing,
+            error: checkError
+        } =
+            await supabaseClient
+                .from("marked_questions")
+                .select("id")
+                .eq(
+                    "user_id",
+                    user.id
+                )
+                .eq(
+                    "question_id",
+                    question.id
+                )
+                .maybeSingle();
 
-        console.error(
-            "Unexpected signup error:",
-            error
+
+        if (checkError) {
+
+            console.error(
+                "Mark check error:",
+                checkError
+            );
+
+            alert(
+                "Unable to check marked question."
+            );
+
+            return;
+
+        }
+
+
+        if (existing) {
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("marked_questions")
+                    .delete()
+                    .eq(
+                        "id",
+                        existing.id
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "Unmark error:",
+                    error
+                );
+
+                alert(
+                    "Unable to unmark question."
+                );
+
+                return;
+
+            }
+
+
+        } else {
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("marked_questions")
+                    .insert({
+
+                        user_id:
+                            user.id,
+
+                        question_id:
+                            question.id,
+
+                        subject:
+                            question.subject,
+
+                        marked_at:
+                            new Date().toISOString()
+
+                    });
+
+
+            if (error) {
+
+                console.error(
+                    "Mark error:",
+                    error
+                );
+
+                alert(
+                    "Unable to mark question."
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        await updateMarkButton(
+            question
         );
 
-        message.innerHTML =
-            "Unable to create account.";
+
+    } catch (error) {
+
+        console.error(
+            "Unexpected mark error:",
+            error
+        );
 
     }
 
@@ -1875,73 +1792,179 @@ async function() {
 
 
 // ========================================
-// LOGIN
+// UPDATE MARK BUTTON
 // ========================================
 
-document.getElementById(
-    "loginBtn"
-).onclick =
-async function() {
+async function updateMarkButton(question) {
 
-    const email =
+    const button =
         document.getElementById(
-            "loginEmail"
-        ).value.trim();
-
-
-    const password =
-        document.getElementById(
-            "loginPassword"
-        ).value;
-
-
-    const message =
-        document.getElementById(
-            "loginMessage"
+            "markQuestionBtn"
         );
 
-
-    if (!email || !password) {
-
-        message.innerHTML =
-            "Please enter your email and password.";
-
+    if (!button) {
         return;
-
     }
-
-
-    message.innerHTML =
-        "Logging in...";
 
 
     try {
 
         const {
+            data: {
+                user
+            }
+        } =
+            await supabaseClient.auth.getUser();
+
+
+        if (!user || !question.id) {
+
+            button.innerHTML =
+                "⭐ Mark Question";
+
+            return;
+
+        }
+
+
+        const {
             data,
             error
         } =
-            await supabaseClient.auth
-                .signInWithPassword({
-
-                    email:
-                        email,
-
-                    password:
-                        password
-
-                });
+            await supabaseClient
+                .from("marked_questions")
+                .select("id")
+                .eq(
+                    "user_id",
+                    user.id
+                )
+                .eq(
+                    "question_id",
+                    question.id
+                )
+                .maybeSingle();
 
 
         if (error) {
 
             console.error(
-                "Login error:",
+                "Mark status error:",
                 error
             );
 
-            message.innerHTML =
-                error.message;
+            return;
+
+        }
+
+
+        if (data) {
+
+            button.innerHTML =
+                "⭐ Unmark Question";
+
+        } else {
+
+            button.innerHTML =
+                "⭐ Mark Question";
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Unexpected mark status error:",
+            error
+        );
+
+    }
+
+}
+
+
+// ========================================
+// ⭐ MARKED QUESTIONS BUTTON
+// ========================================
+
+document.getElementById(
+    "markedBtn"
+).onclick =
+async function() {
+
+    showOnly(
+        "markedScreen"
+    );
+
+    await loadMarkedQuestions();
+
+};
+
+
+// ========================================
+// LOAD MARKED QUESTIONS
+// ========================================
+
+async function loadMarkedQuestions() {
+
+    const container =
+        document.getElementById(
+            "markedQuestionsList"
+        );
+
+    container.innerHTML =
+        "Loading marked questions...";
+
+
+    try {
+
+        const {
+            data: {
+                user
+            }
+        } =
+            await supabaseClient.auth.getUser();
+
+
+        if (!user) {
+
+            container.innerHTML =
+                "Please log in first.";
+
+            return;
+
+        }
+
+
+        const {
+            data: marked,
+            error
+        } =
+            await supabaseClient
+                .from("marked_questions")
+                .select(
+                    "id, question_id, subject, marked_at"
+                )
+                .eq(
+                    "user_id",
+                    user.id
+                )
+                .order(
+                    "marked_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+
+        if (error) {
+
+            console.error(
+                "Marked questions error:",
+                error
+            );
+
+            container.innerHTML =
+                "Unable to load marked questions.";
 
             return;
 
@@ -1949,90 +1972,962 @@ async function() {
 
 
         if (
-            !data ||
-            !data.user
+            !marked ||
+            marked.length === 0
         ) {
 
-            message.innerHTML =
-                "Login failed.";
+            container.innerHTML =
+                "<p>You have no marked questions yet.</p>";
 
             return;
 
         }
 
 
-        const {
-            data: approvedUser,
-            error: approvalError
-        } =
-            await supabaseClient
-                .from(
-                    "approved_users"
-                )
-                .select("email")
-                .eq(
-                    "email",
-                    email
-                )
-                .maybeSingle();
+        // ========================================
+        // LOAD ALL SUBJECT JSON FILES
+        // ========================================
+
+        const questionMap = {};
 
 
-        if (approvalError) {
+        for (const file of subjectFiles) {
 
-            console.error(
-                "Approval check error:",
-                approvalError
-            );
+            try {
 
-            await supabaseClient.auth
-                .signOut();
+                const response =
+                    await fetch(
+                        "data/" +
+                        file +
+                        ".json"
+                    );
 
 
-            message.innerHTML =
-                "Unable to verify account approval.";
+                if (!response.ok) {
+                    continue;
+                }
 
-            return;
+
+                const data =
+                    await response.json();
+
+
+                data.forEach(
+                    function(question) {
+
+                        questionMap[
+                            question.id
+                        ] = question;
+
+                    }
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Unable to load " +
+                    file +
+                    ".json:",
+                    error
+                );
+
+            }
 
         }
 
 
-        if (!approvedUser) {
-
-            await supabaseClient.auth
-                .signOut();
+        container.innerHTML = "";
 
 
-            message.innerHTML =
-                "Your account has not been approved yet. Please request access.";
+        // ========================================
+        // DISPLAY MARKED QUESTIONS
+        // ========================================
 
-            return;
+        marked.forEach(
+            function(record) {
 
-        }
+                const question =
+                    questionMap[
+                        record.question_id
+                    ];
 
 
-        message.innerHTML =
-            "Login successful.";
+                const box =
+                    document.createElement(
+                        "div"
+                    );
 
 
-        showOnly(
-            "homeScreen"
+                box.className =
+                    "marked-question";
+
+
+                if (!question) {
+
+                    box.innerHTML =
+                        "<p><strong>Question ID:</strong> " +
+                        escapeHTML(
+                            record.question_id
+                        ) +
+                        "</p>" +
+                        "<p>Question could not be loaded.</p>";
+
+                    container.appendChild(
+                        box
+                    );
+
+                    return;
+
+                }
+
+
+                question.subject =
+                    record.subject;
+
+
+                // ========================================
+                // SUBJECT
+                // ========================================
+
+                const subjectTitle =
+                    document.createElement(
+                        "h4"
+                    );
+
+
+                subjectTitle.innerHTML =
+                    subjectNames[
+                        record.subject
+                    ] ||
+                    record.subject;
+
+
+                box.appendChild(
+                    subjectTitle
+                );
+
+
+                // ========================================
+                // QUESTION
+                // ========================================
+
+                const questionText =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                questionText.innerHTML =
+                    "<strong>" +
+                    escapeHTML(
+                        question.question
+                    ) +
+                    "</strong>";
+
+
+                box.appendChild(
+                    questionText
+                );
+
+
+                // ========================================
+                // IMAGES
+                // ========================================
+
+                if (
+                    question.images &&
+                    question.images.length
+                ) {
+
+                    const imageContainer =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    imageContainer.className =
+                        "question-images";
+
+
+                    question.images.forEach(
+                        function(src) {
+
+                            const img =
+                                document.createElement(
+                                    "img"
+                                );
+
+
+                            img.src =
+                                src;
+
+
+                            img.alt =
+                                "Question figure";
+
+
+                            img.className =
+                                "question-figure";
+
+
+                            img.loading =
+                                "lazy";
+
+
+                            img.onclick =
+                                function() {
+
+                                    window.open(
+                                        src,
+                                        "_blank"
+                                    );
+
+                                };
+
+
+                            imageContainer.appendChild(
+                                img
+                            );
+
+                        }
+                    );
+
+
+                    box.appendChild(
+                        imageContainer
+                    );
+
+                }
+
+
+                // ========================================
+                // OPTIONS
+                // ========================================
+
+                const optionsContainer =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                question.options.forEach(
+                    function(option, index) {
+
+                        const optionDiv =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        optionDiv.className =
+                            "marked-option";
+
+
+                        optionDiv.innerHTML =
+                            String.fromCharCode(
+                                65 + index
+                            ) +
+                            ". " +
+                            escapeHTML(
+                                option
+                            );
+
+
+                        if (
+                            index ===
+                            question.answer
+                        ) {
+
+                            optionDiv.classList.add(
+                                "correct"
+                            );
+
+                        }
+
+
+                        optionsContainer.appendChild(
+                            optionDiv
+                        );
+
+                    }
+                );
+
+
+                box.appendChild(
+                    optionsContainer
+                );
+
+
+                // ========================================
+                // OPEN QUESTION BUTTON
+                // ========================================
+
+                const openButton =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                openButton.innerHTML =
+                    "Open Question";
+
+
+                openButton.className =
+                    "modeButton";
+
+
+                openButton.onclick =
+                    function() {
+
+                        questions =
+                            [question];
+
+                        status =
+                            ["notAttempted"];
+
+                        current =
+                            0;
+
+                        quizMode =
+                            false;
+
+                        currentSubject =
+                            record.subject;
+
+
+                        showOnly(
+                            "quizScreen"
+                        );
+
+
+                        document.getElementById(
+                            "subject"
+                        ).innerHTML =
+                            subjectNames[
+                                record.subject
+                            ];
+
+
+                        createNavigator();
+
+                        showQuestion();
+
+                    };
+
+
+                box.appendChild(
+                    openButton
+                );
+
+
+                // ========================================
+                // REMOVE MARK
+                // ========================================
+
+                const removeButton =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                removeButton.innerHTML =
+                    "Remove Mark";
+
+
+                removeButton.className =
+                    "backButton";
+
+
+                removeButton.onclick =
+                    async function() {
+
+                        const {
+                            error
+                        } =
+                            await supabaseClient
+                                .from(
+                                    "marked_questions"
+                                )
+                                .delete()
+                                .eq(
+                                    "id",
+                                    record.id
+                                );
+
+
+                        if (error) {
+
+                            console.error(
+                                "Remove mark error:",
+                                error
+                            );
+
+                            alert(
+                                "Unable to remove mark."
+                            );
+
+                            return;
+
+                        }
+
+
+                        await loadMarkedQuestions();
+
+                    };
+
+
+                box.appendChild(
+                    removeButton
+                );
+
+
+                container.appendChild(
+                    box
+                );
+
+            }
         );
 
 
-        await checkAdminAccess();
-
-
-    } catch(error) {
+    } catch (error) {
 
         console.error(
-            "Unexpected login error:",
+            "Unexpected marked questions error:",
             error
         );
 
-        message.innerHTML =
-            "Login failed. Please try again.";
+        container.innerHTML =
+            "Unable to load marked questions.";
 
     }
+
+}
+
+
+// ========================================
+// MARKED BACK
+// ========================================
+
+document.getElementById(
+    "markedBackBtn"
+).onclick =
+function() {
+
+    showOnly(
+        "homeScreen"
+    );
+
+    checkAdminAccess();
+
+};
+
+
+// ========================================
+// 🔎 SEARCH BUTTON
+// ========================================
+
+document.getElementById(
+    "searchBtn"
+).onclick =
+function() {
+
+    showOnly(
+        "searchScreen"
+    );
+
+    document.getElementById(
+        "searchInput"
+    ).focus();
+
+};
+
+
+// ========================================
+// SEARCH BUTTON
+// ========================================
+
+document.getElementById(
+    "searchQuestionsBtn"
+).onclick =
+async function() {
+
+    await performSearch();
+
+};
+
+
+// ========================================
+// SEARCH WHEN ENTER IS PRESSED
+// ========================================
+
+document.getElementById(
+    "searchInput"
+).addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key ===
+            "Enter"
+        ) {
+
+            performSearch();
+
+        }
+
+    }
+);
+
+
+// ========================================
+// PERFORM SEARCH
+// ========================================
+
+async function performSearch() {
+
+    const searchText =
+        document.getElementById(
+            "searchInput"
+        ).value
+        .trim()
+        .toLowerCase();
+
+
+    const selectedSubject =
+        document.getElementById(
+            "searchSubject"
+        ).value;
+
+
+    const resultsContainer =
+        document.getElementById(
+            "searchResults"
+        );
+
+
+    if (!searchText) {
+
+        resultsContainer.innerHTML =
+            "<p>Please enter something to search.</p>";
+
+        return;
+
+    }
+
+
+    resultsContainer.innerHTML =
+        "Searching...";
+
+
+    const results = [];
+
+
+    try {
+
+        for (
+            const subjectFile
+            of subjectFiles
+        ) {
+
+            if (
+                selectedSubject !==
+                "all" &&
+                selectedSubject !==
+                subjectFile
+            ) {
+
+                continue;
+
+            }
+
+
+            const response =
+                await fetch(
+                    "data/" +
+                    subjectFile +
+                    ".json"
+                );
+
+
+            if (!response.ok) {
+                continue;
+            }
+
+
+            const data =
+                await response.json();
+
+
+            data.forEach(
+                function(question) {
+
+                    const questionText =
+                        String(
+                            question.question ||
+                            ""
+                        ).toLowerCase();
+
+
+                    const optionsText =
+                        (
+                            question.options ||
+                            []
+                        )
+                        .join(" ")
+                        .toLowerCase();
+
+
+                    const idText =
+                        String(
+                            question.id ||
+                            ""
+                        ).toLowerCase();
+
+
+                    if (
+                        questionText.includes(
+                            searchText
+                        ) ||
+                        optionsText.includes(
+                            searchText
+                        ) ||
+                        idText.includes(
+                            searchText
+                        )
+                    ) {
+
+                        question.subject =
+                            subjectFile;
+
+
+                        results.push(
+                            question
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        displaySearchResults(
+            results
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Search error:",
+            error
+        );
+
+        resultsContainer.innerHTML =
+            "Unable to search questions.";
+
+    }
+
+}
+
+
+// ========================================
+// DISPLAY SEARCH RESULTS
+// ========================================
+
+function displaySearchResults(results) {
+
+    const container =
+        document.getElementById(
+            "searchResults"
+        );
+
+
+    if (
+        !results ||
+        results.length === 0
+    ) {
+
+        container.innerHTML =
+            "<p>No questions found.</p>";
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        "<p><strong>" +
+        results.length +
+        "</strong> question(s) found.</p>";
+
+
+    results.forEach(
+        function(question) {
+
+            const box =
+                document.createElement(
+                    "div"
+                );
+
+
+            box.className =
+                "search-result";
+
+
+            // ========================================
+            // SUBJECT
+            // ========================================
+
+            const subject =
+                document.createElement(
+                    "h4"
+                );
+
+
+            subject.innerHTML =
+                subjectNames[
+                    question.subject
+                ] ||
+                question.subject;
+
+
+            box.appendChild(
+                subject
+            );
+
+
+            // ========================================
+            // QUESTION
+            // ========================================
+
+            const text =
+                document.createElement(
+                    "div"
+                );
+
+
+            text.innerHTML =
+                "<strong>" +
+                escapeHTML(
+                    question.question
+                ) +
+                "</strong>";
+
+
+            box.appendChild(
+                text
+            );
+
+
+            // ========================================
+            // IMAGES
+            // ========================================
+
+            if (
+                question.images &&
+                question.images.length
+            ) {
+
+                const imageContainer =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                imageContainer.className =
+                    "question-images";
+
+
+                question.images.forEach(
+                    function(src) {
+
+                        const img =
+                            document.createElement(
+                                "img"
+                            );
+
+
+                        img.src =
+                            src;
+
+
+                        img.alt =
+                            "Question figure";
+
+
+                        img.className =
+                            "question-figure";
+
+
+                        img.loading =
+                            "lazy";
+
+
+                        img.onclick =
+                            function() {
+
+                                window.open(
+                                    src,
+                                    "_blank"
+                                );
+
+                            };
+
+
+                        imageContainer.appendChild(
+                            img
+                        );
+
+                    }
+                );
+
+
+                box.appendChild(
+                    imageContainer
+                );
+
+            }
+
+
+            // ========================================
+            // OPTIONS
+            // ========================================
+
+            const options =
+                document.createElement(
+                    "div"
+                );
+
+
+            question.options.forEach(
+                function(option, index) {
+
+                    const optionDiv =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    optionDiv.className =
+                        "search-option";
+
+
+                    optionDiv.innerHTML =
+                        String.fromCharCode(
+                            65 + index
+                        ) +
+                        ". " +
+                        escapeHTML(
+                            option
+                        );
+
+
+                    options.appendChild(
+                        optionDiv
+                    );
+
+                }
+            );
+
+
+            box.appendChild(
+                options
+            );
+
+
+            // ========================================
+            // OPEN QUESTION
+            // ========================================
+
+            const openButton =
+                document.createElement(
+                    "button"
+                );
+
+
+            openButton.innerHTML =
+                "Open Question";
+
+
+            openButton.className =
+                "modeButton";
+
+
+            openButton.onclick =
+                function() {
+
+                    questions =
+                        [question];
+
+
+                    status =
+                        ["notAttempted"];
+
+
+                    current =
+                        0;
+
+
+                    quizMode =
+                        false;
+
+
+                    currentSubject =
+                        question.subject;
+
+
+                    showOnly(
+                        "quizScreen"
+                    );
+
+
+                    document.getElementById(
+                        "subject"
+                    ).innerHTML =
+                        subjectNames[
+                            question.subject
+                        ];
+
+
+                    createNavigator();
+
+                    showQuestion();
+
+                };
+
+
+            box.appendChild(
+                openButton
+            );
+
+
+            container.appendChild(
+                box
+            );
+
+        }
+    );
+
+}
+
+
+// ========================================
+// SEARCH BACK
+// ========================================
+
+document.getElementById(
+    "searchBackBtn"
+).onclick =
+function() {
+
+    showOnly(
+        "homeScreen"
+    );
+
+    checkAdminAccess();
 
 };
 
@@ -2043,7 +2938,8 @@ async function() {
 
 document.getElementById(
     "requestAccessBtn"
-).onclick = function() {
+).onclick =
+function() {
 
     showOnly(
         "accessRequestScreen"
@@ -2052,9 +2948,14 @@ document.getElementById(
 };
 
 
+// ========================================
+// BACK TO LOGIN
+// ========================================
+
 document.getElementById(
     "backToLoginBtn"
-).onclick = function() {
+).onclick =
+function() {
 
     showOnly(
         "loginScreen"
@@ -2062,6 +2963,10 @@ document.getElementById(
 
 };
 
+
+// ========================================
+// SUBMIT ACCESS REQUEST
+// ========================================
 
 document.getElementById(
     "submitAccessRequestBtn"
@@ -2112,9 +3017,7 @@ async function() {
             error
         } =
             await supabaseClient
-                .from(
-                    "access_requests"
-                )
+                .from("access_requests")
                 .insert({
 
                     name:
@@ -2163,7 +3066,7 @@ async function() {
         ).value = "";
 
 
-    } catch(error) {
+    } catch (error) {
 
         console.error(
             "Unexpected request error:",
@@ -2179,768 +3082,7 @@ async function() {
 
 
 // ========================================
-// SEARCH
-// ========================================
-
-let allSearchQuestions = [];
-
-
-document.getElementById(
-    "searchBtn"
-).onclick = async function() {
-
-    showOnly(
-        "searchScreen"
-    );
-
-
-    document.getElementById(
-        "searchInput"
-    ).value = "";
-
-
-    document.getElementById(
-        "searchResults"
-    ).innerHTML =
-        "Loading questions...";
-
-
-    await loadAllSearchQuestions();
-
-};
-
-
-document.getElementById(
-    "searchBackBtn"
-).onclick = function() {
-
-    showOnly(
-        "homeScreen"
-    );
-
-};
-
-
-async function loadAllSearchQuestions() {
-
-    allSearchQuestions = [];
-
-
-    try {
-
-        for (
-            const file of subjectFiles
-        ) {
-
-            const response =
-                await fetch(
-                    "data/" +
-                    file +
-                    ".json"
-                );
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    "Unable to load " +
-                    file
-                );
-
-            }
-
-
-            const data =
-                await response.json();
-
-
-            data.forEach(
-                function(question) {
-
-                    question.subject =
-                        file;
-
-                    allSearchQuestions.push(
-                        question
-                    );
-
-                }
-            );
-
-        }
-
-
-        displaySearchResults(
-            allSearchQuestions
-        );
-
-
-    } catch(error) {
-
-        console.error(
-            "Search loading error:",
-            error
-        );
-
-
-        document.getElementById(
-            "searchResults"
-        ).innerHTML =
-            "Unable to load questions.";
-
-    }
-
-}
-
-
-document.getElementById(
-    "searchQuestionsBtn"
-).onclick = function() {
-
-    performSearch();
-
-};
-
-
-document.getElementById(
-    "searchInput"
-).addEventListener(
-    "keyup",
-    function(event) {
-
-        if (
-            event.key ===
-            "Enter"
-        ) {
-
-            performSearch();
-
-        }
-
-    }
-);
-
-
-function performSearch() {
-
-    const searchText =
-        document.getElementById(
-            "searchInput"
-        ).value
-            .trim()
-            .toLowerCase();
-
-
-    const selectedSubject =
-        document.getElementById(
-            "searchSubject"
-        ).value;
-
-
-    let results =
-        allSearchQuestions;
-
-
-    if (selectedSubject !== "all") {
-
-        results =
-            results.filter(
-                function(question) {
-
-                    return (
-                        question.subject ===
-                        selectedSubject
-                    );
-
-                }
-            );
-
-    }
-
-
-    if (searchText) {
-
-        results =
-            results.filter(
-                function(question) {
-
-                    const questionText =
-                        (
-                            question.question ||
-                            ""
-                        ).toLowerCase();
-
-
-                    const optionsText =
-                        (
-                            question.options ||
-                            []
-                        ).join(" ")
-                            .toLowerCase();
-
-
-                    const idText =
-                        String(
-                            question.id ||
-                            ""
-                        ).toLowerCase();
-
-
-                    return (
-                        questionText.includes(
-                            searchText
-                        ) ||
-                        optionsText.includes(
-                            searchText
-                        ) ||
-                        idText.includes(
-                            searchText
-                        )
-                    );
-
-                }
-            );
-
-    }
-
-
-    displaySearchResults(
-        results
-    );
-
-}
-
-
-function displaySearchResults(
-    results
-) {
-
-    const container =
-        document.getElementById(
-            "searchResults"
-        );
-
-
-    if (
-        !results ||
-        results.length === 0
-    ) {
-
-        container.innerHTML =
-            "<p>No questions found.</p>";
-
-        return;
-
-    }
-
-
-    container.innerHTML =
-        "<p><strong>" +
-        results.length +
-        "</strong> questions found.</p>";
-
-
-    results.forEach(
-        function(question) {
-
-            const box =
-                document.createElement(
-                    "div"
-                );
-
-
-            box.className =
-                "searchResult";
-
-
-            const subject =
-                document.createElement(
-                    "strong"
-                );
-
-
-            subject.innerHTML =
-                subjectNames[
-                    question.subject
-                ] ||
-                question.subject;
-
-
-            const text =
-                document.createElement(
-                    "p"
-                );
-
-
-            text.innerHTML =
-                question.question;
-
-
-            const openButton =
-                document.createElement(
-                    "button"
-                );
-
-
-            openButton.className =
-                "modeButton";
-
-
-            openButton.innerHTML =
-                "Open Question";
-
-
-            openButton.onclick =
-                function() {
-
-                    openSingleQuestion(
-                        question
-                    );
-
-                };
-
-
-            box.appendChild(
-                subject
-            );
-
-
-            box.appendChild(
-                text
-            );
-
-
-            box.appendChild(
-                openButton
-            );
-
-
-            container.appendChild(
-                box
-            );
-
-        }
-    );
-
-}
-
-
-// ========================================
-// OPEN SINGLE SEARCHED QUESTION
-// ========================================
-
-function openSingleQuestion(
-    question
-) {
-
-    questions = [
-        question
-    ];
-
-
-    current = 0;
-
-
-    status = [
-        "notAttempted"
-    ];
-
-
-    currentSubject =
-        question.subject;
-
-
-    quizMode = false;
-
-
-    showOnly(
-        "quizScreen"
-    );
-
-
-    document.getElementById(
-        "subject"
-    ).innerHTML =
-        subjectNames[
-            question.subject
-        ];
-
-
-    createNavigator();
-
-
-    showQuestion();
-
-}
-
-
-// ========================================
-// MARKED QUESTIONS
-// ========================================
-
-document.getElementById(
-    "markedBtn"
-).onclick = async function() {
-
-    showOnly(
-        "markedScreen"
-    );
-
-
-    await loadMarkedQuestions();
-
-};
-
-
-document.getElementById(
-    "markedBackBtn"
-).onclick = function() {
-
-    showOnly(
-        "homeScreen"
-    );
-
-};
-
-
-async function loadMarkedQuestions() {
-
-    const container =
-        document.getElementById(
-            "markedQuestionsList"
-        );
-
-
-    container.innerHTML =
-        "Loading marked questions...";
-
-
-    try {
-
-        const {
-            data: {
-                user
-            }
-        } =
-            await supabaseClient.auth.getUser();
-
-
-        if (!user) {
-
-            container.innerHTML =
-                "Please log in first.";
-
-            return;
-
-        }
-
-
-        const {
-            data: marked,
-            error
-        } =
-            await supabaseClient
-                .from(
-                    "marked_questions"
-                )
-                .select(
-                    "question_id,subject,marked_at"
-                )
-                .eq(
-                    "user_id",
-                    user.id
-                )
-                .order(
-                    "marked_at",
-                    {
-                        ascending: false
-                    }
-                );
-
-
-        if (error) {
-
-            console.error(
-                "Marked questions error:",
-                error
-            );
-
-
-            container.innerHTML =
-                "Unable to load marked questions.";
-
-            return;
-
-        }
-
-
-        if (
-            !marked ||
-            marked.length === 0
-        ) {
-
-            container.innerHTML =
-                "<p>You have no marked questions.</p>";
-
-            return;
-
-        }
-
-
-        const questionMap =
-            new Map();
-
-
-        for (
-            const file of subjectFiles
-        ) {
-
-            const response =
-                await fetch(
-                    "data/" +
-                    file +
-                    ".json"
-                );
-
-
-            if (!response.ok) {
-                continue;
-            }
-
-
-            const data =
-                await response.json();
-
-
-            data.forEach(
-                function(question) {
-
-                    question.subject =
-                        file;
-
-
-                    questionMap.set(
-                        String(
-                            question.id
-                        ),
-                        question
-                    );
-
-                }
-            );
-
-        }
-
-
-        container.innerHTML = "";
-
-
-        marked.forEach(
-            function(markedRecord) {
-
-                const question =
-                    questionMap.get(
-                        String(
-                            markedRecord.question_id
-                        )
-                    );
-
-
-                if (!question) {
-
-                    return;
-
-                }
-
-
-                question._marked =
-                    true;
-
-
-                const box =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                box.className =
-                    "markedQuestion";
-
-
-                box.innerHTML =
-
-                    "<strong>" +
-
-                    (
-                        subjectNames[
-                            question.subject
-                        ] ||
-                        question.subject
-                    ) +
-
-                    "</strong>" +
-
-                    "<p>" +
-
-                    question.question +
-
-                    "</p>";
-
-
-                const openButton =
-                    document.createElement(
-                        "button"
-                    );
-
-
-                openButton.className =
-                    "modeButton";
-
-
-                openButton.innerHTML =
-                    "Open Question";
-
-
-                openButton.onclick =
-                    function() {
-
-                        openSingleQuestion(
-                            question
-                        );
-
-                    };
-
-
-                const unmarkButton =
-                    document.createElement(
-                        "button"
-                    );
-
-
-                unmarkButton.className =
-                    "backButton";
-
-
-                unmarkButton.innerHTML =
-                    "☆ Unmark";
-
-
-                unmarkButton.onclick =
-                    async function() {
-
-                        await unmarkQuestion(
-                            question.id
-                        );
-
-
-                        await loadMarkedQuestions();
-
-                    };
-
-
-                box.appendChild(
-                    openButton
-                );
-
-
-                box.appendChild(
-                    unmarkButton
-                );
-
-
-                container.appendChild(
-                    box
-                );
-
-            }
-        );
-
-
-    } catch(error) {
-
-        console.error(
-            "Unexpected marked questions error:",
-            error
-        );
-
-
-        container.innerHTML =
-            "Unable to load marked questions.";
-
-    }
-
-}
-
-
-// ========================================
-// UNMARK FROM MARKED SCREEN
-// ========================================
-
-async function unmarkQuestion(
-    questionId
-) {
-
-    try {
-
-        const {
-            data: {
-                user
-            }
-        } =
-            await supabaseClient.auth.getUser();
-
-
-        if (!user) {
-            return;
-        }
-
-
-        const {
-            error
-        } =
-            await supabaseClient
-                .from(
-                    "marked_questions"
-                )
-                .delete()
-                .eq(
-                    "user_id",
-                    user.id
-                )
-                .eq(
-                    "question_id",
-                    questionId
-                );
-
-
-        if (error) {
-
-            console.error(
-                "Unmark error:",
-                error
-            );
-
-
-            alert(
-                "Unable to unmark question."
-            );
-
-        }
-
-    } catch(error) {
-
-        console.error(
-            "Unexpected unmark error:",
-            error
-        );
-
-    }
-
-}
-
-
-// ========================================
-// ADMIN ACCESS
+// CHECK ADMIN ACCESS
 // ========================================
 
 async function checkAdminAccess() {
@@ -2968,8 +3110,7 @@ async function checkAdminAccess() {
             },
             error
         } =
-            await supabaseClient.auth
-                .getUser();
+            await supabaseClient.auth.getUser();
 
 
         if (
@@ -2987,9 +3128,7 @@ async function checkAdminAccess() {
             error: adminError
         } =
             await supabaseClient
-                .from(
-                    "admin_users"
-                )
+                .from("admin_users")
                 .select("email")
                 .eq(
                     "email",
@@ -3018,7 +3157,7 @@ async function checkAdminAccess() {
         }
 
 
-    } catch(error) {
+    } catch (error) {
 
         console.error(
             "Unexpected admin check error:",
@@ -3031,7 +3170,7 @@ async function checkAdminAccess() {
 
 
 // ========================================
-// OPEN ADMIN
+// OPEN ADMIN DASHBOARD
 // ========================================
 
 document.getElementById(
@@ -3043,13 +3182,16 @@ async function() {
         "adminScreen"
     );
 
-
     await loadAdminRequests();
 
     await loadApprovedUsers();
 
 };
 
+
+// ========================================
+// ADMIN BACK
+// ========================================
 
 document.getElementById(
     "adminBackBtn"
@@ -3066,7 +3208,7 @@ function() {
 
 
 // ========================================
-// ADMIN REQUESTS
+// LOAD ACCESS REQUESTS
 // ========================================
 
 async function loadAdminRequests() {
@@ -3088,9 +3230,7 @@ async function loadAdminRequests() {
             error
         } =
             await supabaseClient
-                .from(
-                    "access_requests"
-                )
+                .from("access_requests")
                 .select("*")
                 .order(
                     "created_at",
@@ -3106,7 +3246,6 @@ async function loadAdminRequests() {
                 "Admin requests error:",
                 error
             );
-
 
             container.innerHTML =
                 "Unable to load access requests.";
@@ -3158,19 +3297,16 @@ async function loadAdminRequests() {
 
 
                 box.innerHTML =
-
                     "<strong>Name:</strong> " +
                     escapeHTML(
                         request.name
                     ) +
-
                     "<br>" +
 
                     "<strong>Email:</strong> " +
                     escapeHTML(
                         request.email
                     ) +
-
                     "<br>" +
 
                     "<strong>Reason:</strong> " +
@@ -3178,17 +3314,16 @@ async function loadAdminRequests() {
                         request.reason ||
                         "Not provided"
                     ) +
-
                     "<br>" +
 
                     "<strong>Date:</strong> " +
-
                     new Date(
                         request.created_at
                     ).toLocaleString() +
-
                     "<br><br>";
 
+
+                // APPROVE
 
                 const approveButton =
                     document.createElement(
@@ -3213,6 +3348,8 @@ async function loadAdminRequests() {
 
                     };
 
+
+                // REJECT
 
                 const rejectButton =
                     document.createElement(
@@ -3256,13 +3393,12 @@ async function loadAdminRequests() {
         );
 
 
-    } catch(error) {
+    } catch (error) {
 
         console.error(
             "Unexpected admin request error:",
             error
         );
-
 
         container.innerHTML =
             "Unable to load access requests.";
@@ -3276,9 +3412,7 @@ async function loadAdminRequests() {
 // APPROVE USER
 // ========================================
 
-async function approveUser(
-    request
-) {
+async function approveUser(request) {
 
     if (
         !confirm(
@@ -3299,19 +3433,11 @@ async function approveUser(
             error
         } =
             await supabaseClient
-                .from(
-                    "approved_users"
-                )
+                .from("approved_users")
                 .insert({
 
                     email:
-                        request.email,
-
-                    name:
-                        request.name,
-
-                    reason:
-                        request.reason
+                        request.email
 
                 });
 
@@ -3323,12 +3449,10 @@ async function approveUser(
                 error
             );
 
-
             alert(
                 "Unable to approve user: " +
                 error.message
             );
-
 
             return;
 
@@ -3339,9 +3463,7 @@ async function approveUser(
             error: deleteError
         } =
             await supabaseClient
-                .from(
-                    "access_requests"
-                )
+                .from("access_requests")
                 .delete()
                 .eq(
                     "id",
@@ -3369,13 +3491,12 @@ async function approveUser(
         await loadApprovedUsers();
 
 
-    } catch(error) {
+    } catch (error) {
 
         console.error(
             "Unexpected approval error:",
             error
         );
-
 
         alert(
             "Unable to approve user."
@@ -3387,12 +3508,10 @@ async function approveUser(
 
 
 // ========================================
-// REJECT
+// REJECT REQUEST
 // ========================================
 
-async function rejectRequest(
-    request
-) {
+async function rejectRequest(request) {
 
     if (
         !confirm(
@@ -3411,9 +3530,7 @@ async function rejectRequest(
             error
         } =
             await supabaseClient
-                .from(
-                    "access_requests"
-                )
+                .from("access_requests")
                 .delete()
                 .eq(
                     "id",
@@ -3428,12 +3545,10 @@ async function rejectRequest(
                 error
             );
 
-
             alert(
                 "Unable to reject request: " +
                 error.message
             );
-
 
             return;
 
@@ -3443,13 +3558,12 @@ async function rejectRequest(
         await loadAdminRequests();
 
 
-    } catch(error) {
+    } catch (error) {
 
         console.error(
             "Unexpected reject error:",
             error
         );
-
 
         alert(
             "Unable to reject request."
@@ -3461,7 +3575,7 @@ async function rejectRequest(
 
 
 // ========================================
-// APPROVED USERS
+// LOAD APPROVED USERS
 // ========================================
 
 async function loadApprovedUsers() {
@@ -3483,9 +3597,7 @@ async function loadApprovedUsers() {
             error
         } =
             await supabaseClient
-                .from(
-                    "approved_users"
-                )
+                .from("approved_users")
                 .select("*")
                 .order(
                     "approved_at",
@@ -3501,7 +3613,6 @@ async function loadApprovedUsers() {
                 "Approved users error:",
                 error
             );
-
 
             container.innerHTML =
                 "Unable to load approved users.";
@@ -3553,29 +3664,15 @@ async function loadApprovedUsers() {
 
 
                 box.innerHTML =
-
                     "<strong>" +
-
                     escapeHTML(
-                        user.name ||
                         user.email
                     ) +
-
                     "</strong>" +
-
                     "<br>" +
-
-                    escapeHTML(
-                        user.email
-                    ) +
-
-                    "<br>" +
-
                     "Approved: " +
-
                     new Date(
-                        user.approved_at ||
-                        user.created_at
+                        user.approved_at
                     ).toLocaleString();
 
 
@@ -3587,13 +3684,12 @@ async function loadApprovedUsers() {
         );
 
 
-    } catch(error) {
+    } catch (error) {
 
         console.error(
             "Unexpected approved users error:",
             error
         );
-
 
         container.innerHTML =
             "Unable to load approved users.";
