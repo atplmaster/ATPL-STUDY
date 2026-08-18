@@ -17,10 +17,6 @@
 
 <div class="container">
 
-<!-- =========================
-     MAIN TITLE
-     ========================= -->
-
 <h1>ATPL STUDY</h1>
 
 
@@ -150,7 +146,19 @@
         ✈️ Combined ATPL Quiz
     </button>
 
-    <!-- ADMIN BUTTON -->
+    <button
+        id="searchBtn"
+        class="modeButton"
+    >
+        🔎 Search Questions
+    </button>
+
+    <button
+        id="markedBtn"
+        class="modeButton"
+    >
+        ⭐ Marked Questions
+    </button>
 
     <button
         id="adminBtn"
@@ -285,29 +293,12 @@
 
     <select id="questionCount">
 
-        <option value="10">
-            10 Questions
-        </option>
-
-        <option value="20">
-            20 Questions
-        </option>
-
-        <option value="50">
-            50 Questions
-        </option>
-
-        <option value="100">
-            100 Questions
-        </option>
-
-        <option value="200">
-            200 Questions
-        </option>
-
-        <option value="all">
-            All Questions
-        </option>
+        <option value="10">10 Questions</option>
+        <option value="20">20 Questions</option>
+        <option value="50">50 Questions</option>
+        <option value="100">100 Questions</option>
+        <option value="200">200 Questions</option>
+        <option value="all">All Questions</option>
 
     </select>
 
@@ -352,29 +343,12 @@
 
     <select id="combinedQuestionCount">
 
-        <option value="10">
-            10 Questions
-        </option>
-
-        <option value="20">
-            20 Questions
-        </option>
-
-        <option value="50">
-            50 Questions
-        </option>
-
-        <option value="100">
-            100 Questions
-        </option>
-
-        <option value="200">
-            200 Questions
-        </option>
-
-        <option value="all">
-            All Questions
-        </option>
+        <option value="10">10 Questions</option>
+        <option value="20">20 Questions</option>
+        <option value="50">50 Questions</option>
+        <option value="100">100 Questions</option>
+        <option value="200">200 Questions</option>
+        <option value="all">All Questions</option>
 
     </select>
 
@@ -390,6 +364,87 @@
         class="backButton"
     >
         ← Back
+    </button>
+
+</div>
+
+
+<!-- =========================
+     SEARCH SCREEN
+     ========================= -->
+
+<div
+    id="searchScreen"
+    style="display:none;"
+>
+
+    <h2>🔎 Search Questions</h2>
+
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="Search questions..."
+    >
+
+    <select id="searchSubject">
+
+        <option value="all">
+            All Subjects
+        </option>
+
+        <option value="meteorology">
+            Meteorology
+        </option>
+
+        <option value="airlaw">
+            Air Law
+        </option>
+
+        <option value="operational">
+            Operational Procedures
+        </option>
+
+    </select>
+
+    <button
+        id="searchQuestionsBtn"
+        class="modeButton"
+    >
+        Search
+    </button>
+
+    <div id="searchResults"></div>
+
+    <button
+        id="searchBackBtn"
+        class="backButton"
+    >
+        ← Back to Home
+    </button>
+
+</div>
+
+
+<!-- =========================
+     MARKED QUESTIONS SCREEN
+     ========================= -->
+
+<div
+    id="markedScreen"
+    style="display:none;"
+>
+
+    <h2>⭐ Marked Questions</h2>
+
+    <div id="markedQuestionsList">
+        Loading marked questions...
+    </div>
+
+    <button
+        id="markedBackBtn"
+        class="backButton"
+    >
+        ← Back to Home
     </button>
 
 </div>
@@ -422,21 +477,14 @@
         class="question-images"
     ></div>
 
-
-    <!-- =========================
-         MARK QUESTION
-         ========================= -->
-
     <button
         id="markQuestionBtn"
-        class="modeButton"
+        class="markButton"
     >
-        🔖 Mark Question
+        ⭐ Mark Question
     </button>
 
-
     <div id="answers"></div>
-
 
     <div class="navigation">
 
@@ -498,16 +546,11 @@
 </div>
 
 
-<!-- ========================================
-     SUPABASE JAVASCRIPT LIBRARY
-     ======================================== -->
+<!-- =========================
+     SUPABASE
+     ========================= -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-
-<!-- ========================================
-     SUPABASE CONNECTION
-     ======================================== -->
 
 <script>
 
@@ -527,10 +570,6 @@ console.log("SUPABASE CONNECTED");
 
 </script>
 
-
-<!-- ========================================
-     ATPL STUDY JAVASCRIPT
-     ======================================== -->
 
 <script src="js/script.js"></script>
 
