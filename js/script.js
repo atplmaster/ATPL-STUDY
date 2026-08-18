@@ -20,15 +20,25 @@ let markedQuestionIds = new Set();
 // ========================================
 
 const subjectNames = {
-    meteorology: "Meteorology",
-    airlaw: "Air Law",
-    operational: "Operational Procedures"
+
+    meteorology:
+        "Meteorology",
+
+    airlaw:
+        "Air Law",
+
+    operational:
+        "Operational Procedures"
+
 };
 
+
 const subjectFiles = [
+
     "meteorology",
     "airlaw",
     "operational"
+
 ];
 
 
@@ -39,6 +49,7 @@ const subjectFiles = [
 function showOnly(screenId) {
 
     const screens = [
+
         "loginScreen",
         "accessRequestScreen",
         "homeScreen",
@@ -50,7 +61,9 @@ function showOnly(screenId) {
         "markedScreen",
         "quizScreen",
         "resultsScreen"
+
     ];
+
 
     screens.forEach(function(id) {
 
@@ -58,16 +71,24 @@ function showOnly(screenId) {
             document.getElementById(id);
 
         if (element) {
-            element.style.display = "none";
+
+            element.style.display =
+                "none";
+
         }
 
     });
 
+
     const selected =
         document.getElementById(screenId);
 
+
     if (selected) {
-        selected.style.display = "block";
+
+        selected.style.display =
+            "block";
+
     }
 
 }
@@ -77,10 +98,13 @@ function showOnly(screenId) {
 // PRACTICE BUTTON
 // ========================================
 
-document.getElementById("practiceBtn").onclick =
-function() {
+document.getElementById(
+    "practiceBtn"
+).onclick = function() {
 
-    showOnly("practiceSetup");
+    showOnly(
+        "practiceSetup"
+    );
 
 };
 
@@ -89,8 +113,9 @@ function() {
 // START PRACTICE
 // ========================================
 
-document.getElementById("startPracticeBtn").onclick =
-function() {
+document.getElementById(
+    "startPracticeBtn"
+).onclick = function() {
 
     quizMode = false;
 
@@ -99,7 +124,11 @@ function() {
             "practiceSubjectSelect"
         ).value;
 
-    showOnly("quizScreen");
+
+    showOnly(
+        "quizScreen"
+    );
+
 
     loadPracticeQuestions(
         subjectFile
@@ -112,10 +141,13 @@ function() {
 // PRACTICE BACK
 // ========================================
 
-document.getElementById("practiceBackBtn").onclick =
-function() {
+document.getElementById(
+    "practiceBackBtn"
+).onclick = function() {
 
-    showOnly("homeScreen");
+    showOnly(
+        "homeScreen"
+    );
 
 };
 
@@ -124,10 +156,13 @@ function() {
 // SUBJECT QUIZ
 // ========================================
 
-document.getElementById("subjectQuizBtn").onclick =
-function() {
+document.getElementById(
+    "subjectQuizBtn"
+).onclick = function() {
 
-    showOnly("quizSetup");
+    showOnly(
+        "quizSetup"
+    );
 
 };
 
@@ -136,22 +171,29 @@ function() {
 // START SUBJECT QUIZ
 // ========================================
 
-document.getElementById("startQuizBtn").onclick =
-function() {
+document.getElementById(
+    "startQuizBtn"
+).onclick = function() {
 
     quizMode = true;
+
 
     const subjectFile =
         document.getElementById(
             "subjectSelect"
         ).value;
 
+
     const numberOfQuestions =
         document.getElementById(
             "questionCount"
         ).value;
 
-    showOnly("quizScreen");
+
+    showOnly(
+        "quizScreen"
+    );
+
 
     loadSubjectQuiz(
         subjectFile,
@@ -165,10 +207,13 @@ function() {
 // SUBJECT QUIZ BACK
 // ========================================
 
-document.getElementById("backHomeBtn").onclick =
-function() {
+document.getElementById(
+    "backHomeBtn"
+).onclick = function() {
 
-    showOnly("homeScreen");
+    showOnly(
+        "homeScreen"
+    );
 
 };
 
@@ -177,10 +222,14 @@ function() {
 // COMBINED QUIZ
 // ========================================
 
-document.getElementById("combinedQuizBtn").onclick =
-function() {
+document.getElementById(
+    "combinedQuizBtn"
+).onclick = function() {
 
-    showOnly("combinedQuizSetup");
+    showOnly(
+        "combinedQuizSetup"
+    );
+
 
     loadCombinedQuestionCount();
 
@@ -191,10 +240,13 @@ function() {
 // COMBINED BACK
 // ========================================
 
-document.getElementById("combinedBackBtn").onclick =
-function() {
+document.getElementById(
+    "combinedBackBtn"
+).onclick = function() {
 
-    showOnly("homeScreen");
+    showOnly(
+        "homeScreen"
+    );
 
 };
 
@@ -207,9 +259,13 @@ async function loadCombinedQuestionCount() {
 
     let totalQuestions = 0;
 
+
     try {
 
-        for (const file of subjectFiles) {
+        for (
+            const file
+            of subjectFiles
+        ) {
 
             const response =
                 await fetch(
@@ -217,6 +273,7 @@ async function loadCombinedQuestionCount() {
                     file +
                     ".json"
                 );
+
 
             if (!response.ok) {
 
@@ -228,24 +285,31 @@ async function loadCombinedQuestionCount() {
 
             }
 
+
             const data =
                 await response.json();
+
 
             totalQuestions +=
                 data.length;
 
         }
 
+
         document.getElementById(
             "availableQuestions"
         ).innerHTML =
-            "Available questions: <strong>" +
+
+            "Available questions: " +
+            "<strong>" +
             totalQuestions +
             "</strong>";
+
 
         updateCombinedQuestionOptions(
             totalQuestions
         );
+
 
     } catch (error) {
 
@@ -253,6 +317,7 @@ async function loadCombinedQuestionCount() {
             "Combined question count error:",
             error
         );
+
 
         document.getElementById(
             "availableQuestions"
@@ -277,16 +342,23 @@ function updateCombinedQuestionOptions(
             "combinedQuestionCount"
         );
 
+
     if (!select) {
         return;
     }
 
-    select.querySelectorAll("option")
-        .forEach(function(option) {
 
-            if (option.value === "all") {
+    select.querySelectorAll(
+        "option"
+    ).forEach(
+        function(option) {
+
+            if (
+                option.value === "all"
+            ) {
                 return;
             }
+
 
             const number =
                 parseInt(
@@ -294,10 +366,12 @@ function updateCombinedQuestionOptions(
                     10
                 );
 
+
             option.disabled =
                 number > totalQuestions;
 
-        });
+        }
+    );
 
 }
 
@@ -308,13 +382,13 @@ function updateCombinedQuestionOptions(
 
 document.getElementById(
     "startCombinedBtn"
-).onclick =
-function() {
+).onclick = function() {
 
     const questionCount =
         document.getElementById(
             "combinedQuestionCount"
         ).value;
+
 
     loadCombinedQuiz(
         questionCount
@@ -340,6 +414,7 @@ async function loadPracticeQuestions(
                 ".json"
             );
 
+
         if (!response.ok) {
 
             throw new Error(
@@ -350,15 +425,22 @@ async function loadPracticeQuestions(
 
         }
 
+
         questions =
             await response.json();
 
-        questions.forEach(function(question) {
 
-            question.subject =
-                subjectFile;
+        // Force correct subject
 
-        });
+        questions.forEach(
+            function(question) {
+
+                question.subject =
+                    subjectFile;
+
+            }
+        );
+
 
         status =
             new Array(
@@ -367,7 +449,9 @@ async function loadPracticeQuestions(
                 "notAttempted"
             );
 
+
         current = 0;
+
 
         document.getElementById(
             "subject"
@@ -376,15 +460,20 @@ async function loadPracticeQuestions(
                 subjectFile
             ];
 
+
         await loadMarkedQuestions();
+
 
         createNavigator();
 
+
         showQuestion();
+
 
         await loadSavedProgress(
             subjectFile
         );
+
 
     } catch (error) {
 
@@ -392,6 +481,7 @@ async function loadPracticeQuestions(
             "Practice loading error:",
             error
         );
+
 
         alert(
             "Error loading " +
@@ -424,6 +514,7 @@ async function loadSubjectQuiz(
                 ".json"
             );
 
+
         if (!response.ok) {
 
             throw new Error(
@@ -434,8 +525,10 @@ async function loadSubjectQuiz(
 
         }
 
+
         let allQuestions =
             await response.json();
+
 
         allQuestions.forEach(
             function(question) {
@@ -446,16 +539,26 @@ async function loadSubjectQuiz(
             }
         );
 
+
+        // Randomize
+
         allQuestions.sort(
             function() {
 
-                return Math.random() - 0.5;
+                return (
+                    Math.random() -
+                    0.5
+                );
 
             }
         );
 
+
+        // Select number
+
         if (
-            numberOfQuestions === "all"
+            numberOfQuestions ===
+            "all"
         ) {
 
             questions =
@@ -474,6 +577,7 @@ async function loadSubjectQuiz(
 
         }
 
+
         status =
             new Array(
                 questions.length
@@ -481,21 +585,28 @@ async function loadSubjectQuiz(
                 "notAttempted"
             );
 
+
         current = 0;
+
 
         document.getElementById(
             "subject"
         ).innerHTML =
+
             subjectNames[
                 subjectFile
             ] +
             " QUIZ";
 
+
         await loadMarkedQuestions();
+
 
         createNavigator();
 
+
         showQuestion();
+
 
     } catch (error) {
 
@@ -503,6 +614,7 @@ async function loadSubjectQuiz(
             "Subject quiz loading error:",
             error
         );
+
 
         alert(
             "Error loading " +
@@ -527,9 +639,13 @@ async function loadCombinedQuiz(
 
     const combinedQuestions = [];
 
+
     try {
 
-        for (const file of subjectFiles) {
+        for (
+            const file
+            of subjectFiles
+        ) {
 
             const response =
                 await fetch(
@@ -537,6 +653,7 @@ async function loadCombinedQuiz(
                     file +
                     ".json"
                 );
+
 
             if (!response.ok) {
 
@@ -548,14 +665,17 @@ async function loadCombinedQuiz(
 
             }
 
+
             const data =
                 await response.json();
+
 
             data.forEach(
                 function(question) {
 
                     question.subject =
                         file;
+
 
                     combinedQuestions.push(
                         question
@@ -566,13 +686,18 @@ async function loadCombinedQuiz(
 
         }
 
+
         combinedQuestions.sort(
             function() {
 
-                return Math.random() - 0.5;
+                return (
+                    Math.random() -
+                    0.5
+                );
 
             }
         );
+
 
         if (
             questionCount === "all"
@@ -594,6 +719,7 @@ async function loadCombinedQuiz(
 
         }
 
+
         status =
             new Array(
                 questions.length
@@ -601,22 +727,32 @@ async function loadCombinedQuiz(
                 "notAttempted"
             );
 
+
         current = 0;
+
 
         quizMode = true;
 
-        showOnly("quizScreen");
+
+        showOnly(
+            "quizScreen"
+        );
+
 
         document.getElementById(
             "subject"
         ).innerHTML =
             "COMBINED ATPL QUIZ";
 
+
         await loadMarkedQuestions();
+
 
         createNavigator();
 
+
         showQuestion();
+
 
     } catch (error) {
 
@@ -624,6 +760,7 @@ async function loadCombinedQuiz(
             "Combined quiz error:",
             error
         );
+
 
         alert(
             "Error loading combined quiz."
@@ -645,26 +782,35 @@ function createNavigator() {
             "navigator"
         );
 
+
     if (!nav) {
         return;
     }
 
+
     nav.innerHTML = "";
 
+
     questions.forEach(
-        function(question, index) {
+        function(
+            question,
+            index
+        ) {
 
             const button =
                 document.createElement(
                     "button"
                 );
 
+
             button.innerHTML =
                 index + 1;
+
 
             button.className =
                 "navButton " +
                 status[index];
+
 
             button.onclick =
                 function() {
@@ -672,9 +818,11 @@ function createNavigator() {
                     current =
                         index;
 
+
                     showQuestion();
 
                 };
+
 
             nav.appendChild(
                 button
@@ -696,17 +844,22 @@ function showQuestion() {
         return;
     }
 
+
     const question =
         questions[current];
+
 
     document.getElementById(
         "counter"
     ).innerHTML =
+
         "Question " +
         (current + 1) +
         " of " +
         questions.length;
 
+
+    // SUBJECT
 
     if (
         question.subject &&
@@ -729,16 +882,21 @@ function showQuestion() {
     }
 
 
+    // QUESTION
+
     document.getElementById(
         "question"
     ).innerHTML =
         question.question;
 
 
+    // IMAGES
+
     const questionImages =
         document.getElementById(
             "questionImages"
         );
+
 
     questionImages.innerHTML = "";
 
@@ -759,16 +917,22 @@ function showQuestion() {
                         "img"
                     );
 
-                img.src = src;
+
+                img.src =
+                    src;
+
 
                 img.alt =
                     "Question figure";
 
+
                 img.className =
                     "question-figure";
 
+
                 img.loading =
                     "lazy";
+
 
                 img.onerror =
                     function() {
@@ -780,6 +944,7 @@ function showQuestion() {
 
                     };
 
+
                 img.onclick =
                     function() {
 
@@ -790,12 +955,14 @@ function showQuestion() {
 
                     };
 
+
                 questionImages.appendChild(
                     img
                 );
 
             }
         );
+
 
         questionImages.style.display =
             "flex";
@@ -808,13 +975,18 @@ function showQuestion() {
     }
 
 
+    // MARK BUTTON
+
     updateMarkButton();
 
+
+    // ANSWERS
 
     const answers =
         document.getElementById(
             "answers"
         );
+
 
     answers.innerHTML = "";
 
@@ -835,15 +1007,20 @@ function showQuestion() {
 
 
     question.options.forEach(
-        function(option, index) {
+        function(
+            option,
+            index
+        ) {
 
             const button =
                 document.createElement(
                     "button"
                 );
 
+
             button.className =
                 "option";
+
 
             button.innerHTML =
                 option;
@@ -914,8 +1091,10 @@ function showQuestion() {
                             "correct"
                         );
 
+
                         status[current] =
                             "correct";
+
 
                         questionStatus =
                             "correct";
@@ -926,8 +1105,10 @@ function showQuestion() {
                             "wrong"
                         );
 
+
                         status[current] =
                             "wrong";
+
 
                         questionStatus =
                             "wrong";
@@ -937,6 +1118,7 @@ function showQuestion() {
                             answers.querySelectorAll(
                                 ".option"
                             );
+
 
                         if (
                             allButtons[
@@ -960,6 +1142,7 @@ function showQuestion() {
                         current,
                         questionStatus
                     );
+
 
                     createNavigator();
 
@@ -1000,6 +1183,7 @@ async function toggleMarkQuestion() {
         return;
     }
 
+
     const question =
         questions[current];
 
@@ -1038,7 +1222,9 @@ async function toggleMarkQuestion() {
 
         const alreadyMarked =
             markedQuestionIds.has(
-                String(question.id)
+                String(
+                    question.id
+                )
             );
 
 
@@ -1069,9 +1255,11 @@ async function toggleMarkQuestion() {
                     error
                 );
 
+
                 alert(
                     "Unable to unmark question."
                 );
+
 
                 return;
 
@@ -1079,8 +1267,11 @@ async function toggleMarkQuestion() {
 
 
             markedQuestionIds.delete(
-                String(question.id)
+                String(
+                    question.id
+                )
             );
+
 
         } else {
 
@@ -1116,10 +1307,12 @@ async function toggleMarkQuestion() {
                     error
                 );
 
+
                 alert(
                     "Unable to mark question: " +
                     error.message
                 );
+
 
                 return;
 
@@ -1127,13 +1320,16 @@ async function toggleMarkQuestion() {
 
 
             markedQuestionIds.add(
-                String(question.id)
+                String(
+                    question.id
+                )
             );
 
         }
 
 
         updateMarkButton();
+
 
     } catch (error) {
 
@@ -1158,6 +1354,7 @@ function updateMarkButton() {
             "markQuestionBtn"
         );
 
+
     if (
         !button ||
         !questions.length
@@ -1174,12 +1371,15 @@ function updateMarkButton() {
 
     if (
         markedQuestionIds.has(
-            String(question.id)
+            String(
+                question.id
+            )
         )
     ) {
 
         button.innerHTML =
             "⭐ Unmark Question";
+
 
         button.classList.add(
             "marked"
@@ -1189,6 +1389,7 @@ function updateMarkButton() {
 
         button.innerHTML =
             "⭐ Mark Question";
+
 
         button.classList.remove(
             "marked"
@@ -1248,6 +1449,7 @@ async function loadMarkedQuestions() {
                 error
             );
 
+
             return;
 
         }
@@ -1294,6 +1496,7 @@ async function() {
         "markedScreen"
     );
 
+
     await displayMarkedQuestions();
 
 };
@@ -1330,6 +1533,7 @@ async function displayMarkedQuestions() {
             container.innerHTML =
                 "Please log in.";
 
+
             return;
 
         }
@@ -1365,8 +1569,10 @@ async function displayMarkedQuestions() {
                 error
             );
 
+
             container.innerHTML =
                 "Unable to load marked questions.";
+
 
             return;
 
@@ -1380,6 +1586,7 @@ async function displayMarkedQuestions() {
 
             container.innerHTML =
                 "<p>You have no marked questions.</p>";
+
 
             return;
 
@@ -1401,6 +1608,7 @@ async function displayMarkedQuestions() {
                     ".json"
                 );
 
+
             if (!response.ok) {
                 continue;
             }
@@ -1415,6 +1623,7 @@ async function displayMarkedQuestions() {
 
                     question.subject =
                         subjectFile;
+
 
                     allQuestions.push(
                         question
@@ -1436,11 +1645,11 @@ async function displayMarkedQuestions() {
                     allQuestions.find(
                         function(q) {
 
-                            return String(
-                                q.id
-                            ) ===
-                            String(
-                                marked.question_id
+                            return (
+                                String(q.id) ===
+                                String(
+                                    marked.question_id
+                                )
                             );
 
                         }
@@ -1456,11 +1665,14 @@ async function displayMarkedQuestions() {
                 box.style.border =
                     "1px solid #ccc";
 
+
                 box.style.padding =
                     "15px";
 
+
                 box.style.marginBottom =
                     "10px";
+
 
                 box.style.borderRadius =
                     "8px";
@@ -1469,6 +1681,7 @@ async function displayMarkedQuestions() {
                 if (question) {
 
                     box.innerHTML =
+
                         "<strong>" +
                         escapeHTML(
                             subjectNames[
@@ -1476,13 +1689,19 @@ async function displayMarkedQuestions() {
                             ]
                         ) +
                         "</strong>" +
+
                         "<br><br>" +
+
                         "<strong>Question:</strong><br>" +
+
                         escapeHTML(
                             question.question
                         ) +
+
                         "<br><br>" +
+
                         "<strong>Question ID:</strong> " +
+
                         escapeHTML(
                             question.id
                         );
@@ -1497,6 +1716,7 @@ async function displayMarkedQuestions() {
                     openButton.innerHTML =
                         "Open Question";
 
+
                     openButton.className =
                         "modeButton";
 
@@ -1508,13 +1728,17 @@ async function displayMarkedQuestions() {
                                 question
                             ];
 
+
                             status = [
                                 "notAttempted"
                             ];
 
+
                             current = 0;
 
+
                             quizMode = false;
+
 
                             showOnly(
                                 "quizScreen"
@@ -1532,7 +1756,9 @@ async function displayMarkedQuestions() {
                                                 question.subject
                                             ];
 
+
                                         createNavigator();
+
 
                                         showQuestion();
 
@@ -1551,6 +1777,7 @@ async function displayMarkedQuestions() {
                     unmarkButton.innerHTML =
                         "Unmark";
 
+
                     unmarkButton.className =
                         "backButton";
 
@@ -1561,6 +1788,7 @@ async function displayMarkedQuestions() {
                             await unmarkById(
                                 marked.question_id
                             );
+
 
                             await displayMarkedQuestions();
 
@@ -1578,17 +1806,21 @@ async function displayMarkedQuestions() {
                         openButton
                     );
 
+
                     box.appendChild(
                         unmarkButton
                     );
 
-
                 } else {
 
                     box.innerHTML =
+
                         "<strong>Question not found</strong>" +
+
                         "<br>" +
+
                         "Question ID: " +
+
                         escapeHTML(
                             marked.question_id
                         );
@@ -1610,6 +1842,7 @@ async function displayMarkedQuestions() {
             "Unexpected marked list error:",
             error
         );
+
 
         container.innerHTML =
             "Unable to load marked questions.";
@@ -1667,13 +1900,16 @@ async function unmarkById(
                 error
             );
 
+
             return;
 
         }
 
 
         markedQuestionIds.delete(
-            String(questionId)
+            String(
+                questionId
+            )
         );
 
 
@@ -1720,7 +1956,7 @@ async function() {
 
 
 // ========================================
-// SEARCH QUESTIONS FUNCTION
+// SEARCH FUNCTION
 // ========================================
 
 async function searchQuestions() {
@@ -1784,6 +2020,7 @@ async function searchQuestions() {
                     subjectFile
                 );
 
+
                 continue;
 
             }
@@ -1798,6 +2035,7 @@ async function searchQuestions() {
 
                     question.subject =
                         subjectFile;
+
 
                     allQuestions.push(
                         question
@@ -1838,12 +2076,15 @@ async function searchQuestions() {
 
 
                     return (
+
                         questionText.includes(
                             searchText
                         ) ||
+
                         optionsText.includes(
                             searchText
                         )
+
                     );
 
                 }
@@ -1857,12 +2098,14 @@ async function searchQuestions() {
             results.innerHTML =
                 "<p>No questions found.</p>";
 
+
             return;
 
         }
 
 
         results.innerHTML =
+
             "<p><strong>" +
             filtered.length +
             "</strong> questions found.</p>";
@@ -1880,17 +2123,21 @@ async function searchQuestions() {
                 box.style.border =
                     "1px solid #ccc";
 
+
                 box.style.padding =
                     "15px";
 
+
                 box.style.marginBottom =
                     "10px";
+
 
                 box.style.borderRadius =
                     "8px";
 
 
                 box.innerHTML =
+
                     "<strong>" +
                     escapeHTML(
                         subjectNames[
@@ -1898,7 +2145,9 @@ async function searchQuestions() {
                         ]
                     ) +
                     "</strong>" +
+
                     "<br><br>" +
+
                     escapeHTML(
                         question.question
                     );
@@ -1913,6 +2162,7 @@ async function searchQuestions() {
                 openButton.innerHTML =
                     "Open Question";
 
+
                 openButton.className =
                     "modeButton";
 
@@ -1924,13 +2174,17 @@ async function searchQuestions() {
                             question
                         ];
 
+
                         status = [
                             "notAttempted"
                         ];
 
+
                         current = 0;
 
+
                         quizMode = false;
+
 
                         showOnly(
                             "quizScreen"
@@ -1948,7 +2202,9 @@ async function searchQuestions() {
                                             question.subject
                                         ];
 
+
                                     createNavigator();
+
 
                                     showQuestion();
 
@@ -1984,6 +2240,7 @@ async function searchQuestions() {
             "Search error:",
             error
         );
+
 
         results.innerHTML =
             "Unable to search questions.";
@@ -2133,6 +2390,7 @@ function() {
         "homeScreen"
     );
 
+
     checkAdminAccess();
 
 };
@@ -2155,19 +2413,27 @@ function showResults() {
             if (
                 result === "correct"
             ) {
+
                 correct++;
+
             }
+
 
             if (
                 result === "wrong"
             ) {
+
                 wrong++;
+
             }
+
 
             if (
                 result === "skipped"
             ) {
+
                 skipped++;
+
             }
 
         }
@@ -2200,6 +2466,7 @@ function showResults() {
     document.getElementById(
         "resultScore"
     ).innerHTML =
+
         "<h1>" +
         percentage +
         "%</h1>";
@@ -2208,15 +2475,19 @@ function showResults() {
     document.getElementById(
         "resultDetails"
     ).innerHTML =
+
         "<p>Correct: " +
         correct +
         "</p>" +
+
         "<p>Wrong: " +
         wrong +
         "</p>" +
+
         "<p>Skipped: " +
         skipped +
         "</p>" +
+
         "<p>Total Questions: " +
         total +
         "</p>";
@@ -2235,9 +2506,11 @@ function() {
 
     current = 0;
 
+
     showOnly(
         "quizScreen"
     );
+
 
     showQuestion();
 
@@ -2256,6 +2529,7 @@ function() {
     showOnly(
         "homeScreen"
     );
+
 
     checkAdminAccess();
 
@@ -2297,6 +2571,7 @@ async function() {
         message.innerHTML =
             "Please enter your email and password.";
 
+
         return;
 
     }
@@ -2308,6 +2583,7 @@ async function() {
 
         message.innerHTML =
             "Password must be at least 6 characters.";
+
 
         return;
 
@@ -2341,8 +2617,10 @@ async function() {
                 error
             );
 
+
             message.innerHTML =
                 error.message;
+
 
             return;
 
@@ -2359,6 +2637,7 @@ async function() {
             "Unexpected signup error:",
             error
         );
+
 
         message.innerHTML =
             "Unable to create account.";
@@ -2403,6 +2682,7 @@ async function() {
         message.innerHTML =
             "Please enter your email and password.";
 
+
         return;
 
     }
@@ -2437,8 +2717,10 @@ async function() {
                 error
             );
 
+
             message.innerHTML =
                 error.message;
+
 
             return;
 
@@ -2452,6 +2734,7 @@ async function() {
 
             message.innerHTML =
                 "Login failed.";
+
 
             return;
 
@@ -2483,10 +2766,13 @@ async function() {
                 approvalError
             );
 
+
             await supabaseClient.auth.signOut();
+
 
             message.innerHTML =
                 "Unable to verify account approval.";
+
 
             return;
 
@@ -2497,8 +2783,10 @@ async function() {
 
             await supabaseClient.auth.signOut();
 
+
             message.innerHTML =
                 "Your account has not been approved yet. Please request access.";
+
 
             return;
 
@@ -2523,6 +2811,7 @@ async function() {
             "Unexpected login error:",
             error
         );
+
 
         message.innerHTML =
             "Login failed. Please try again.";
@@ -2563,6 +2852,7 @@ async function saveProgress(
                 "Question has no ID:",
                 question
             );
+
 
             return;
 
@@ -2606,6 +2896,7 @@ async function saveProgress(
                 "Progress lookup error:",
                 findError
             );
+
 
             return;
 
@@ -2651,6 +2942,7 @@ async function saveProgress(
                 );
 
             }
+
 
         } else {
 
@@ -2756,6 +3048,7 @@ async function loadSavedProgress(
                 error
             );
 
+
             return;
 
         }
@@ -2771,12 +3064,15 @@ async function loadSavedProgress(
                             function(question) {
 
                                 return (
+
                                     String(
                                         question.id
                                     ) ===
+
                                     String(
                                         record.question_id
                                     )
+
                                 );
 
                             }
@@ -2814,182 +3110,63 @@ async function loadSavedProgress(
 
 
 // ========================================
-// RESET SUBJECT PROGRESS
+// RESET PROGRESS
 // ========================================
 
-async function resetSubjectProgress(
-    subjectFile
-) {
+const resetSubjectSelect =
+    document.getElementById(
+        "resetSubjectSelect"
+    );
+
+
+const resetProgressBtn =
+    document.getElementById(
+        "resetProgressBtn"
+    );
+
+
+const resetProgressMessage =
+    document.getElementById(
+        "resetProgressMessage"
+    );
+
+
+// ========================================
+// UPDATE RESET BUTTON
+// ========================================
+
+function updateResetProgressButton() {
+
+    if (
+        !resetSubjectSelect ||
+        !resetProgressBtn
+    ) {
+
+        return;
+
+    }
+
+
+    const subject =
+        resetSubjectSelect.value;
+
 
     const subjectName =
         subjectNames[
-            subjectFile
+            subject
         ];
 
 
-    const confirmed =
-        confirm(
-            "Are you sure you want to reset all your " +
-            subjectName +
-            " progress?\n\n" +
-            "This will remove Correct, Wrong and Skipped progress for this subject.\n\n" +
-            "Your marked questions will NOT be deleted."
-        );
+    resetProgressBtn.innerHTML =
+        "🔄 Reset " +
+        subjectName +
+        " Progress";
 
 
-    if (!confirmed) {
-        return;
-    }
+    if (resetProgressMessage) {
 
-
-    const message =
-        document.getElementById(
-            "resetMessage"
-        );
-
-
-    if (message) {
-
-        message.innerHTML =
-            "Resetting " +
-            subjectName +
-            " progress...";
-
-    }
-
-
-    try {
-
-        const {
-            data: {
-                user
-            },
-            error: userError
-        } =
-            await supabaseClient.auth.getUser();
-
-
-        if (
-            userError ||
-            !user
-        ) {
-
-            if (message) {
-
-                message.innerHTML =
-                    "Please log in first.";
-
-            }
-
-            return;
-
-        }
-
-
-        const {
-            error
-        } =
-            await supabaseClient
-                .from(
-                    "progress"
-                )
-                .delete()
-                .eq(
-                    "user_id",
-                    user.id
-                )
-                .eq(
-                    "subject",
-                    subjectFile
-                );
-
-
-        if (error) {
-
-            console.error(
-                "Reset progress error:",
-                error
-            );
-
-            if (message) {
-
-                message.innerHTML =
-                    "Unable to reset progress: " +
-                    error.message;
-
-            }
-
-            return;
-
-        }
-
-
-        /*
-         * If the current question list belongs
-         * entirely to this subject, reset the
-         * displayed progress as well.
-         */
-
-        if (
-            questions.length > 0 &&
-            questions.every(
-                function(question) {
-
-                    return (
-                        question.subject ===
-                        subjectFile
-                    );
-
-                }
-            )
-        ) {
-
-            status =
-                new Array(
-                    questions.length
-                ).fill(
-                    "notAttempted"
-                );
-
-            current = 0;
-
-            createNavigator();
-
-            showQuestion();
-
-        }
-
-
-        if (message) {
-
-            message.innerHTML =
-                "✅ " +
-                subjectName +
-                " progress has been reset.";
-
-        }
-
-
-        console.log(
-            subjectName +
-            " progress reset successfully."
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Unexpected reset error:",
-            error
-        );
-
-
-        if (message) {
-
-            message.innerHTML =
-                "Unable to reset progress.";
-
-        }
+        resetProgressMessage.innerHTML =
+            "";
 
     }
 
@@ -2997,51 +3174,234 @@ async function resetSubjectProgress(
 
 
 // ========================================
-// RESET METEOROLOGY BUTTON
+// RESET SUBJECT SELECTOR
 // ========================================
 
-document.getElementById(
-    "resetMeteorologyBtn"
-).onclick =
-async function() {
+if (resetSubjectSelect) {
 
-    await resetSubjectProgress(
-        "meteorology"
+    resetSubjectSelect.addEventListener(
+        "change",
+        function() {
+
+            updateResetProgressButton();
+
+        }
     );
 
-};
+}
 
 
 // ========================================
-// RESET AIR LAW BUTTON
+// RESET PROGRESS BUTTON
 // ========================================
 
-document.getElementById(
-    "resetAirlawBtn"
-).onclick =
-async function() {
+if (resetProgressBtn) {
 
-    await resetSubjectProgress(
-        "airlaw"
-    );
+    resetProgressBtn.onclick =
+        async function() {
 
-};
+            const subject =
+                resetSubjectSelect.value;
 
 
-// ========================================
-// RESET OPERATIONAL PROCEDURES BUTTON
-// ========================================
+            const subjectName =
+                subjectNames[
+                    subject
+                ];
 
-document.getElementById(
-    "resetOperationalBtn"
-).onclick =
-async function() {
 
-    await resetSubjectProgress(
-        "operational"
-    );
+            const confirmed =
+                confirm(
 
-};
+                    "Are you sure you want to reset all saved progress for " +
+                    subjectName +
+                    "?\n\n" +
+
+                    "Your marked questions will NOT be deleted."
+
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            resetProgressBtn.disabled =
+                true;
+
+
+            resetProgressBtn.innerHTML =
+                "Resetting...";
+
+
+            if (resetProgressMessage) {
+
+                resetProgressMessage.innerHTML =
+
+                    "Resetting " +
+                    subjectName +
+                    " progress...";
+
+            }
+
+
+            try {
+
+                const {
+                    data: {
+                        user
+                    }
+                } =
+                    await supabaseClient.auth.getUser();
+
+
+                if (!user) {
+
+                    alert(
+                        "Please log in first."
+                    );
+
+
+                    resetProgressBtn.disabled =
+                        false;
+
+
+                    updateResetProgressButton();
+
+
+                    return;
+
+                }
+
+
+                // ========================================
+                // DELETE ONLY PROGRESS
+                // DO NOT TOUCH MARKED QUESTIONS
+                // ========================================
+
+                const {
+                    error
+                } =
+                    await supabaseClient
+                        .from(
+                            "progress"
+                        )
+                        .delete()
+                        .eq(
+                            "user_id",
+                            user.id
+                        )
+                        .eq(
+                            "subject",
+                            subject
+                        );
+
+
+                if (error) {
+
+                    console.error(
+                        "Reset progress error:",
+                        error
+                    );
+
+
+                    if (resetProgressMessage) {
+
+                        resetProgressMessage.innerHTML =
+
+                            "❌ Unable to reset " +
+                            subjectName +
+                            " progress.";
+
+                    }
+
+
+                    alert(
+
+                        "Unable to reset progress:\n\n" +
+                        error.message
+
+                    );
+
+
+                    resetProgressBtn.disabled =
+                        false;
+
+
+                    updateResetProgressButton();
+
+
+                    return;
+
+                }
+
+
+                // ========================================
+                // SUCCESS
+                // ========================================
+
+                if (resetProgressMessage) {
+
+                    resetProgressMessage.innerHTML =
+
+                        "✅ " +
+                        subjectName +
+                        " progress has been reset. " +
+                        "Marked questions were not deleted.";
+
+                }
+
+
+                alert(
+
+                    subjectName +
+                    " progress has been reset successfully.\n\n" +
+
+                    "Your marked questions were not deleted."
+
+                );
+
+
+                resetProgressBtn.disabled =
+                    false;
+
+
+                updateResetProgressButton();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Unexpected reset error:",
+                    error
+                );
+
+
+                if (resetProgressMessage) {
+
+                    resetProgressMessage.innerHTML =
+                        "❌ An unexpected error occurred.";
+
+                }
+
+
+                alert(
+                    "Unable to reset progress."
+                );
+
+
+                resetProgressBtn.disabled =
+                    false;
+
+
+                updateResetProgressButton();
+
+            }
+
+        };
+
+}
 
 
 // ========================================
@@ -3117,6 +3477,7 @@ async function() {
         message.innerHTML =
             "Please enter your name and email.";
 
+
         return;
 
     }
@@ -3156,8 +3517,10 @@ async function() {
                 error
             );
 
+
             message.innerHTML =
                 "Unable to submit request. Please try again.";
+
 
             return;
 
@@ -3189,6 +3552,7 @@ async function() {
             "Unexpected request error:",
             error
         );
+
 
         message.innerHTML =
             "Unable to submit request. Please try again.";
@@ -3265,6 +3629,7 @@ async function checkAdminAccess() {
                 adminError
             );
 
+
             return;
 
         }
@@ -3303,7 +3668,9 @@ async function() {
         "adminScreen"
     );
 
+
     await loadAdminRequests();
+
 
     await loadApprovedUsers();
 
@@ -3322,6 +3689,7 @@ function() {
     showOnly(
         "homeScreen"
     );
+
 
     checkAdminAccess();
 
@@ -3370,8 +3738,10 @@ async function loadAdminRequests() {
                 error
             );
 
+
             container.innerHTML =
                 "Unable to load access requests.";
+
 
             return;
 
@@ -3386,12 +3756,14 @@ async function loadAdminRequests() {
             container.innerHTML =
                 "No access requests.";
 
+
             return;
 
         }
 
 
-        container.innerHTML = "";
+        container.innerHTML =
+            "";
 
 
         data.forEach(
@@ -3406,37 +3778,49 @@ async function loadAdminRequests() {
                 box.style.border =
                     "1px solid #ccc";
 
+
                 box.style.padding =
                     "15px";
 
+
                 box.style.marginBottom =
                     "10px";
+
 
                 box.style.borderRadius =
                     "8px";
 
 
                 box.innerHTML =
+
                     "<strong>Name:</strong> " +
                     escapeHTML(
                         request.name
                     ) +
+
                     "<br>" +
+
                     "<strong>Email:</strong> " +
                     escapeHTML(
                         request.email
                     ) +
+
                     "<br>" +
+
                     "<strong>Reason:</strong> " +
                     escapeHTML(
                         request.reason ||
                         "Not provided"
                     ) +
+
                     "<br>" +
+
                     "<strong>Date:</strong> " +
+
                     new Date(
                         request.created_at
                     ).toLocaleString() +
+
                     "<br><br>";
 
 
@@ -3448,6 +3832,7 @@ async function loadAdminRequests() {
 
                 approveButton.innerHTML =
                     "Approve";
+
 
                 approveButton.className =
                     "modeButton";
@@ -3472,6 +3857,7 @@ async function loadAdminRequests() {
                 rejectButton.innerHTML =
                     "Reject";
 
+
                 rejectButton.className =
                     "backButton";
 
@@ -3489,6 +3875,7 @@ async function loadAdminRequests() {
                 box.appendChild(
                     approveButton
                 );
+
 
                 box.appendChild(
                     rejectButton
@@ -3509,6 +3896,7 @@ async function loadAdminRequests() {
             "Unexpected admin request error:",
             error
         );
+
 
         container.innerHTML =
             "Unable to load access requests.";
@@ -3569,10 +3957,12 @@ async function approveUser(
                 error
             );
 
+
             alert(
                 "Unable to approve user: " +
                 error.message
             );
+
 
             return;
 
@@ -3610,6 +4000,7 @@ async function approveUser(
 
         await loadAdminRequests();
 
+
         await loadApprovedUsers();
 
 
@@ -3619,6 +4010,7 @@ async function approveUser(
             "Unexpected approval error:",
             error
         );
+
 
         alert(
             "Unable to approve user."
@@ -3671,10 +4063,12 @@ async function rejectRequest(
                 error
             );
 
+
             alert(
                 "Unable to reject request: " +
                 error.message
             );
+
 
             return;
 
@@ -3690,6 +4084,7 @@ async function rejectRequest(
             "Unexpected reject error:",
             error
         );
+
 
         alert(
             "Unable to reject request."
@@ -3742,8 +4137,10 @@ async function loadApprovedUsers() {
                 error
             );
 
+
             container.innerHTML =
                 "Unable to load approved users.";
+
 
             return;
 
@@ -3758,12 +4155,14 @@ async function loadApprovedUsers() {
             container.innerHTML =
                 "No approved users.";
 
+
             return;
 
         }
 
 
-        container.innerHTML = "";
+        container.innerHTML =
+            "";
 
 
         data.forEach(
@@ -3778,24 +4177,31 @@ async function loadApprovedUsers() {
                 box.style.border =
                     "1px solid #ccc";
 
+
                 box.style.padding =
                     "10px";
 
+
                 box.style.marginBottom =
                     "8px";
+
 
                 box.style.borderRadius =
                     "8px";
 
 
                 box.innerHTML =
+
                     "<strong>" +
                     escapeHTML(
                         user.email
                     ) +
                     "</strong>" +
+
                     "<br>" +
+
                     "Approved: " +
+
                     new Date(
                         user.approved_at ||
                         user.created_at
@@ -3816,6 +4222,7 @@ async function loadApprovedUsers() {
             "Unexpected approved users error:",
             error
         );
+
 
         container.innerHTML =
             "Unable to load approved users.";
@@ -3844,22 +4251,27 @@ function escapeHTML(
 
 
     return String(value)
+
         .replace(
             /&/g,
             "&amp;"
         )
+
         .replace(
             /</g,
             "&lt;"
         )
+
         .replace(
             />/g,
             "&gt;"
         )
+
         .replace(
             /"/g,
             "&quot;"
         )
+
         .replace(
             /'/g,
             "&#039;"
@@ -3869,11 +4281,19 @@ function escapeHTML(
 
 
 // ========================================
+// INITIAL RESET BUTTON
+// ========================================
+
+updateResetProgressButton();
+
+
+// ========================================
 // INITIAL SCREEN
 // ========================================
 
 showOnly(
     "loginScreen"
 );
+
 
 checkAdminAccess();
