@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
 
-```
 <meta charset="UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +10,6 @@
 <title>ATPL Study</title>
 
 <link rel="stylesheet" href="css/style.css">
-```
 
 </head>
 
@@ -20,7 +17,6 @@
 
 <div class="container">
 
-```
 <!-- =========================
      MAIN TITLE
      ========================= -->
@@ -36,20 +32,17 @@
 
     <h2>ATPL STUDY LOGIN</h2>
 
-
     <input
         type="email"
         id="loginEmail"
         placeholder="Email"
     >
 
-
     <input
         type="password"
         id="loginPassword"
         placeholder="Password"
     >
-
 
     <button
         id="loginBtn"
@@ -58,7 +51,6 @@
         Login
     </button>
 
-
     <button
         id="signupBtn"
         class="modeButton"
@@ -66,14 +58,12 @@
         Create Account
     </button>
 
-
     <button
         id="requestAccessBtn"
         class="modeButton"
     >
         Request Access
     </button>
-
 
     <p id="loginMessage"></p>
 
@@ -91,13 +81,11 @@
 
     <h2>Request Access</h2>
 
-
     <input
         type="text"
         id="requestName"
         placeholder="Full Name"
     >
-
 
     <input
         type="email"
@@ -105,13 +93,11 @@
         placeholder="Email Address"
     >
 
-
     <textarea
         id="requestReason"
         placeholder="Why do you want access?"
         rows="4"
     ></textarea>
-
 
     <button
         id="submitAccessRequestBtn"
@@ -120,14 +106,12 @@
         Submit Request
     </button>
 
-
     <button
         id="backToLoginBtn"
         class="backButton"
     >
         ← Back to Login
     </button>
-
 
     <p id="accessRequestMessage"></p>
 
@@ -145,14 +129,12 @@
 
     <h2>Select Study Mode</h2>
 
-
     <button
         id="practiceBtn"
         class="modeButton"
     >
         📖 Practice Questions
     </button>
-
 
     <button
         id="subjectQuizBtn"
@@ -161,14 +143,12 @@
         📝 Subject Quiz
     </button>
 
-
     <button
         id="combinedQuizBtn"
         class="modeButton"
     >
         ✈️ Combined ATPL Quiz
     </button>
-
 
     <!-- ADMIN BUTTON -->
 
@@ -194,28 +174,21 @@
 
     <h2>ATPL STUDY ADMIN</h2>
 
-
     <h3>Access Requests</h3>
-
 
     <div id="adminRequests">
         Loading requests...
     </div>
 
-
     <hr>
 
-
     <h3>Approved Users</h3>
-
 
     <div id="approvedUsersList">
         Loading approved users...
     </div>
 
-
     <br>
-
 
     <button
         id="adminBackBtn"
@@ -238,11 +211,9 @@
 
     <h2>Practice Questions</h2>
 
-
     <label for="practiceSubjectSelect">
         Choose Subject:
     </label>
-
 
     <select id="practiceSubjectSelect">
 
@@ -260,14 +231,12 @@
 
     </select>
 
-
     <button
         id="startPracticeBtn"
         class="modeButton"
     >
         Start Practice
     </button>
-
 
     <button
         id="practiceBackBtn"
@@ -290,11 +259,9 @@
 
     <h2>Subject Quiz</h2>
 
-
     <label for="subjectSelect">
         Choose Subject:
     </label>
-
 
     <select id="subjectSelect">
 
@@ -312,11 +279,9 @@
 
     </select>
 
-
     <label for="questionCount">
         Number of Questions:
     </label>
-
 
     <select id="questionCount">
 
@@ -346,14 +311,12 @@
 
     </select>
 
-
     <button
         id="startQuizBtn"
         class="modeButton"
     >
         Start Quiz
     </button>
-
 
     <button
         id="backHomeBtn"
@@ -376,7 +339,6 @@
 
     <h2>Combined ATPL Quiz</h2>
 
-
     <p
         id="availableQuestions"
         class="availableQuestions"
@@ -384,11 +346,9 @@
         Loading questions...
     </p>
 
-
     <label for="combinedQuestionCount">
         Number of Questions:
     </label>
-
 
     <select id="combinedQuestionCount">
 
@@ -418,14 +378,12 @@
 
     </select>
 
-
     <button
         id="startCombinedBtn"
         class="modeButton"
     >
         Start Combined Quiz
     </button>
-
 
     <button
         id="combinedBackBtn"
@@ -450,20 +408,31 @@
         TEST
     </div>
 
-
     <div id="counter"></div>
 
-
     <div id="navigator"></div>
-
 
     <div
         id="question"
         class="question"
     ></div>
 
+    <div
+        id="questionImages"
+        class="question-images"
+    ></div>
 
-    <div id="questionImages" class="question-images"></div>
+
+    <!-- =========================
+         MARK QUESTION
+         ========================= -->
+
+    <button
+        id="markQuestionBtn"
+        class="modeButton"
+    >
+        🔖 Mark Question
+    </button>
 
 
     <div id="answers"></div>
@@ -475,18 +444,15 @@
             Previous
         </button>
 
-
         <button id="skipBtn">
             Skip
         </button>
-
 
         <button id="nextBtn">
             Next Question
         </button>
 
     </div>
-
 
     <button
         id="questionBackBtn"
@@ -509,12 +475,9 @@
 
     <h2>Quiz Complete</h2>
 
-
     <div id="resultScore"></div>
 
-
     <div id="resultDetails"></div>
-
 
     <button
         id="reviewBtn"
@@ -522,7 +485,6 @@
     >
         Review Answers
     </button>
-
 
     <button
         id="resultsHomeBtn"
@@ -532,15 +494,16 @@
     </button>
 
 </div>
-```
 
 </div>
+
 
 <!-- ========================================
      SUPABASE JAVASCRIPT LIBRARY
      ======================================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 
 <!-- ========================================
      SUPABASE CONNECTION
@@ -554,17 +517,16 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_uZCsH6SxiKwiedJoKDKHOQ_g4xYR3id";
 
-
 const supabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
         SUPABASE_KEY
     );
 
-
 console.log("SUPABASE CONNECTED");
 
 </script>
+
 
 <!-- ========================================
      ATPL STUDY JAVASCRIPT
