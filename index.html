@@ -239,52 +239,58 @@
 
     </select>
 
-
-    <!-- =========================
-         RESET PROGRESS
-         ========================= -->
-
-    <hr>
-
-    <h3>Reset Progress</h3>
-
-    <p>
-        Reset the saved progress for a subject.
-        Marked questions will not be deleted.
-    </p>
-
-    <button
-        id="resetMeteorologyBtn"
-        class="backButton"
-    >
-        🔄 Reset Meteorology Progress
-    </button>
-
-    <button
-        id="resetAirlawBtn"
-        class="backButton"
-    >
-        🔄 Reset Air Law Progress
-    </button>
-
-    <button
-        id="resetOperationalBtn"
-        class="backButton"
-    >
-        🔄 Reset Operational Procedures Progress
-    </button>
-
-    <p id="resetMessage"></p>
-
-    <hr>
-
-
     <button
         id="startPracticeBtn"
         class="modeButton"
     >
         Start Practice
     </button>
+
+
+    <!-- =========================
+         RESET PROGRESS
+         ========================= -->
+
+    <div id="resetProgressSection">
+
+        <hr>
+
+        <h3>Reset Progress</h3>
+
+        <p>
+            Reset the saved progress for a subject.
+            Marked questions will not be deleted.
+        </p>
+
+        <select id="resetSubjectSelect">
+
+            <option value="meteorology">
+                Meteorology
+            </option>
+
+            <option value="airlaw">
+                Air Law
+            </option>
+
+            <option value="operational">
+                Operational Procedures
+            </option>
+
+        </select>
+
+        <br><br>
+
+        <button
+            id="resetProgressBtn"
+            class="modeButton"
+        >
+            🔄 Reset Meteorology Progress
+        </button>
+
+        <p id="resetProgressMessage"></p>
+
+    </div>
+
 
     <button
         id="practiceBackBtn"
