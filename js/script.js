@@ -1,6 +1,7 @@
 // ============================================================
 // ATPL STUDY PLATFORM
 // COMPLETE VERSION WITH PROGRESS DASHBOARD
+// FORGOT PASSWORD + RESET PASSWORD
 // ============================================================
 
 
@@ -46,6 +47,8 @@ function showOnly(screenId) {
     const screens = [
         "loginScreen",
         "accessRequestScreen",
+        "forgotPasswordScreen",
+        "resetPasswordScreen",
         "homeScreen",
         "progressScreen",
         "adminScreen",
@@ -500,10 +503,6 @@ async function loadPracticeQuestions(subjectFile) {
 
         await loadMarkedQuestions();
 
-        // IMPORTANT:
-        // Load saved progress BEFORE displaying
-        // the navigator/question.
-
         await loadSavedProgress(
             subjectFile
         );
@@ -867,9 +866,11 @@ function showQuestion() {
         );
 
     if (!questionImages) {
+
         console.error(
             "questionImages element not found."
         );
+
     } else {
 
         questionImages.innerHTML = "";
@@ -2332,7 +2333,8 @@ document.getElementById(
 ).onclick = function() {
 
     if (
-        current > 0
+        current >
+        0
     ) {
 
         current--;
@@ -3910,6 +3912,421 @@ async function() {
 
 
 // ============================================================
+// FORGOT PASSWORD
+// ============================================================
+
+const forgotPasswordBtn =
+    document.getElementById(
+        "forgotPasswordBtn"
+    );
+
+if (forgotPasswordBtn) {
+
+    forgotPasswordBtn.onclick =
+        function() {
+
+            const emailInput =
+                document.getElementById(
+                    "loginEmail"
+                );
+
+            const forgotEmail =
+                document.getElementById(
+                    "forgotPasswordEmail"
+                );
+
+            if (
+                emailInput &&
+                forgotEmail
+            ) {
+
+                forgotEmail.value =
+                    emailInput.value.trim();
+
+            }
+
+            const message =
+                document.getElementById(
+                    "forgotPasswordMessage"
+                );
+
+            if (message) {
+
+                message.innerHTML =
+                    "";
+
+            }
+
+            showOnly(
+                "forgotPasswordScreen"
+            );
+
+        };
+
+}
+
+
+// ============================================================
+// BACK TO LOGIN FROM FORGOT PASSWORD
+// ============================================================
+
+const backToLoginFromForgotBtn =
+    document.getElementById(
+        "backToLoginFromForgotBtn"
+    );
+
+if (backToLoginFromForgotBtn) {
+
+    backToLoginFromForgotBtn.onclick =
+        function() {
+
+            showOnly(
+                "loginScreen"
+            );
+
+        };
+
+}
+
+
+// ============================================================
+// SEND PASSWORD RESET EMAIL
+// ============================================================
+
+const sendResetEmailBtn =
+    document.getElementById(
+        "sendResetEmailBtn"
+    );
+
+if (sendResetEmailBtn) {
+
+    sendResetEmailBtn.onclick =
+        async function() {
+
+            const email =
+                document.getElementById(
+                    "forgotPasswordEmail"
+                ).value
+                .trim();
+
+            const message =
+                document.getElementById(
+                    "forgotPasswordMessage"
+                );
+
+            if (!email) {
+
+                message.innerHTML =
+                    "Please enter your email address.";
+
+                return;
+
+            }
+
+            message.innerHTML =
+                "Sending password reset email...";
+
+            try {
+
+                const redirectUrl =
+                    window.location.origin +
+                    window.location.pathname;
+
+                const {
+                    error
+                } =
+                    await supabaseClient.auth
+                        .resetPasswordForEmail(
+                            email,
+                            {
+                                redirectTo:
+                                    redirectUrl
+                            }
+                        );
+
+                if (error) {
+
+                    console.error(
+                        "Password reset request error:",
+                        error
+                    );
+
+                    message.innerHTML =
+                        error.message;
+
+                    return;
+
+                }
+
+                message.innerHTML =
+                    "Password reset email sent. Please check your email and follow the reset link.";
+
+            } catch (error) {
+
+                console.error(
+                    "Unexpected password reset error:",
+                    error
+                );
+
+                message.innerHTML =
+                    "Unable to send password reset email. Please try again.";
+
+            }
+
+        };
+
+}
+
+
+// ============================================================
+// RESET PASSWORD SCREEN
+// ============================================================
+
+async function openResetPasswordScreen() {
+
+    showOnly(
+        "resetPasswordScreen"
+    );
+
+    const message =
+        document.getElementById(
+            "resetPasswordMessage"
+        );
+
+    if (message) {
+
+        message.innerHTML =
+            "Please enter your new password.";
+
+    }
+
+}
+
+
+// ============================================================
+// UPDATE PASSWORD
+// ============================================================
+
+const updatePasswordBtn =
+    document.getElementById(
+        "updatePasswordBtn"
+    );
+
+if (updatePasswordBtn) {
+
+    updatePasswordBtn.onclick =
+        async function() {
+
+            const password =
+                document.getElementById(
+                    "newPassword"
+                ).value;
+
+            const confirmPassword =
+                document.getElementById(
+                    "confirmNewPassword"
+                ).value;
+
+            const message =
+                document.getElementById(
+                    "resetPasswordMessage"
+                );
+
+            if (
+                !password ||
+                !confirmPassword
+            ) {
+
+                message.innerHTML =
+                    "Please enter your new password twice.";
+
+                return;
+
+            }
+
+            if (
+                password.length < 6
+            ) {
+
+                message.innerHTML =
+                    "Password must be at least 6 characters.";
+
+                return;
+
+            }
+
+            if (
+                password !==
+                confirmPassword
+            ) {
+
+                message.innerHTML =
+                    "Passwords do not match.";
+
+                return;
+
+            }
+
+            message.innerHTML =
+                "Updating password...";
+
+            try {
+
+                const {
+                    data: { user }
+                } =
+                    await supabaseClient.auth.getUser();
+
+                if (!user) {
+
+                    message.innerHTML =
+                        "Your reset session has expired. Please request a new password reset email.";
+
+                    return;
+
+                }
+
+                const {
+                    error
+                } =
+                    await supabaseClient.auth.updateUser({
+
+                        password:
+                            password
+
+                    });
+
+                if (error) {
+
+                    console.error(
+                        "Update password error:",
+                        error
+                    );
+
+                    message.innerHTML =
+                        error.message;
+
+                    return;
+
+                }
+
+                message.innerHTML =
+                    "Password updated successfully. You can now log in with your new password.";
+
+                document.getElementById(
+                    "newPassword"
+                ).value = "";
+
+                document.getElementById(
+                    "confirmNewPassword"
+                ).value = "";
+
+                setTimeout(
+                    async function() {
+
+                        await supabaseClient.auth.signOut();
+
+                        showOnly(
+                            "loginScreen"
+                        );
+
+                        const loginMessage =
+                            document.getElementById(
+                                "loginMessage"
+                            );
+
+                        if (loginMessage) {
+
+                            loginMessage.innerHTML =
+                                "Your password has been changed successfully. Please log in.";
+
+                        }
+
+                    },
+                    2000
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Unexpected update password error:",
+                    error
+                );
+
+                message.innerHTML =
+                    "Unable to update password.";
+
+            }
+
+        };
+
+}
+
+
+// ============================================================
+// RESET PASSWORD BACK TO LOGIN
+// ============================================================
+
+const resetPasswordBackBtn =
+    document.getElementById(
+        "resetPasswordBackBtn"
+    );
+
+if (resetPasswordBackBtn) {
+
+    resetPasswordBackBtn.onclick =
+        async function() {
+
+            try {
+
+                await supabaseClient.auth.signOut();
+
+            } catch (error) {
+
+                console.error(
+                    "Sign out error:",
+                    error
+                );
+
+            }
+
+            showOnly(
+                "loginScreen"
+            );
+
+        };
+
+}
+
+
+// ============================================================
+// AUTH STATE CHANGE
+// ============================================================
+
+supabaseClient.auth.onAuthStateChange(
+    async function(event, session) {
+
+        if (
+            event ===
+            "PASSWORD_RECOVERY"
+        ) {
+
+            setTimeout(
+                function() {
+
+                    openResetPasswordScreen();
+
+                },
+                0
+            );
+
+        }
+
+    }
+);
+
+
+// ============================================================
 // REQUEST ACCESS
 // ============================================================
 
@@ -4670,3 +5087,42 @@ showOnly(
 );
 
 checkAdminAccess();
+
+
+// ============================================================
+// CHECK FOR PASSWORD RECOVERY SESSION
+// ============================================================
+
+setTimeout(
+    async function() {
+
+        try {
+
+            const {
+                data: { session }
+            } =
+                await supabaseClient.auth.getSession();
+
+            if (
+                session &&
+                window.location.hash.includes(
+                    "type=recovery"
+                )
+            ) {
+
+                openResetPasswordScreen();
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Recovery session check error:",
+                error
+            );
+
+        }
+
+    },
+    500
+);
