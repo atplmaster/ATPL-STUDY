@@ -31,9 +31,7 @@
     <div id="loginArea">
 
 
-        <!-- =================================================
-             LOGIN SCREEN
-             ================================================= -->
+        <!-- LOGIN SCREEN -->
 
         <div id="loginScreen" class="authScreen">
 
@@ -48,6 +46,7 @@
                 <p class="authSubtitle">
                     Your professional ATPL training platform
                 </p>
+
 
                 <h2>Welcome back</h2>
 
@@ -88,152 +87,15 @@
                 </button>
 
 
-                <!-- FORGOT PASSWORD -->
-
-                <button
-                    id="forgotPasswordBtn"
-                    class="textButton"
-                    type="button"
-                >
-                    Forgot Password?
-                </button>
-
-
                 <button
                     id="requestAccessBtn"
                     class="textButton"
-                    type="button"
                 >
                     Request Access
                 </button>
 
 
                 <p id="loginMessage" class="message"></p>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             FORGOT PASSWORD SCREEN
-             ================================================= -->
-
-        <div
-            id="forgotPasswordScreen"
-            class="authScreen"
-            style="display:none;"
-        >
-
-            <div class="authCard">
-
-                <div class="authLogo">
-                    🔐
-                </div>
-
-                <h1>ATPL STUDY</h1>
-
-                <h2>Forgot Password?</h2>
-
-                <p class="authDescription">
-                    Enter the email address associated with
-                    your ATPL Study account and we will send
-                    you a password reset link.
-                </p>
-
-
-                <input
-                    type="email"
-                    id="resetEmail"
-                    placeholder="Email address"
-                    autocomplete="email"
-                >
-
-
-                <button
-                    id="sendResetBtn"
-                    class="modeButton primaryButton"
-                    type="button"
-                >
-                    Send Reset Link
-                </button>
-
-
-                <button
-                    id="backToLoginFromForgotBtn"
-                    class="backButton"
-                    type="button"
-                >
-                    ← Back to Login
-                </button>
-
-
-                <p
-                    id="forgotPasswordMessage"
-                    class="message"
-                ></p>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             RESET PASSWORD SCREEN
-             ================================================= -->
-
-        <div
-            id="resetPasswordScreen"
-            class="authScreen"
-            style="display:none;"
-        >
-
-            <div class="authCard">
-
-                <div class="authLogo">
-                    🔑
-                </div>
-
-                <h1>ATPL STUDY</h1>
-
-                <h2>Create New Password</h2>
-
-                <p class="authDescription">
-                    Enter your new password below.
-                </p>
-
-
-                <input
-                    type="password"
-                    id="newPassword"
-                    placeholder="New password"
-                    autocomplete="new-password"
-                >
-
-
-                <input
-                    type="password"
-                    id="confirmNewPassword"
-                    placeholder="Confirm new password"
-                    autocomplete="new-password"
-                >
-
-
-                <button
-                    id="updatePasswordBtn"
-                    class="modeButton primaryButton"
-                    type="button"
-                >
-                    Update Password
-                </button>
-
-
-                <p
-                    id="resetPasswordMessage"
-                    class="message"
-                ></p>
 
             </div>
 
@@ -522,6 +384,7 @@
 
             <div class="sidebarBottom">
 
+
                 <div class="sidebarDivider"></div>
 
 
@@ -570,6 +433,7 @@
                     </span>
 
                 </button>
+
 
             </div>
 
@@ -624,6 +488,7 @@
                 class="contentScreen dashboardScreen"
                 style="display:none;"
             >
+
 
                 <div class="pageHeader">
 
@@ -843,6 +708,7 @@
 
                 <div class="dashboardSection">
 
+
                     <div class="secondaryActions">
 
 
@@ -921,6 +787,7 @@
                 class="contentScreen"
                 style="display:none;"
             >
+
 
                 <div class="pageHeader">
 
@@ -1050,6 +917,7 @@
                 style="display:none;"
             >
 
+
                 <div class="pageHeader">
 
                     <div>
@@ -1118,6 +986,7 @@
                 class="contentScreen setupScreen"
                 style="display:none;"
             >
+
 
                 <div class="pageHeader">
 
@@ -1227,6 +1096,7 @@
                 class="contentScreen setupScreen"
                 style="display:none;"
             >
+
 
                 <div class="pageHeader">
 
@@ -1341,6 +1211,7 @@
                 style="display:none;"
             >
 
+
                 <div class="pageHeader">
 
                     <div>
@@ -1440,6 +1311,7 @@
                 style="display:none;"
             >
 
+
                 <div class="pageHeader">
 
                     <div>
@@ -1529,6 +1401,7 @@
                 class="contentScreen"
                 style="display:none;"
             >
+
 
                 <div class="pageHeader">
 
@@ -1762,6 +1635,7 @@
                 style="display:none;"
             >
 
+
                 <div class="resultsCard">
 
 
@@ -1813,6 +1687,7 @@
 
 
                 </div>
+
 
             </div>
 
@@ -1872,705 +1747,6 @@ console.log(
 
 
 // ============================================================
-// AUTH SCREEN HELPERS
-// ============================================================
-
-function hideAllAuthScreens() {
-
-    const screens = [
-
-        "loginScreen",
-        "forgotPasswordScreen",
-        "resetPasswordScreen",
-        "accessRequestScreen"
-
-    ];
-
-
-    screens.forEach(
-        function(id) {
-
-            const element =
-                document.getElementById(id);
-
-
-            if (element) {
-
-                element.style.display =
-                    "none";
-
-            }
-
-        }
-    );
-
-}
-
-
-// ============================================================
-// SHOW LOGIN
-// ============================================================
-
-function showLoginScreen() {
-
-    hideAllAuthScreens();
-
-
-    document
-        .getElementById(
-            "loginScreen"
-        )
-        .style
-        .display =
-            "block";
-
-}
-
-
-// ============================================================
-// SHOW FORGOT PASSWORD
-// ============================================================
-
-function showForgotPasswordScreen() {
-
-    hideAllAuthScreens();
-
-
-    const screen =
-        document.getElementById(
-            "forgotPasswordScreen"
-        );
-
-
-    if (screen) {
-
-        screen.style.display =
-            "block";
-
-    }
-
-
-    const email =
-        document.getElementById(
-            "loginEmail"
-        );
-
-
-    const resetEmail =
-        document.getElementById(
-            "resetEmail"
-        );
-
-
-    if (
-        email &&
-        resetEmail &&
-        email.value.trim()
-    ) {
-
-        resetEmail.value =
-            email.value.trim();
-
-    }
-
-
-    if (resetEmail) {
-
-        resetEmail.focus();
-
-    }
-
-}
-
-
-// ============================================================
-// SHOW RESET PASSWORD
-// ============================================================
-
-function showResetPasswordScreen() {
-
-    const loginArea =
-        document.getElementById(
-            "loginArea"
-        );
-
-
-    const mainApplication =
-        document.getElementById(
-            "mainApplication"
-        );
-
-
-    if (loginArea) {
-
-        loginArea.style.display =
-            "block";
-
-    }
-
-
-    if (mainApplication) {
-
-        mainApplication.style.display =
-            "none";
-
-    }
-
-
-    hideAllAuthScreens();
-
-
-    const screen =
-        document.getElementById(
-            "resetPasswordScreen"
-        );
-
-
-    if (screen) {
-
-        screen.style.display =
-            "block";
-
-    }
-
-
-    const newPassword =
-        document.getElementById(
-            "newPassword"
-        );
-
-
-    if (newPassword) {
-
-        newPassword.focus();
-
-    }
-
-}
-
-
-// ============================================================
-// SHOW ACCESS REQUEST
-// ============================================================
-
-function showAccessRequestScreen() {
-
-    hideAllAuthScreens();
-
-
-    document
-        .getElementById(
-            "accessRequestScreen"
-        )
-        .style
-        .display =
-            "block";
-
-}
-
-
-// ============================================================
-// FORGOT PASSWORD BUTTON
-// ============================================================
-
-const forgotPasswordBtn =
-    document.getElementById(
-        "forgotPasswordBtn"
-    );
-
-
-if (forgotPasswordBtn) {
-
-    forgotPasswordBtn.addEventListener(
-        "click",
-        function() {
-
-            showForgotPasswordScreen();
-
-        }
-    );
-
-}
-
-
-// ============================================================
-// BACK TO LOGIN FROM FORGOT PASSWORD
-// ============================================================
-
-const backToLoginFromForgotBtn =
-    document.getElementById(
-        "backToLoginFromForgotBtn"
-    );
-
-
-if (backToLoginFromForgotBtn) {
-
-    backToLoginFromForgotBtn.addEventListener(
-        "click",
-        function() {
-
-            const message =
-                document.getElementById(
-                    "forgotPasswordMessage"
-                );
-
-
-            if (message) {
-
-                message.innerHTML =
-                    "";
-
-            }
-
-
-            showLoginScreen();
-
-        }
-    );
-
-}
-
-
-// ============================================================
-// SEND PASSWORD RESET EMAIL
-// ============================================================
-
-const sendResetBtn =
-    document.getElementById(
-        "sendResetBtn"
-    );
-
-
-if (sendResetBtn) {
-
-    sendResetBtn.addEventListener(
-        "click",
-        async function() {
-
-            const emailInput =
-                document.getElementById(
-                    "resetEmail"
-                );
-
-
-            const message =
-                document.getElementById(
-                    "forgotPasswordMessage"
-                );
-
-
-            const email =
-                emailInput.value
-                    .trim()
-                    .toLowerCase();
-
-
-            if (!email) {
-
-                message.innerHTML =
-                    "Please enter your email address.";
-
-                message.style.color =
-                    "#b42318";
-
-                return;
-
-            }
-
-
-            if (
-                !email.includes("@") ||
-                !email.includes(".")
-            ) {
-
-                message.innerHTML =
-                    "Please enter a valid email address.";
-
-                message.style.color =
-                    "#b42318";
-
-                return;
-
-            }
-
-
-            sendResetBtn.disabled =
-                true;
-
-
-            sendResetBtn.innerText =
-                "Sending...";
-
-
-            message.innerHTML =
-                "";
-
-
-            try {
-
-                /*
-                 * IMPORTANT:
-                 *
-                 * This URL must also be added to:
-                 *
-                 * Supabase
-                 * Authentication
-                 * URL Configuration
-                 * Redirect URLs
-                 *
-                 */
-
-                const redirectUrl =
-                    window.location.origin +
-                    window.location.pathname;
-
-
-                const {
-                    error
-                } =
-                    await supabaseClient
-                        .auth
-                        .resetPasswordForEmail(
-                            email,
-                            {
-                                redirectTo:
-                                    redirectUrl
-                            }
-                        );
-
-
-                if (error) {
-
-                    console.error(
-                        "Password reset error:",
-                        error
-                    );
-
-
-                    message.innerHTML =
-                        escapeHTML(
-                            error.message
-                        );
-
-                    message.style.color =
-                        "#b42318";
-
-                    return;
-
-                }
-
-
-                message.innerHTML =
-                    "Password reset link sent. Please check your email.";
-
-                message.style.color =
-                    "#087443";
-
-
-                emailInput.value =
-                    "";
-
-
-            } catch (error) {
-
-                console.error(
-                    "Password reset error:",
-                    error
-                );
-
-
-                message.innerHTML =
-                    "Unable to send the reset email. Please try again.";
-
-                message.style.color =
-                    "#b42318";
-
-            } finally {
-
-                sendResetBtn.disabled =
-                    false;
-
-
-                sendResetBtn.innerText =
-                    "Send Reset Link";
-
-            }
-
-        }
-    );
-
-}
-
-
-// ============================================================
-// UPDATE PASSWORD
-// ============================================================
-
-const updatePasswordBtn =
-    document.getElementById(
-        "updatePasswordBtn"
-    );
-
-
-if (updatePasswordBtn) {
-
-    updatePasswordBtn.addEventListener(
-        "click",
-        async function() {
-
-            const newPassword =
-                document
-                    .getElementById(
-                        "newPassword"
-                    )
-                    .value;
-
-
-            const confirmPassword =
-                document
-                    .getElementById(
-                        "confirmNewPassword"
-                    )
-                    .value;
-
-
-            const message =
-                document.getElementById(
-                    "resetPasswordMessage"
-                );
-
-
-            if (!newPassword) {
-
-                message.innerHTML =
-                    "Please enter a new password.";
-
-                message.style.color =
-                    "#b42318";
-
-                return;
-
-            }
-
-
-            if (newPassword.length < 6) {
-
-                message.innerHTML =
-                    "Password must contain at least 6 characters.";
-
-                message.style.color =
-                    "#b42318";
-
-                return;
-
-            }
-
-
-            if (
-                newPassword !==
-                confirmPassword
-            ) {
-
-                message.innerHTML =
-                    "The passwords do not match.";
-
-                message.style.color =
-                    "#b42318";
-
-                return;
-
-            }
-
-
-            updatePasswordBtn.disabled =
-                true;
-
-
-            updatePasswordBtn.innerText =
-                "Updating...";
-
-
-            message.innerHTML =
-                "";
-
-
-            try {
-
-                const {
-                    error
-                } =
-                    await supabaseClient
-                        .auth
-                        .updateUser(
-                            {
-                                password:
-                                    newPassword
-                            }
-                        );
-
-
-                if (error) {
-
-                    console.error(
-                        "Update password error:",
-                        error
-                    );
-
-
-                    message.innerHTML =
-                        escapeHTML(
-                            error.message
-                        );
-
-                    message.style.color =
-                        "#b42318";
-
-                    return;
-
-                }
-
-
-                message.innerHTML =
-                    "Password updated successfully.";
-
-                message.style.color =
-                    "#087443";
-
-
-                document
-                    .getElementById(
-                        "newPassword"
-                    )
-                    .value =
-                    "";
-
-
-                document
-                    .getElementById(
-                        "confirmNewPassword"
-                    )
-                    .value =
-                    "";
-
-
-                /*
-                 * Give Supabase a moment to finish the
-                 * recovery session before signing out.
-                 */
-
-                setTimeout(
-                    async function() {
-
-                        await supabaseClient
-                            .auth
-                            .signOut();
-
-
-                        showLoginScreen();
-
-
-                        const loginMessage =
-                            document
-                                .getElementById(
-                                    "loginMessage"
-                                );
-
-
-                        if (loginMessage) {
-
-                            loginMessage.innerHTML =
-                                "Your password has been changed. You can now log in with your new password.";
-
-                            loginMessage.style.color =
-                                "#087443";
-
-                        }
-
-                    },
-                    1200
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "Update password error:",
-                    error
-                );
-
-
-                message.innerHTML =
-                    "Unable to update your password. Please request a new reset link.";
-
-                message.style.color =
-                    "#b42318";
-
-            } finally {
-
-                updatePasswordBtn.disabled =
-                    false;
-
-
-                updatePasswordBtn.innerText =
-                    "Update Password";
-
-            }
-
-        }
-    );
-
-}
-
-
-// ============================================================
-// ACCESS REQUEST BUTTON
-// ============================================================
-
-const requestAccessBtn =
-    document.getElementById(
-        "requestAccessBtn"
-    );
-
-
-if (requestAccessBtn) {
-
-    requestAccessBtn.addEventListener(
-        "click",
-        function() {
-
-            showAccessRequestScreen();
-
-        }
-    );
-
-}
-
-
-// ============================================================
-// BACK TO LOGIN
-// ============================================================
-
-const backToLoginBtn =
-    document.getElementById(
-        "backToLoginBtn"
-    );
-
-
-if (backToLoginBtn) {
-
-    backToLoginBtn.addEventListener(
-        "click",
-        function() {
-
-            showLoginScreen();
-
-        }
-    );
-
-}
-
-
-// ============================================================
 // OPEN DASHBOARD
 // ============================================================
 
@@ -2579,8 +1755,6 @@ function openDashboard() {
     const screens = [
 
         "loginScreen",
-        "forgotPasswordScreen",
-        "resetPasswordScreen",
         "accessRequestScreen",
         "progressScreen",
         "adminScreen",
@@ -2599,10 +1773,7 @@ function openDashboard() {
         function(id) {
 
             const element =
-                document.getElementById(
-                    id
-                );
-
+                document.getElementById(id);
 
             if (element) {
 
@@ -2815,9 +1986,7 @@ function toggleSidebar() {
 }
 
 
-// ============================================================
-// CLOSE MOBILE SIDEBAR AFTER SELECTING
-// ============================================================
+// Close mobile sidebar after selecting an option
 
 document
     .querySelectorAll(
@@ -2890,7 +2059,7 @@ async function logoutUser() {
             )
             .style
             .display =
-            "none";
+                "none";
 
 
         document
@@ -2899,10 +2068,25 @@ async function logoutUser() {
             )
             .style
             .display =
-            "block";
+                "block";
 
 
-        showLoginScreen();
+        document
+            .getElementById(
+                "loginScreen"
+            )
+            .style
+            .display =
+                "block";
+
+
+        document
+            .getElementById(
+                "accessRequestScreen"
+            )
+            .style
+            .display =
+                "none";
 
 
         document
@@ -2910,7 +2094,7 @@ async function logoutUser() {
                 "loginEmail"
             )
             .value =
-            "";
+                "";
 
 
         document
@@ -2918,7 +2102,7 @@ async function logoutUser() {
                 "loginPassword"
             )
             .value =
-            "";
+                "";
 
 
         document
@@ -2926,7 +2110,7 @@ async function logoutUser() {
                 "loginMessage"
             )
             .innerHTML =
-            "";
+                "";
 
 
     } catch (error) {
@@ -2958,7 +2142,7 @@ async function showMainApplication() {
         )
         .style
         .display =
-        "none";
+            "none";
 
 
     document
@@ -2967,7 +2151,7 @@ async function showMainApplication() {
         )
         .style
         .display =
-        "flex";
+            "flex";
 
 
     openDashboard();
@@ -2995,9 +2179,9 @@ async function showMainApplication() {
                     "sidebarUserName"
                 )
                 .innerHTML =
-                escapeHTML(
-                    user.email
-                );
+                    escapeHTML(
+                        user.email
+                    );
 
         }
 
@@ -3080,13 +2264,12 @@ async function updateAdminSidebar() {
             sidebarAdmin.style.display =
                 "flex";
 
-
             document
                 .getElementById(
                     "sidebarUserRole"
                 )
                 .innerHTML =
-                "Administrator";
+                    "Administrator";
 
         } else {
 
@@ -3102,7 +2285,6 @@ async function updateAdminSidebar() {
             error
         );
 
-
         sidebarAdmin.style.display =
             "none";
 
@@ -3112,7 +2294,7 @@ async function updateAdminSidebar() {
 
 
 // ============================================================
-// MONITOR LOGIN / RECOVERY STATE
+// MONITOR LOGIN STATE
 // ============================================================
 
 supabaseClient
@@ -3122,33 +2304,6 @@ supabaseClient
             event,
             session
         ) {
-
-            console.log(
-                "AUTH EVENT:",
-                event
-            );
-
-
-            /*
-             * PASSWORD_RECOVERY occurs when the user
-             * clicks the password-reset link in their email.
-             */
-
-            if (
-                event ===
-                "PASSWORD_RECOVERY"
-            ) {
-
-                showResetPasswordScreen();
-
-                return;
-
-            }
-
-
-            /*
-             * Normal login.
-             */
 
             if (
                 session &&
@@ -3163,133 +2318,6 @@ supabaseClient
 
         }
     );
-
-
-// ============================================================
-// CHECK CURRENT SESSION ON PAGE LOAD
-// ============================================================
-
-async function checkInitialSession() {
-
-    try {
-
-        const {
-            data: {
-                session
-            }
-        } =
-            await supabaseClient
-                .auth
-                .getSession();
-
-
-        /*
-         * If a recovery session already exists when
-         * the page loads, show the password screen.
-         */
-
-        if (
-            session &&
-            window.location.hash &&
-            (
-                window.location.hash.includes(
-                    "type=recovery"
-                ) ||
-                window.location.hash.includes(
-                    "access_token"
-                )
-            )
-        ) {
-
-            showResetPasswordScreen();
-
-            return;
-
-        }
-
-
-        /*
-         * Otherwise, if the user is already logged in,
-         * open the application.
-         */
-
-        if (
-            session &&
-            session.user
-        ) {
-
-            await showMainApplication();
-
-            await updateAdminSidebar();
-
-            return;
-
-        }
-
-
-        /*
-         * No active session.
-         * Show login.
-         */
-
-        document
-            .getElementById(
-                "mainApplication"
-            )
-            .style
-            .display =
-            "none";
-
-
-        document
-            .getElementById(
-                "loginArea"
-            )
-            .style
-            .display =
-            "block";
-
-
-        showLoginScreen();
-
-    } catch (error) {
-
-        console.error(
-            "Initial session error:",
-            error
-        );
-
-
-        document
-            .getElementById(
-                "mainApplication"
-            )
-            .style
-            .display =
-            "none";
-
-
-        document
-            .getElementById(
-                "loginArea"
-            )
-            .style
-            .display =
-            "block";
-
-
-        showLoginScreen();
-
-    }
-
-}
-
-
-// ============================================================
-// START AUTH CHECK
-// ============================================================
-
-checkInitialSession();
 
 
 </script>
