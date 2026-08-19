@@ -500,10 +500,6 @@ async function loadPracticeQuestions(subjectFile) {
 
         await loadMarkedQuestions();
 
-        // IMPORTANT:
-        // Load saved progress BEFORE displaying
-        // the navigator/question.
-
         await loadSavedProgress(
             subjectFile
         );
@@ -867,9 +863,11 @@ function showQuestion() {
         );
 
     if (!questionImages) {
+
         console.error(
             "questionImages element not found."
         );
+
     } else {
 
         questionImages.innerHTML = "";
@@ -2332,7 +2330,8 @@ document.getElementById(
 ).onclick = function() {
 
     if (
-        current > 0
+        current >
+        0
     ) {
 
         current--;
@@ -4337,6 +4336,7 @@ async function loadAdminRequests() {
 
 // ============================================================
 // APPROVE USER
+// FIXED: PREVENTS DUPLICATE EMAIL ERROR
 // ============================================================
 
 async function approveUser(request) {
@@ -4355,8 +4355,105 @@ async function approveUser(request) {
 
     try {
 
+        // ----------------------------------------------------
+        // CHECK IF EMAIL IS ALREADY APPROVED
+        // ----------------------------------------------------
+
         const {
-            error
+            data: existingApprovedUser,
+            error: checkError
+        } =
+            await supabaseClient
+                .from("approved_users")
+                .select("email")
+                .eq(
+                    "email",
+                    request.email
+                )
+                .maybeSingle();
+
+
+        if (checkError) {
+
+            console.error(
+                "Check approved user error:",
+                checkError
+            );
+
+            alert(
+                "Unable to check approved users:\n\n" +
+                checkError.message
+            );
+
+            return;
+
+        }
+
+
+        // ----------------------------------------------------
+        // ALREADY APPROVED
+        // ----------------------------------------------------
+
+        if (existingApprovedUser) {
+
+            console.log(
+                "User is already approved:",
+                request.email
+            );
+
+
+            // Remove the duplicate pending request
+            const {
+                error: deleteExistingRequestError
+            } =
+                await supabaseClient
+                    .from("access_requests")
+                    .delete()
+                    .eq(
+                        "id",
+                        request.id
+                    );
+
+
+            if (deleteExistingRequestError) {
+
+                console.error(
+                    "Delete already-approved request error:",
+                    deleteExistingRequestError
+                );
+
+                alert(
+                    "This user is already approved, but the pending request could not be removed:\n\n" +
+                    deleteExistingRequestError.message
+                );
+
+                return;
+
+            }
+
+
+            alert(
+                request.email +
+                " is already approved.\n\n" +
+                "The duplicate access request has been removed."
+            );
+
+
+            await loadAdminRequests();
+
+            await loadApprovedUsers();
+
+            return;
+
+        }
+
+
+        // ----------------------------------------------------
+        // INSERT NEW APPROVED USER
+        // ----------------------------------------------------
+
+        const {
+            error: insertError
         } =
             await supabaseClient
                 .from("approved_users")
@@ -4373,21 +4470,27 @@ async function approveUser(request) {
 
                 });
 
-        if (error) {
+
+        if (insertError) {
 
             console.error(
-                "Approval error:",
-                error
+                "Approval insert error:",
+                insertError
             );
 
             alert(
-                "Unable to approve user: " +
-                error.message
+                "Unable to approve user:\n\n" +
+                insertError.message
             );
 
             return;
 
         }
+
+
+        // ----------------------------------------------------
+        // DELETE ACCESS REQUEST
+        // ----------------------------------------------------
 
         const {
             error: deleteError
@@ -4400,6 +4503,7 @@ async function approveUser(request) {
                     request.id
                 );
 
+
         if (deleteError) {
 
             console.error(
@@ -4407,7 +4511,23 @@ async function approveUser(request) {
                 deleteError
             );
 
+            alert(
+                "User was approved, but the access request could not be removed:\n\n" +
+                deleteError.message
+            );
+
+            await loadAdminRequests();
+
+            await loadApprovedUsers();
+
+            return;
+
         }
+
+
+        // ----------------------------------------------------
+        // SUCCESS
+        // ----------------------------------------------------
 
         alert(
             "User approved successfully."
@@ -4417,6 +4537,7 @@ async function approveUser(request) {
 
         await loadApprovedUsers();
 
+
     } catch (error) {
 
         console.error(
@@ -4425,7 +4546,8 @@ async function approveUser(request) {
         );
 
         alert(
-            "Unable to approve user."
+            "Unable to approve user:\n\n" +
+            error.message
         );
 
     }
