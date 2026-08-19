@@ -13,738 +13,1699 @@
 
 </head>
 
+
 <body>
 
-<div class="container">
 
-<h1>ATPL STUDY</h1>
+<!-- =========================================================
+     APP WRAPPER
+     ========================================================= -->
 
-
-<!-- =====================================================
-     LOGIN SCREEN
-     ===================================================== -->
-
-<div id="loginScreen">
-
-    <h2>ATPL STUDY LOGIN</h2>
-
-    <input
-        type="email"
-        id="loginEmail"
-        placeholder="Email"
-    >
-
-    <input
-        type="password"
-        id="loginPassword"
-        placeholder="Password"
-    >
-
-    <button
-        id="loginBtn"
-        class="modeButton"
-    >
-        Login
-    </button>
-
-    <button
-        id="signupBtn"
-        class="modeButton"
-    >
-        Create Account
-    </button>
-
-    <button
-        id="requestAccessBtn"
-        class="modeButton"
-    >
-        Request Access
-    </button>
-
-    <p id="loginMessage"></p>
-
-</div>
+<div class="app">
 
 
-<!-- =====================================================
-     ACCESS REQUEST SCREEN
-     ===================================================== -->
+    <!-- =====================================================
+         LOGIN AREA
+         ===================================================== -->
 
-<div
-    id="accessRequestScreen"
-    style="display:none;"
->
-
-    <h2>Request Access</h2>
-
-    <input
-        type="text"
-        id="requestName"
-        placeholder="Full Name"
-    >
-
-    <input
-        type="email"
-        id="requestEmail"
-        placeholder="Email Address"
-    >
-
-    <textarea
-        id="requestReason"
-        placeholder="Why do you want access?"
-        rows="4"
-    ></textarea>
-
-    <button
-        id="submitAccessRequestBtn"
-        class="modeButton"
-    >
-        Submit Request
-    </button>
-
-    <button
-        id="backToLoginBtn"
-        class="backButton"
-    >
-        ← Back to Login
-    </button>
-
-    <p id="accessRequestMessage"></p>
-
-</div>
+    <div id="loginArea">
 
 
-<!-- =====================================================
-     HOME SCREEN
-     ===================================================== -->
+        <!-- LOGIN SCREEN -->
 
-<div
-    id="homeScreen"
-    style="display:none;"
->
+        <div id="loginScreen" class="authScreen">
 
-    <h2>Select Study Mode</h2>
+            <div class="authCard">
 
-    <button
-        id="practiceBtn"
-        class="modeButton"
-    >
-        📖 Practice Questions
-    </button>
+                <div class="authLogo">
+                    ✈️
+                </div>
 
-    <button
-        id="subjectQuizBtn"
-        class="modeButton"
-    >
-        📝 Subject Quiz
-    </button>
+                <h1>ATPL STUDY</h1>
 
-    <button
-        id="combinedQuizBtn"
-        class="modeButton"
-    >
-        ✈️ Combined ATPL Quiz
-    </button>
-
-    <button
-        id="searchBtn"
-        class="modeButton"
-    >
-        🔎 Search Questions
-    </button>
-
-    <button
-        id="markedBtn"
-        class="modeButton"
-    >
-        ⭐ Marked Questions
-    </button>
-
-    <!-- NEW PROGRESS BUTTON -->
-
-    <button
-        id="progressBtn"
-        class="modeButton"
-    >
-        📊 My Progress
-    </button>
-
-    <button
-        id="adminBtn"
-        class="modeButton"
-        style="display:none;"
-    >
-        ⚙️ Admin Dashboard
-    </button>
-
-</div>
+                <p class="authSubtitle">
+                    Your professional ATPL training platform
+                </p>
 
 
-<!-- =====================================================
-     PROGRESS DASHBOARD
-     ===================================================== -->
+                <h2>Welcome back</h2>
 
-<div
-    id="progressScreen"
-    style="display:none;"
->
-
-    <h2>📊 My ATPL Progress</h2>
-
-    <p id="progressLoading">
-        Loading your progress...
-    </p>
+                <p class="authDescription">
+                    Sign in to continue your ATPL training.
+                </p>
 
 
-    <!-- OVERALL PROGRESS -->
+                <input
+                    type="email"
+                    id="loginEmail"
+                    placeholder="Email address"
+                    autocomplete="email"
+                >
 
-    <div
-        id="overallProgressCard"
-        class="progressCard"
-    >
 
-        <h3>📊 Overall Progress</h3>
+                <input
+                    type="password"
+                    id="loginPassword"
+                    placeholder="Password"
+                    autocomplete="current-password"
+                >
 
-        <div id="overallProgressContent">
-            Loading...
+
+                <button
+                    id="loginBtn"
+                    class="modeButton primaryButton"
+                >
+                    Login
+                </button>
+
+
+                <button
+                    id="signupBtn"
+                    class="modeButton secondaryButton"
+                >
+                    Create Account
+                </button>
+
+
+                <button
+                    id="requestAccessBtn"
+                    class="textButton"
+                >
+                    Request Access
+                </button>
+
+
+                <p id="loginMessage" class="message"></p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             ACCESS REQUEST SCREEN
+             ================================================= -->
+
+        <div
+            id="accessRequestScreen"
+            class="authScreen"
+            style="display:none;"
+        >
+
+            <div class="authCard">
+
+                <div class="authLogo">
+                    ✈️
+                </div>
+
+                <h1>ATPL STUDY</h1>
+
+                <h2>Request Access</h2>
+
+                <p class="authDescription">
+                    Submit your details and your request will be
+                    reviewed by an administrator.
+                </p>
+
+
+                <input
+                    type="text"
+                    id="requestName"
+                    placeholder="Full Name"
+                >
+
+
+                <input
+                    type="email"
+                    id="requestEmail"
+                    placeholder="Email Address"
+                >
+
+
+                <textarea
+                    id="requestReason"
+                    placeholder="Why do you want access?"
+                    rows="4"
+                ></textarea>
+
+
+                <button
+                    id="submitAccessRequestBtn"
+                    class="modeButton primaryButton"
+                >
+                    Submit Request
+                </button>
+
+
+                <button
+                    id="backToLoginBtn"
+                    class="backButton"
+                >
+                    ← Back to Login
+                </button>
+
+
+                <p
+                    id="accessRequestMessage"
+                    class="message"
+                ></p>
+
+            </div>
+
         </div>
 
     </div>
 
 
-    <!-- SUBJECT PROGRESS -->
+
+    <!-- =========================================================
+         MAIN APPLICATION
+         ========================================================= -->
 
     <div
-        id="subjectProgressCard"
-        class="progressCard"
-    >
-
-        <h3>📚 Progress by Subject</h3>
-
-        <div id="subjectProgressContent">
-            Loading...
-        </div>
-
-    </div>
-
-
-    <!-- STRONGEST / WEAKEST -->
-
-    <div
-        id="performanceCard"
-        class="progressCard"
-    >
-
-        <h3>🏆 Performance</h3>
-
-        <div id="performanceContent">
-            Loading...
-        </div>
-
-    </div>
-
-
-    <!-- WRONG QUESTIONS -->
-
-    <div
-        id="wrongQuestionsCard"
-        class="progressCard"
-    >
-
-        <h3>🔴 Wrong Questions</h3>
-
-        <div id="wrongQuestionsContent">
-            Loading...
-        </div>
-
-    </div>
-
-
-    <!-- MASTERED -->
-
-    <div
-        id="masteredQuestionsCard"
-        class="progressCard"
-    >
-
-        <h3>🏆 Mastered Questions</h3>
-
-        <div id="masteredQuestionsContent">
-            Loading...
-        </div>
-
-    </div>
-
-
-    <button
-        id="progressBackBtn"
-        class="backButton"
-    >
-        ← Back to Home
-    </button>
-
-</div>
-
-
-<!-- =====================================================
-     ADMIN DASHBOARD
-     ===================================================== -->
-
-<div
-    id="adminScreen"
-    style="display:none;"
->
-
-    <h2>ATPL STUDY ADMIN</h2>
-
-    <h3>Access Requests</h3>
-
-    <div id="adminRequests">
-        Loading requests...
-    </div>
-
-    <hr>
-
-    <h3>Approved Users</h3>
-
-    <div id="approvedUsersList">
-        Loading approved users...
-    </div>
-
-    <br>
-
-    <button
-        id="adminBackBtn"
-        class="backButton"
-    >
-        ← Back to Home
-    </button>
-
-</div>
-
-
-<!-- =====================================================
-     PRACTICE SETUP
-     ===================================================== -->
-
-<div
-    id="practiceSetup"
-    style="display:none;"
->
-
-    <h2>Practice Questions</h2>
-
-    <label for="practiceSubjectSelect">
-        Choose Subject:
-    </label>
-
-    <select id="practiceSubjectSelect">
-
-        <option value="meteorology">
-            Meteorology
-        </option>
-
-        <option value="airlaw">
-            Air Law
-        </option>
-
-        <option value="operational">
-            Operational Procedures
-        </option>
-
-    </select>
-
-    <button
-        id="startPracticeBtn"
-        class="modeButton"
-    >
-        Start Practice
-    </button>
-
-
-    <!-- RESET -->
-
-    <div
-        id="resetProgressSection"
+        id="mainApplication"
         style="display:none;"
     >
 
-        <hr>
 
-        <h3>Reset Progress</h3>
+        <!-- =====================================================
+             SIDEBAR
+             ===================================================== -->
 
-        <p>
-            Reset the saved progress for the selected subject.
-            Marked questions will not be deleted.
-        </p>
-
-        <button
-            id="resetProgressBtn"
-            class="resetButton"
+        <aside
+            id="sidebar"
+            class="sidebar"
         >
-            🔄 Reset Progress
-        </button>
+
+
+            <!-- LOGO -->
+
+            <div class="sidebarHeader">
+
+                <div class="sidebarLogo">
+                    ✈️
+                </div>
+
+                <div>
+
+                    <div class="sidebarTitle">
+                        ATPL STUDY
+                    </div>
+
+                    <div class="sidebarSubtitle">
+                        Flight Training
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- NAVIGATION -->
+
+            <nav class="sidebarNavigation">
+
+
+                <div class="sidebarSectionTitle">
+                    STUDY
+                </div>
+
+
+                <button
+                    class="sidebarButton active"
+                    id="sidebarHomeBtn"
+                    onclick="openDashboard()"
+                >
+
+                    <span class="sidebarIcon">
+                        🏠
+                    </span>
+
+                    <span>
+                        Dashboard
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="sidebarButton"
+                    id="sidebarPracticeBtn"
+                    onclick="document.getElementById('practiceBtn').click()"
+                >
+
+                    <span class="sidebarIcon">
+                        📖
+                    </span>
+
+                    <span>
+                        Practice Questions
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="sidebarButton"
+                    id="sidebarSubjectQuizBtn"
+                    onclick="document.getElementById('subjectQuizBtn').click()"
+                >
+
+                    <span class="sidebarIcon">
+                        📝
+                    </span>
+
+                    <span>
+                        Subject Quiz
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="sidebarButton"
+                    id="sidebarCombinedQuizBtn"
+                    onclick="document.getElementById('combinedQuizBtn').click()"
+                >
+
+                    <span class="sidebarIcon">
+                        ✈️
+                    </span>
+
+                    <span>
+                        Combined ATPL Quiz
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="sidebarButton"
+                    id="sidebarMarkedBtn"
+                    onclick="document.getElementById('markedBtn').click()"
+                >
+
+                    <span class="sidebarIcon">
+                        ⭐
+                    </span>
+
+                    <span>
+                        Marked Questions
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="sidebarButton"
+                    id="sidebarSearchBtn"
+                    onclick="document.getElementById('searchBtn').click()"
+                >
+
+                    <span class="sidebarIcon">
+                        🔎
+                    </span>
+
+                    <span>
+                        Search Questions
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="sidebarButton"
+                    id="sidebarProgressBtn"
+                    onclick="document.getElementById('progressBtn').click()"
+                >
+
+                    <span class="sidebarIcon">
+                        📊
+                    </span>
+
+                    <span>
+                        My Progress
+                    </span>
+
+                </button>
+
+
+                <div class="sidebarDivider"></div>
+
+
+                <div class="sidebarSectionTitle">
+                    ADMINISTRATION
+                </div>
+
+
+                <button
+                    id="sidebarAdminBtn"
+                    class="sidebarButton adminSidebarButton"
+                    style="display:none;"
+                    onclick="document.getElementById('adminBtn').click()"
+                >
+
+                    <span class="sidebarIcon">
+                        ⚙️
+                    </span>
+
+                    <span>
+                        Admin Dashboard
+                    </span>
+
+                </button>
+
+
+            </nav>
+
+
+            <!-- SIDEBAR BOTTOM -->
+
+            <div class="sidebarBottom">
+
+
+                <div class="sidebarDivider"></div>
+
+
+                <div
+                    class="userMiniProfile"
+                    id="sidebarUserProfile"
+                >
+
+                    <div class="userAvatar">
+                        👤
+                    </div>
+
+                    <div class="userInfo">
+
+                        <div
+                            class="userName"
+                            id="sidebarUserName"
+                        >
+                            ATPL Student
+                        </div>
+
+                        <div
+                            class="userRole"
+                            id="sidebarUserRole"
+                        >
+                            Student
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="sidebarButton logoutButton"
+                    id="logoutBtn"
+                    onclick="logoutUser()"
+                >
+
+                    <span class="sidebarIcon">
+                        🚪
+                    </span>
+
+                    <span>
+                        Logout
+                    </span>
+
+                </button>
+
+
+            </div>
+
+
+        </aside>
+
+
+
+        <!-- =====================================================
+             MOBILE TOP BAR
+             ===================================================== -->
+
+        <header class="mobileHeader">
+
+            <button
+                id="mobileMenuBtn"
+                class="mobileMenuButton"
+                onclick="toggleSidebar()"
+            >
+                ☰
+            </button>
+
+
+            <div class="mobileHeaderTitle">
+                ✈️ ATPL STUDY
+            </div>
+
+
+            <div class="mobileHeaderSpacer"></div>
+
+        </header>
+
+
+
+        <!-- =====================================================
+             MAIN CONTENT
+             ===================================================== -->
+
+        <main
+            id="mainContent"
+            class="mainContent"
+        >
+
+
+
+            <!-- =================================================
+                 HOME / DASHBOARD
+                 ================================================= -->
+
+            <div
+                id="homeScreen"
+                class="contentScreen dashboardScreen"
+                style="display:none;"
+            >
+
+
+                <div class="pageHeader">
+
+                    <div>
+
+                        <p class="pageEyebrow">
+                            ATPL STUDY PLATFORM
+                        </p>
+
+                        <h1>
+                            Welcome back 👋
+                        </h1>
+
+                        <p class="pageDescription">
+                            Continue your ATPL training and keep
+                            building your aviation knowledge.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- DASHBOARD STAT CARDS -->
+
+                <div class="dashboardCards">
+
+
+                    <div class="dashboardCard">
+
+                        <div class="dashboardCardIcon">
+                            📚
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Practice
+                            </h3>
+
+                            <p>
+                                Work through ATPL questions
+                                at your own pace.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="dashboardCard">
+
+                        <div class="dashboardCardIcon">
+                            📝
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Subject Quiz
+                            </h3>
+
+                            <p>
+                                Test your knowledge by subject.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="dashboardCard">
+
+                        <div class="dashboardCardIcon">
+                            ✈️
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Combined Quiz
+                            </h3>
+
+                            <p>
+                                Challenge yourself across
+                                all ATPL subjects.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- QUICK ACTIONS -->
+
+                <div class="dashboardSection">
+
+                    <div class="sectionHeader">
+
+                        <div>
+
+                            <h2>
+                                Quick Start
+                            </h2>
+
+                            <p>
+                                Choose how you want to study.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="quickActions">
+
+
+                        <button
+                            id="practiceBtn"
+                            class="quickActionCard"
+                        >
+
+                            <span class="quickActionIcon">
+                                📖
+                            </span>
+
+                            <span class="quickActionText">
+
+                                <strong>
+                                    Practice Questions
+                                </strong>
+
+                                <small>
+                                    Study questions without
+                                    a time limit.
+                                </small>
+
+                            </span>
+
+                            <span class="quickActionArrow">
+                                →
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            id="subjectQuizBtn"
+                            class="quickActionCard"
+                        >
+
+                            <span class="quickActionIcon">
+                                📝
+                            </span>
+
+                            <span class="quickActionText">
+
+                                <strong>
+                                    Subject Quiz
+                                </strong>
+
+                                <small>
+                                    Take a randomized quiz
+                                    from one subject.
+                                </small>
+
+                            </span>
+
+                            <span class="quickActionArrow">
+                                →
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            id="combinedQuizBtn"
+                            class="quickActionCard"
+                        >
+
+                            <span class="quickActionIcon">
+                                ✈️
+                            </span>
+
+                            <span class="quickActionText">
+
+                                <strong>
+                                    Combined ATPL Quiz
+                                </strong>
+
+                                <small>
+                                    Test yourself across
+                                    all subjects.
+                                </small>
+
+                            </span>
+
+                            <span class="quickActionArrow">
+                                →
+                            </span>
+
+                        </button>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- SECONDARY ACTIONS -->
+
+                <div class="dashboardSection">
+
+
+                    <div class="secondaryActions">
+
+
+                        <button
+                            id="searchBtn"
+                            class="secondaryAction"
+                        >
+
+                            🔎
+
+                            <span>
+                                Search Questions
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            id="markedBtn"
+                            class="secondaryAction"
+                        >
+
+                            ⭐
+
+                            <span>
+                                Marked Questions
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            id="progressBtn"
+                            class="secondaryAction"
+                        >
+
+                            📊
+
+                            <span>
+                                My Progress
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            id="adminBtn"
+                            class="secondaryAction adminAction"
+                            style="display:none;"
+                        >
+
+                            ⚙️
+
+                            <span>
+                                Admin Dashboard
+                            </span>
+
+                        </button>
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 PROGRESS DASHBOARD
+                 ================================================= -->
+
+            <div
+                id="progressScreen"
+                class="contentScreen"
+                style="display:none;"
+            >
+
+
+                <div class="pageHeader">
+
+                    <div>
+
+                        <p class="pageEyebrow">
+                            PERFORMANCE
+                        </p>
+
+                        <h1>
+                            📊 My ATPL Progress
+                        </h1>
+
+                        <p class="pageDescription">
+                            Track your learning progress and
+                            identify areas that need more work.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <p id="progressLoading">
+                    Loading your progress...
+                </p>
+
+
+                <div
+                    id="overallProgressCard"
+                    class="progressCard"
+                >
+
+                    <h3>
+                        📊 Overall Progress
+                    </h3>
+
+                    <div id="overallProgressContent">
+                        Loading...
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="subjectProgressCard"
+                    class="progressCard"
+                >
+
+                    <h3>
+                        📚 Progress by Subject
+                    </h3>
+
+                    <div id="subjectProgressContent">
+                        Loading...
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="performanceCard"
+                    class="progressCard"
+                >
+
+                    <h3>
+                        🏆 Performance
+                    </h3>
+
+                    <div id="performanceContent">
+                        Loading...
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="wrongQuestionsCard"
+                    class="progressCard"
+                >
+
+                    <h3>
+                        🔴 Wrong Questions
+                    </h3>
+
+                    <div id="wrongQuestionsContent">
+                        Loading...
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="masteredQuestionsCard"
+                    class="progressCard"
+                >
+
+                    <h3>
+                        🏆 Mastered Questions
+                    </h3>
+
+                    <div id="masteredQuestionsContent">
+                        Loading...
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="progressBackBtn"
+                    class="backButton"
+                >
+                    ← Back to Dashboard
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 ADMIN DASHBOARD
+                 ================================================= -->
+
+            <div
+                id="adminScreen"
+                class="contentScreen"
+                style="display:none;"
+            >
+
+
+                <div class="pageHeader">
+
+                    <div>
+
+                        <p class="pageEyebrow">
+                            ADMINISTRATION
+                        </p>
+
+                        <h1>
+                            ⚙️ Admin Dashboard
+                        </h1>
+
+                        <p class="pageDescription">
+                            Manage access requests and
+                            approved users.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="adminCard">
+
+                    <h2>
+                        Access Requests
+                    </h2>
+
+                    <div id="adminRequests">
+                        Loading requests...
+                    </div>
+
+                </div>
+
+
+                <div class="adminCard">
+
+                    <h2>
+                        Approved Users
+                    </h2>
+
+                    <div id="approvedUsersList">
+                        Loading approved users...
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="adminBackBtn"
+                    class="backButton"
+                >
+                    ← Back to Dashboard
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 PRACTICE SETUP
+                 ================================================= -->
+
+            <div
+                id="practiceSetup"
+                class="contentScreen setupScreen"
+                style="display:none;"
+            >
+
+
+                <div class="pageHeader">
+
+                    <div>
+
+                        <p class="pageEyebrow">
+                            STUDY MODE
+                        </p>
+
+                        <h1>
+                            📖 Practice Questions
+                        </h1>
+
+                        <p class="pageDescription">
+                            Work through questions at your
+                            own pace.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="setupCard">
+
+
+                    <label for="practiceSubjectSelect">
+                        Choose Subject
+                    </label>
+
+
+                    <select
+                        id="practiceSubjectSelect"
+                    >
+
+                        <option value="meteorology">
+                            Meteorology
+                        </option>
+
+                        <option value="airlaw">
+                            Air Law
+                        </option>
+
+                        <option value="operational">
+                            Operational Procedures
+                        </option>
+
+                    </select>
+
+
+                    <button
+                        id="startPracticeBtn"
+                        class="modeButton primaryButton"
+                    >
+                        Start Practice
+                    </button>
+
+
+                    <div
+                        id="resetProgressSection"
+                        style="display:none;"
+                    >
+
+                        <hr>
+
+                        <h3>
+                            Reset Progress
+                        </h3>
+
+                        <p>
+                            Reset the saved progress for
+                            the selected subject.
+                            Marked questions will not be deleted.
+                        </p>
+
+
+                        <button
+                            id="resetProgressBtn"
+                            class="resetButton"
+                        >
+                            🔄 Reset Progress
+                        </button>
+
+                    </div>
+
+
+                </div>
+
+
+                <button
+                    id="practiceBackBtn"
+                    class="backButton"
+                >
+                    ← Back to Dashboard
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 SUBJECT QUIZ SETUP
+                 ================================================= -->
+
+            <div
+                id="quizSetup"
+                class="contentScreen setupScreen"
+                style="display:none;"
+            >
+
+
+                <div class="pageHeader">
+
+                    <div>
+
+                        <p class="pageEyebrow">
+                            QUIZ MODE
+                        </p>
+
+                        <h1>
+                            📝 Subject Quiz
+                        </h1>
+
+                        <p class="pageDescription">
+                            Select a subject and challenge
+                            yourself with randomized questions.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="setupCard">
+
+
+                    <label for="subjectSelect">
+                        Choose Subject
+                    </label>
+
+
+                    <select id="subjectSelect">
+
+                        <option value="meteorology">
+                            Meteorology
+                        </option>
+
+                        <option value="airlaw">
+                            Air Law
+                        </option>
+
+                        <option value="operational">
+                            Operational Procedures
+                        </option>
+
+                    </select>
+
+
+                    <label for="questionCount">
+                        Number of Questions
+                    </label>
+
+
+                    <select id="questionCount">
+
+                        <option value="10">
+                            10 Questions
+                        </option>
+
+                        <option value="20">
+                            20 Questions
+                        </option>
+
+                        <option value="50">
+                            50 Questions
+                        </option>
+
+                        <option value="100">
+                            100 Questions
+                        </option>
+
+                        <option value="200">
+                            200 Questions
+                        </option>
+
+                        <option value="all">
+                            All Questions
+                        </option>
+
+                    </select>
+
+
+                    <button
+                        id="startQuizBtn"
+                        class="modeButton primaryButton"
+                    >
+                        Start Quiz
+                    </button>
+
+
+                </div>
+
+
+                <button
+                    id="backHomeBtn"
+                    class="backButton"
+                >
+                    ← Back to Dashboard
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 COMBINED QUIZ SETUP
+                 ================================================= -->
+
+            <div
+                id="combinedQuizSetup"
+                class="contentScreen setupScreen"
+                style="display:none;"
+            >
+
+
+                <div class="pageHeader">
+
+                    <div>
+
+                        <p class="pageEyebrow">
+                            FULL ATPL TRAINING
+                        </p>
+
+                        <h1>
+                            ✈️ Combined ATPL Quiz
+                        </h1>
+
+                        <p class="pageDescription">
+                            Questions from all ATPL subjects
+                            in one randomized quiz.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="setupCard">
+
+
+                    <p
+                        id="availableQuestions"
+                        class="availableQuestions"
+                    >
+                        Loading questions...
+                    </p>
+
+
+                    <label for="combinedQuestionCount">
+                        Number of Questions
+                    </label>
+
+
+                    <select id="combinedQuestionCount">
+
+                        <option value="10">
+                            10 Questions
+                        </option>
+
+                        <option value="20">
+                            20 Questions
+                        </option>
+
+                        <option value="50">
+                            50 Questions
+                        </option>
+
+                        <option value="100">
+                            100 Questions
+                        </option>
+
+                        <option value="200">
+                            200 Questions
+                        </option>
+
+                        <option value="all">
+                            All Questions
+                        </option>
+
+                    </select>
+
+
+                    <button
+                        id="startCombinedBtn"
+                        class="modeButton primaryButton"
+                    >
+                        Start Combined Quiz
+                    </button>
+
+
+                </div>
+
+
+                <button
+                    id="combinedBackBtn"
+                    class="backButton"
+                >
+                    ← Back to Dashboard
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 SEARCH
+                 ================================================= -->
+
+            <div
+                id="searchScreen"
+                class="contentScreen"
+                style="display:none;"
+            >
+
+
+                <div class="pageHeader">
+
+                    <div>
+
+                        <p class="pageEyebrow">
+                            QUESTION BANK
+                        </p>
+
+                        <h1>
+                            🔎 Search Questions
+                        </h1>
+
+                        <p class="pageDescription">
+                            Find any question across your ATPL
+                            question bank.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="searchCard">
+
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Search questions..."
+                    >
+
+
+                    <select id="searchSubject">
+
+                        <option value="all">
+                            All Subjects
+                        </option>
+
+                        <option value="meteorology">
+                            Meteorology
+                        </option>
+
+                        <option value="airlaw">
+                            Air Law
+                        </option>
+
+                        <option value="operational">
+                            Operational Procedures
+                        </option>
+
+                    </select>
+
+
+                    <button
+                        id="searchQuestionsBtn"
+                        class="modeButton primaryButton"
+                    >
+                        🔎 Search
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="searchResults"
+                    class="searchResults"
+                ></div>
+
+
+                <button
+                    id="searchBackBtn"
+                    class="backButton"
+                >
+                    ← Back to Dashboard
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 MARKED QUESTIONS
+                 ================================================= -->
+
+            <div
+                id="markedScreen"
+                class="contentScreen"
+                style="display:none;"
+            >
+
+
+                <div class="pageHeader">
+
+                    <div>
+
+                        <p class="pageEyebrow">
+                            YOUR STUDY LIST
+                        </p>
+
+                        <h1>
+                            ⭐ Marked Questions
+                        </h1>
+
+                        <p class="pageDescription">
+                            Questions you have saved for
+                            further review.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="markedQuizButtons"
+                    class="markedQuizGrid"
+                >
+
+
+                    <button
+                        id="allMarkedQuizBtn"
+                        class="markedQuizCard"
+                    >
+
+                        <span>
+                            ⭐
+                        </span>
+
+                        <strong>
+                            All Marked Questions
+                        </strong>
+
+                    </button>
+
+
+                    <button
+                        id="meteorologyMarkedQuizBtn"
+                        class="markedQuizCard"
+                    >
+
+                        <span>
+                            🌦️
+                        </span>
+
+                        <strong>
+                            Meteorology
+                        </strong>
+
+                    </button>
+
+
+                    <button
+                        id="airlawMarkedQuizBtn"
+                        class="markedQuizCard"
+                    >
+
+                        <span>
+                            ⚖️
+                        </span>
+
+                        <strong>
+                            Air Law
+                        </strong>
+
+                    </button>
+
+
+                    <button
+                        id="operationalMarkedQuizBtn"
+                        class="markedQuizCard"
+                    >
+
+                        <span>
+                            ✈️
+                        </span>
+
+                        <strong>
+                            Operational Procedures
+                        </strong>
+
+                    </button>
+
+
+                </div>
+
+
+                <div class="markedListCard">
+
+                    <h2>
+                        Your Marked Questions
+                    </h2>
+
+
+                    <div id="markedQuestionsList">
+                        Loading marked questions...
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="markedBackBtn"
+                    class="backButton"
+                >
+                    ← Back to Dashboard
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 QUESTION SCREEN
+                 ================================================= -->
+
+            <div
+                id="quizScreen"
+                class="contentScreen questionScreen"
+                style="display:none;"
+            >
+
+
+                <div class="questionTopBar">
+
+
+                    <div
+                        id="subject"
+                        class="questionSubject"
+                    >
+                        TEST
+                    </div>
+
+
+                    <div
+                        id="counter"
+                        class="questionCounter"
+                    ></div>
+
+
+                </div>
+
+
+                <div
+                    id="navigator"
+                    class="questionNavigator"
+                ></div>
+
+
+                <div
+                    id="questionCard"
+                    class="questionCard"
+                >
+
+
+                    <div
+                        id="question"
+                        class="question"
+                    ></div>
+
+
+                    <div
+                        id="questionImages"
+                        class="question-images"
+                    ></div>
+
+
+                    <button
+                        id="markQuestionBtn"
+                        class="markButton"
+                    >
+                        ⭐ Mark Question
+                    </button>
+
+
+                    <div
+                        id="answers"
+                        class="answers"
+                    ></div>
+
+
+                </div>
+
+
+                <div class="navigation">
+
+                    <button id="prevBtn">
+                        ← Previous
+                    </button>
+
+
+                    <button id="skipBtn">
+                        Skip
+                    </button>
+
+
+                    <button id="nextBtn">
+                        Next Question →
+                    </button>
+
+                </div>
+
+
+                <button
+                    id="questionBackBtn"
+                    class="backButton"
+                >
+                    ← Back to Dashboard
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 RESULTS
+                 ================================================= -->
+
+            <div
+                id="resultsScreen"
+                class="contentScreen resultsScreen"
+                style="display:none;"
+            >
+
+
+                <div class="resultsCard">
+
+
+                    <div class="resultsIcon">
+                        🏆
+                    </div>
+
+
+                    <h1>
+                        Quiz Complete
+                    </h1>
+
+
+                    <div id="resultScore"></div>
+
+
+                    <div id="resultDetails"></div>
+
+
+                    <div class="resultsActions">
+
+
+                        <button
+                            id="redoWrongBtn"
+                            class="modeButton primaryButton"
+                            style="display:none;"
+                        >
+                            🔁 Redo Wrong Questions
+                        </button>
+
+
+                        <button
+                            id="reviewBtn"
+                            class="modeButton secondaryButton"
+                        >
+                            Review Answers
+                        </button>
+
+
+                        <button
+                            id="resultsHomeBtn"
+                            class="backButton"
+                        >
+                            ← Back to Dashboard
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </main>
 
     </div>
 
-
-    <button
-        id="practiceBackBtn"
-        class="backButton"
-    >
-        ← Back
-    </button>
-
 </div>
 
 
-<!-- =====================================================
-     SUBJECT QUIZ SETUP
-     ===================================================== -->
 
-<div
-    id="quizSetup"
-    style="display:none;"
->
-
-    <h2>Subject Quiz</h2>
-
-    <label for="subjectSelect">
-        Choose Subject:
-    </label>
-
-    <select id="subjectSelect">
-
-        <option value="meteorology">
-            Meteorology
-        </option>
-
-        <option value="airlaw">
-            Air Law
-        </option>
-
-        <option value="operational">
-            Operational Procedures
-        </option>
-
-    </select>
-
-    <label for="questionCount">
-        Number of Questions:
-    </label>
-
-    <select id="questionCount">
-
-        <option value="10">10 Questions</option>
-        <option value="20">20 Questions</option>
-        <option value="50">50 Questions</option>
-        <option value="100">100 Questions</option>
-        <option value="200">200 Questions</option>
-        <option value="all">All Questions</option>
-
-    </select>
-
-    <button
-        id="startQuizBtn"
-        class="modeButton"
-    >
-        Start Quiz
-    </button>
-
-    <button
-        id="backHomeBtn"
-        class="backButton"
-    >
-        ← Back
-    </button>
-
-</div>
-
-
-<!-- =====================================================
-     COMBINED QUIZ SETUP
-     ===================================================== -->
-
-<div
-    id="combinedQuizSetup"
-    style="display:none;"
->
-
-    <h2>Combined ATPL Quiz</h2>
-
-    <p
-        id="availableQuestions"
-        class="availableQuestions"
-    >
-        Loading questions...
-    </p>
-
-    <label for="combinedQuestionCount">
-        Number of Questions:
-    </label>
-
-    <select id="combinedQuestionCount">
-
-        <option value="10">10 Questions</option>
-        <option value="20">20 Questions</option>
-        <option value="50">50 Questions</option>
-        <option value="100">100 Questions</option>
-        <option value="200">200 Questions</option>
-        <option value="all">All Questions</option>
-
-    </select>
-
-    <button
-        id="startCombinedBtn"
-        class="modeButton"
-    >
-        Start Combined Quiz
-    </button>
-
-    <button
-        id="combinedBackBtn"
-        class="backButton"
-    >
-        ← Back
-    </button>
-
-</div>
-
-
-<!-- =====================================================
-     SEARCH SCREEN
-     ===================================================== -->
-
-<div
-    id="searchScreen"
-    style="display:none;"
->
-
-    <h2>🔎 Search Questions</h2>
-
-    <input
-        type="text"
-        id="searchInput"
-        placeholder="Search questions..."
-    >
-
-    <select id="searchSubject">
-
-        <option value="all">
-            All Subjects
-        </option>
-
-        <option value="meteorology">
-            Meteorology
-        </option>
-
-        <option value="airlaw">
-            Air Law
-        </option>
-
-        <option value="operational">
-            Operational Procedures
-        </option>
-
-    </select>
-
-    <button
-        id="searchQuestionsBtn"
-        class="modeButton"
-    >
-        Search
-    </button>
-
-    <div id="searchResults"></div>
-
-    <button
-        id="searchBackBtn"
-        class="backButton"
-    >
-        ← Back to Home
-    </button>
-
-</div>
-
-
-<!-- =====================================================
-     MARKED QUESTIONS
-     ===================================================== -->
-
-<div
-    id="markedScreen"
-    style="display:none;"
->
-
-    <h2>⭐ Marked Questions</h2>
-
-    <p>
-        Choose a marked-question quiz:
-    </p>
-
-
-    <div id="markedQuizButtons">
-
-        <button
-            id="allMarkedQuizBtn"
-            class="modeButton"
-        >
-            ⭐ All Marked Questions
-        </button>
-
-        <button
-            id="meteorologyMarkedQuizBtn"
-            class="modeButton"
-        >
-            🌦️ Meteorology Marked Questions
-        </button>
-
-        <button
-            id="airlawMarkedQuizBtn"
-            class="modeButton"
-        >
-            ⚖️ Air Law Marked Questions
-        </button>
-
-        <button
-            id="operationalMarkedQuizBtn"
-            class="modeButton"
-        >
-            ✈️ Operational Procedures Marked Questions
-        </button>
-
-    </div>
-
-
-    <hr>
-
-    <h3>Your Marked Questions</h3>
-
-    <div id="markedQuestionsList">
-        Loading marked questions...
-    </div>
-
-    <button
-        id="markedBackBtn"
-        class="backButton"
-    >
-        ← Back to Home
-    </button>
-
-</div>
-
-
-<!-- =====================================================
-     QUESTION SCREEN
-     ===================================================== -->
-
-<div
-    id="quizScreen"
-    style="display:none;"
->
-
-    <div id="subject">
-        TEST
-    </div>
-
-    <div id="counter"></div>
-
-    <div id="navigator"></div>
-
-    <div
-        id="question"
-        class="question"
-    ></div>
-
-    <div
-        id="questionImages"
-        class="question-images"
-    ></div>
-
-    <button
-        id="markQuestionBtn"
-        class="markButton"
-    >
-        ⭐ Mark Question
-    </button>
-
-    <div id="answers"></div>
-
-    <div class="navigation">
-
-        <button id="prevBtn">
-            Previous
-        </button>
-
-        <button id="skipBtn">
-            Skip
-        </button>
-
-        <button id="nextBtn">
-            Next Question
-        </button>
-
-    </div>
-
-    <button
-        id="questionBackBtn"
-        class="backButton"
-    >
-        ← Back to Menu
-    </button>
-
-</div>
-
-
-<!-- =====================================================
-     RESULTS SCREEN
-     ===================================================== -->
-
-<div
-    id="resultsScreen"
-    style="display:none;"
->
-
-    <h2>Quiz Complete</h2>
-
-    <div id="resultScore"></div>
-
-    <div id="resultDetails"></div>
-
-
-    <button
-        id="redoWrongBtn"
-        class="modeButton"
-        style="display:none;"
-    >
-        🔁 Redo Wrong Questions
-    </button>
-
-
-    <button
-        id="reviewBtn"
-        class="modeButton"
-    >
-        Review Answers
-    </button>
-
-    <button
-        id="resultsHomeBtn"
-        class="backButton"
-    >
-        ← Back to Home
-    </button>
-
-</div>
-
-</div>
-
-
-<!-- =====================================================
+<!-- =========================================================
      SUPABASE
-     ===================================================== -->
+     ========================================================= -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 
 <script>
 
@@ -754,18 +1715,613 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_uZCsH6SxiKwiedJoKDKHOQ_g4xYR3id";
 
+
 const supabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
         SUPABASE_KEY
     );
 
-console.log("SUPABASE CONNECTED");
+
+console.log(
+    "SUPABASE CONNECTED"
+);
 
 </script>
 
 
+
+<!-- =========================================================
+     EXISTING JAVASCRIPT
+     ========================================================= -->
+
 <script src="js/script.js"></script>
+
+
+
+<!-- =========================================================
+     NEW LAYOUT CONTROLS
+     ========================================================= -->
+
+<script>
+
+
+// ============================================================
+// OPEN DASHBOARD
+// ============================================================
+
+function openDashboard() {
+
+    const screens = [
+
+        "loginScreen",
+        "accessRequestScreen",
+        "progressScreen",
+        "adminScreen",
+        "practiceSetup",
+        "quizSetup",
+        "combinedQuizSetup",
+        "searchScreen",
+        "markedScreen",
+        "quizScreen",
+        "resultsScreen"
+
+    ];
+
+
+    screens.forEach(
+        function(id) {
+
+            const element =
+                document.getElementById(id);
+
+            if (element) {
+
+                element.style.display =
+                    "none";
+
+            }
+
+        }
+    );
+
+
+    const home =
+        document.getElementById(
+            "homeScreen"
+        );
+
+
+    if (home) {
+
+        home.style.display =
+            "block";
+
+    }
+
+
+    setActiveSidebar(
+        "sidebarHomeBtn"
+    );
+
+}
+
+
+// ============================================================
+// SIDEBAR ACTIVE STATE
+// ============================================================
+
+function setActiveSidebar(
+    buttonId
+) {
+
+    document
+        .querySelectorAll(
+            ".sidebarButton"
+        )
+        .forEach(
+            function(button) {
+
+                button.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+    const button =
+        document.getElementById(
+            buttonId
+        );
+
+
+    if (button) {
+
+        button.classList.add(
+            "active"
+        );
+
+    }
+
+}
+
+
+// ============================================================
+// SIDEBAR NAVIGATION TRACKING
+// ============================================================
+
+document
+    .getElementById(
+        "sidebarPracticeBtn"
+    )
+    .addEventListener(
+        "click",
+        function() {
+
+            setActiveSidebar(
+                "sidebarPracticeBtn"
+            );
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "sidebarSubjectQuizBtn"
+    )
+    .addEventListener(
+        "click",
+        function() {
+
+            setActiveSidebar(
+                "sidebarSubjectQuizBtn"
+            );
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "sidebarCombinedQuizBtn"
+    )
+    .addEventListener(
+        "click",
+        function() {
+
+            setActiveSidebar(
+                "sidebarCombinedQuizBtn"
+            );
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "sidebarMarkedBtn"
+    )
+    .addEventListener(
+        "click",
+        function() {
+
+            setActiveSidebar(
+                "sidebarMarkedBtn"
+            );
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "sidebarSearchBtn"
+    )
+    .addEventListener(
+        "click",
+        function() {
+
+            setActiveSidebar(
+                "sidebarSearchBtn"
+            );
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "sidebarProgressBtn"
+    )
+    .addEventListener(
+        "click",
+        function() {
+
+            setActiveSidebar(
+                "sidebarProgressBtn"
+            );
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "sidebarAdminBtn"
+    )
+    .addEventListener(
+        "click",
+        function() {
+
+            setActiveSidebar(
+                "sidebarAdminBtn"
+            );
+
+        }
+    );
+
+
+// ============================================================
+// MOBILE SIDEBAR
+// ============================================================
+
+function toggleSidebar() {
+
+    const sidebar =
+        document.getElementById(
+            "sidebar"
+        );
+
+
+    if (sidebar) {
+
+        sidebar.classList.toggle(
+            "mobileOpen"
+        );
+
+    }
+
+}
+
+
+// Close mobile sidebar after selecting an option
+
+document
+    .querySelectorAll(
+        ".sidebarButton"
+    )
+    .forEach(
+        function(button) {
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    if (
+                        window.innerWidth <=
+                        768
+                    ) {
+
+                        const sidebar =
+                            document.getElementById(
+                                "sidebar"
+                            );
+
+
+                        if (sidebar) {
+
+                            sidebar.classList.remove(
+                                "mobileOpen"
+                            );
+
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+// ============================================================
+// LOGOUT
+// ============================================================
+
+async function logoutUser() {
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to log out?"
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    try {
+
+        await supabaseClient
+            .auth
+            .signOut();
+
+
+        document
+            .getElementById(
+                "mainApplication"
+            )
+            .style
+            .display =
+                "none";
+
+
+        document
+            .getElementById(
+                "loginArea"
+            )
+            .style
+            .display =
+                "block";
+
+
+        document
+            .getElementById(
+                "loginScreen"
+            )
+            .style
+            .display =
+                "block";
+
+
+        document
+            .getElementById(
+                "accessRequestScreen"
+            )
+            .style
+            .display =
+                "none";
+
+
+        document
+            .getElementById(
+                "loginEmail"
+            )
+            .value =
+                "";
+
+
+        document
+            .getElementById(
+                "loginPassword"
+            )
+            .value =
+                "";
+
+
+        document
+            .getElementById(
+                "loginMessage"
+            )
+            .innerHTML =
+                "";
+
+
+    } catch (error) {
+
+        console.error(
+            "Logout error:",
+            error
+        );
+
+
+        alert(
+            "Unable to log out."
+        );
+
+    }
+
+}
+
+
+// ============================================================
+// SHOW APPLICATION AFTER LOGIN
+// ============================================================
+
+async function showMainApplication() {
+
+    document
+        .getElementById(
+            "loginArea"
+        )
+        .style
+        .display =
+            "none";
+
+
+    document
+        .getElementById(
+            "mainApplication"
+        )
+        .style
+        .display =
+            "flex";
+
+
+    openDashboard();
+
+
+    try {
+
+        const {
+            data: {
+                user
+            }
+        } =
+            await supabaseClient
+                .auth
+                .getUser();
+
+
+        if (
+            user &&
+            user.email
+        ) {
+
+            document
+                .getElementById(
+                    "sidebarUserName"
+                )
+                .innerHTML =
+                    escapeHTML(
+                        user.email
+                    );
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Unable to load user profile:",
+            error
+        );
+
+    }
+
+}
+
+
+// ============================================================
+// ADMIN SIDEBAR VISIBILITY
+// ============================================================
+
+async function updateAdminSidebar() {
+
+    const sidebarAdmin =
+        document.getElementById(
+            "sidebarAdminBtn"
+        );
+
+
+    if (!sidebarAdmin) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const {
+            data: {
+                user
+            }
+        } =
+            await supabaseClient
+                .auth
+                .getUser();
+
+
+        if (!user) {
+
+            sidebarAdmin.style.display =
+                "none";
+
+            return;
+
+        }
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from(
+                    "admin_users"
+                )
+                .select(
+                    "email"
+                )
+                .eq(
+                    "email",
+                    user.email
+                )
+                .maybeSingle();
+
+
+        if (
+            !error &&
+            data
+        ) {
+
+            sidebarAdmin.style.display =
+                "flex";
+
+            document
+                .getElementById(
+                    "sidebarUserRole"
+                )
+                .innerHTML =
+                    "Administrator";
+
+        } else {
+
+            sidebarAdmin.style.display =
+                "none";
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Admin sidebar error:",
+            error
+        );
+
+        sidebarAdmin.style.display =
+            "none";
+
+    }
+
+}
+
+
+// ============================================================
+// MONITOR LOGIN STATE
+// ============================================================
+
+supabaseClient
+    .auth
+    .onAuthStateChange(
+        async function(
+            event,
+            session
+        ) {
+
+            if (
+                session &&
+                session.user
+            ) {
+
+                await showMainApplication();
+
+                await updateAdminSidebar();
+
+            }
+
+        }
+    );
+
+
+</script>
+
 
 </body>
 
