@@ -1,11 +1,11 @@
 /* =========================================================
    ATPL STUDY PLATFORM
-   MODERN AVIATION DESIGN
+   PROFESSIONAL AVIATION LEARNING DESIGN
    ========================================================= */
 
 
 /* =========================================================
-   GLOBAL
+   GLOBAL RESET
    ========================================================= */
 
 * {
@@ -14,6 +14,7 @@
 
 html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -26,16 +27,30 @@ body {
         Helvetica,
         sans-serif;
 
+    color: #17212b;
+
     background:
         linear-gradient(
             135deg,
-            #071a2d 0%,
-            #0d2b45 45%,
-            #eef3f8 45%,
-            #f5f7fa 100%
+            #061a2d 0%,
+            #0b304d 38%,
+            #edf3f7 38%,
+            #f6f8fa 100%
         );
 
-    color: #17212b;
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   BUTTON / INPUT INHERIT
+   ========================================================= */
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
 }
 
 
@@ -44,18 +59,20 @@ body {
    ========================================================= */
 
 .container {
-    width: min(900px, calc(100% - 30px));
+    width: min(960px, calc(100% - 32px));
 
     margin: 40px auto;
 
+    padding: 36px;
+
     background: #ffffff;
 
-    padding: 35px;
+    border: 1px solid rgba(16, 48, 70, 0.08);
 
     border-radius: 18px;
 
     box-shadow:
-        0 20px 50px rgba(0, 0, 0, 0.18);
+        0 22px 55px rgba(3, 27, 46, 0.18);
 
     min-height: 500px;
 }
@@ -66,28 +83,31 @@ body {
    ========================================================= */
 
 h1 {
-    margin: -35px -35px 30px -35px;
+    margin: -36px -36px 32px;
 
     padding: 28px 20px;
 
     text-align: center;
 
-    color: white;
+    color: #ffffff;
 
     font-size: 30px;
+
+    font-weight: 800;
 
     letter-spacing: 2px;
 
     background:
         linear-gradient(
             135deg,
-            #061a2e,
-            #0b4268
+            #041827,
+            #0a456d
         );
 
     border-radius: 18px 18px 0 0;
 
-    position: relative;
+    box-shadow:
+        inset 0 -1px 0 rgba(255,255,255,0.08);
 }
 
 h1::after {
@@ -95,11 +115,11 @@ h1::after {
 
     display: block;
 
-    font-size: 20px;
+    margin-top: 7px;
 
-    margin-top: 5px;
+    font-size: 19px;
 
-    opacity: 0.8;
+    opacity: 0.75;
 }
 
 
@@ -108,23 +128,27 @@ h1::after {
    ========================================================= */
 
 h2 {
+    margin: 10px 0 26px;
+
     text-align: center;
 
-    color: #092c49;
+    color: #092f4c;
 
     font-size: 25px;
 
-    margin: 10px 0 25px;
+    font-weight: 750;
 }
 
 h3 {
-    color: #123b5a;
+    margin-top: 26px;
 
-    margin-top: 25px;
+    color: #123e5d;
+
+    font-size: 19px;
 }
 
 p {
-    line-height: 1.6;
+    line-height: 1.65;
 }
 
 
@@ -133,7 +157,7 @@ p {
    ========================================================= */
 
 #loginScreen {
-    max-width: 500px;
+    width: min(500px, 100%);
 
     margin: 0 auto;
 
@@ -141,18 +165,43 @@ p {
 }
 
 #loginScreen h2 {
-    margin-top: 10px;
+    margin-top: 8px;
 }
 
 #loginScreen::before {
-    content: "✈️";
+    content: "✈";
 
-    display: block;
+    display: flex;
 
-    font-size: 55px;
+    align-items: center;
+    justify-content: center;
 
-    margin: 5px auto 15px;
+    width: 82px;
+    height: 82px;
+
+    margin: 5px auto 20px;
+
+    color: #ffffff;
+
+    font-size: 40px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #082b45,
+            #0b6794
+        );
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 10px 25px rgba(8, 57, 86, 0.2);
 }
+
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
 
 #loginScreen input,
 #accessRequestScreen input,
@@ -163,23 +212,28 @@ p {
 
     width: 100%;
 
-    padding: 15px 16px;
+    min-height: 50px;
 
     margin: 12px 0;
 
-    font-size: 16px;
+    padding: 14px 16px;
 
     color: #17212b;
 
+    font-size: 16px;
+
     background: #f8fafc;
 
-    border: 1px solid #d5dde5;
+    border: 1px solid #d2dce4;
 
     border-radius: 10px;
 
     outline: none;
 
-    transition: 0.2s;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
 }
 
 #loginScreen input:focus,
@@ -187,105 +241,26 @@ p {
 #accessRequestScreen textarea:focus,
 #searchInput:focus {
 
-    border-color: #0b6fa4;
+    background: #ffffff;
 
-    background: white;
+    border-color: #0872a5;
 
     box-shadow:
-        0 0 0 3px rgba(11, 111, 164, 0.12);
+        0 0 0 4px rgba(8, 114, 165, 0.11);
 }
+
+
+/* =========================================================
+   MESSAGES
+   ========================================================= */
 
 #loginMessage,
 #accessRequestMessage {
+    margin-top: 15px;
 
     text-align: center;
 
-    margin-top: 15px;
-
-    font-weight: 600;
-}
-
-
-/* =========================================================
-   MODE BUTTONS
-   ========================================================= */
-
-.modeButton {
-
-    display: block;
-
-    width: 100%;
-
-    padding: 16px 20px;
-
-    margin: 12px 0;
-
-    font-size: 17px;
-
-    font-weight: 600;
-
-    letter-spacing: 0.2px;
-
-    cursor: pointer;
-
-    border: none;
-
-    border-radius: 10px;
-
-    color: white;
-
-    background:
-        linear-gradient(
-            135deg,
-            #092d49,
-            #0b618e
-        );
-
-    box-shadow:
-        0 5px 12px rgba(8, 45, 73, 0.15);
-
-    transition:
-        transform 0.18s,
-        box-shadow 0.18s,
-        background 0.18s;
-}
-
-.modeButton:hover {
-
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 8px 18px rgba(8, 45, 73, 0.25);
-
-    background:
-        linear-gradient(
-            135deg,
-            #0b3b5f,
-            #0877ad
-        );
-}
-
-.modeButton:active {
-    transform: translateY(0);
-}
-
-
-/* =========================================================
-   HOME SCREEN
-   ========================================================= */
-
-#homeScreen h2 {
-    margin-bottom: 25px;
-}
-
-#homeScreen .modeButton {
-    min-height: 58px;
-
-    font-size: 18px;
-
-    text-align: left;
-
-    padding-left: 24px;
+    font-weight: 700;
 }
 
 
@@ -294,18 +269,16 @@ p {
    ========================================================= */
 
 label {
-
     display: block;
 
     margin-top: 20px;
-
     margin-bottom: 8px;
 
-    color: #23445d;
+    color: #25465d;
 
-    font-size: 15px;
+    font-size: 14px;
 
-    font-weight: 700;
+    font-weight: 750;
 }
 
 
@@ -321,15 +294,17 @@ label {
 
     width: 100%;
 
-    padding: 14px 15px;
+    min-height: 50px;
 
-    font-size: 16px;
+    padding: 13px 15px;
 
     color: #17212b;
 
+    font-size: 16px;
+
     background: #f8fafc;
 
-    border: 1px solid #ccd7e0;
+    border: 1px solid #ccd8e1;
 
     border-radius: 10px;
 
@@ -337,7 +312,10 @@ label {
 
     cursor: pointer;
 
-    transition: 0.2s;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
 }
 
 #subjectSelect:focus,
@@ -346,10 +324,96 @@ label {
 #combinedQuestionCount:focus,
 #searchSubject:focus {
 
-    border-color: #0b6fa4;
+    background: #ffffff;
+
+    border-color: #0872a5;
 
     box-shadow:
-        0 0 0 3px rgba(11, 111, 164, 0.12);
+        0 0 0 4px rgba(8, 114, 165, 0.11);
+}
+
+
+/* =========================================================
+   PRIMARY MODE BUTTONS
+   ========================================================= */
+
+.modeButton {
+
+    display: block;
+
+    width: 100%;
+
+    min-height: 54px;
+
+    margin: 12px 0;
+
+    padding: 15px 20px;
+
+    color: #ffffff;
+
+    font-size: 17px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.1px;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #082d48,
+            #096891
+        );
+
+    box-shadow:
+        0 5px 14px rgba(7, 53, 80, 0.16);
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        filter 0.18s ease;
+}
+
+.modeButton:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 9px 20px rgba(7, 53, 80, 0.23);
+
+    filter: brightness(1.06);
+}
+
+.modeButton:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   HOME SCREEN
+   ========================================================= */
+
+#homeScreen h2 {
+    margin-bottom: 26px;
+}
+
+#homeScreen .modeButton {
+
+    min-height: 62px;
+
+    padding: 18px 24px;
+
+    text-align: left;
+
+    font-size: 18px;
+
+    border-radius: 12px;
 }
 
 
@@ -363,29 +427,32 @@ label {
 
     width: 100%;
 
-    padding: 14px 18px;
+    min-height: 48px;
 
     margin-top: 15px;
 
-    font-size: 16px;
-
-    font-weight: 600;
-
-    cursor: pointer;
+    padding: 13px 18px;
 
     color: #294254;
 
+    font-size: 16px;
+
+    font-weight: 700;
+
     background: #f1f5f8;
 
-    border: 1px solid #d5dee6;
+    border: 1px solid #d5dfe6;
 
     border-radius: 10px;
 
-    transition: 0.2s;
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        transform 0.18s ease;
 }
 
 .backButton:hover {
-
     background: #e5edf3;
 
     transform: translateY(-1px);
@@ -402,22 +469,22 @@ label {
 
     width: 100%;
 
-    padding: 14px 18px;
+    min-height: 48px;
 
     margin: 15px 0;
 
+    padding: 13px 18px;
+
+    color: #ffffff;
+
     font-size: 16px;
 
-    font-weight: 600;
-
-    cursor: pointer;
-
-    color: white;
+    font-weight: 700;
 
     background:
         linear-gradient(
             135deg,
-            #b42318,
+            #a91e17,
             #dc3545
         );
 
@@ -425,32 +492,35 @@ label {
 
     border-radius: 10px;
 
-    box-shadow:
-        0 5px 12px rgba(180, 35, 24, 0.18);
+    cursor: pointer;
 
-    transition: 0.2s;
+    box-shadow:
+        0 5px 13px rgba(180, 35, 24, 0.16);
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
 }
 
 .resetButton:hover {
-
     transform: translateY(-2px);
 
     box-shadow:
-        0 8px 16px rgba(180, 35, 24, 0.25);
+        0 8px 18px rgba(180, 35, 24, 0.24);
 }
 
 
 /* =========================================================
-   RESET SECTION
+   RESET PROGRESS SECTION
    ========================================================= */
 
 #resetProgressSection {
 
-    margin-top: 25px;
+    margin-top: 28px;
 
     padding: 20px;
 
-    background: #f8fafc;
+    background: #fafbfc;
 
     border: 1px solid #dce5ec;
 
@@ -458,6 +528,7 @@ label {
 }
 
 #resetProgressSection h3 {
+
     margin-top: 0;
 
     color: #9d1c15;
@@ -470,21 +541,23 @@ label {
 
 .availableQuestions {
 
-    text-align: center;
-
-    font-size: 17px;
-
     margin: 20px 0;
 
-    padding: 14px;
-
-    background: #eef6fb;
-
-    border-radius: 10px;
+    padding: 15px;
 
     color: #17496b;
 
+    font-size: 16px;
+
+    font-weight: 650;
+
+    text-align: center;
+
+    background: #eef7fc;
+
     border: 1px solid #d4e8f5;
+
+    border-radius: 10px;
 }
 
 
@@ -493,7 +566,6 @@ label {
    ========================================================= */
 
 #quizScreen {
-
     position: relative;
 }
 
@@ -504,35 +576,35 @@ label {
 
 #subject {
 
-    text-align: center;
+    margin: 4px 0 7px;
 
-    font-size: 21px;
+    color: #084568;
+
+    font-size: 22px;
 
     font-weight: 800;
 
-    letter-spacing: 0.5px;
+    text-align: center;
 
-    color: #0a4165;
-
-    margin: 5px 0 8px;
+    letter-spacing: 0.3px;
 }
 
 
 /* =========================================================
-   COUNTER
+   QUESTION COUNTER
    ========================================================= */
 
 #counter {
 
-    text-align: center;
+    margin-bottom: 18px;
 
     color: #657987;
 
-    font-size: 15px;
+    font-size: 14px;
 
-    font-weight: 600;
+    font-weight: 700;
 
-    margin-bottom: 18px;
+    text-align: center;
 }
 
 
@@ -548,22 +620,24 @@ label {
 
     gap: 6px;
 
+    max-height: 190px;
+
     margin: 20px 0;
 
     padding: 14px;
+
+    overflow-y: auto;
 
     background: #f5f8fa;
 
     border: 1px solid #dce4ea;
 
     border-radius: 12px;
-
-    max-height: 180px;
-
-    overflow-y: auto;
 }
 
 .navButton {
+
+    flex: 0 0 38px;
 
     width: 38px;
 
@@ -571,22 +645,31 @@ label {
 
     padding: 0;
 
-    cursor: pointer;
+    color: #334957;
 
     font-size: 13px;
 
-    font-weight: 700;
+    font-weight: 750;
+
+    background: #ffffff;
 
     border: 1px solid #cbd5dc;
 
     border-radius: 7px;
 
-    transition: 0.15s;
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
 }
 
 .navButton:hover {
 
     transform: scale(1.06);
+
+    box-shadow:
+        0 3px 8px rgba(0,0,0,0.10);
 }
 
 
@@ -596,36 +679,36 @@ label {
 
 .navButton.notAttempted {
 
-    background: white;
+    background: #ffffff;
 
     color: #334957;
 }
 
 .navButton.correct {
 
+    color: #ffffff !important;
+
     background: #16834b !important;
 
-    color: white !important;
-
-    border-color: #16834b;
+    border-color: #16834b !important;
 }
 
 .navButton.wrong {
 
+    color: #ffffff !important;
+
     background: #d93025 !important;
 
-    color: white !important;
-
-    border-color: #d93025;
+    border-color: #d93025 !important;
 }
 
 .navButton.skipped {
 
-    background: #f39c12 !important;
+    color: #ffffff !important;
 
-    color: white !important;
+    background: #e69a12 !important;
 
-    border-color: #f39c12;
+    border-color: #e69a12 !important;
 }
 
 
@@ -635,15 +718,17 @@ label {
 
 .question {
 
-    font-size: 21px;
-
-    line-height: 1.6;
-
-    font-weight: 600;
-
     margin: 25px 0;
 
-    padding: 24px;
+    padding: 25px 25px 25px 27px;
+
+    color: #17212b;
+
+    font-size: 21px;
+
+    font-weight: 650;
+
+    line-height: 1.65;
 
     background: #f8fafc;
 
@@ -651,10 +736,8 @@ label {
 
     border-radius: 12px;
 
-    color: #17212b;
-
     box-shadow:
-        0 3px 10px rgba(0, 0, 0, 0.04);
+        0 4px 12px rgba(0, 0, 0, 0.045);
 }
 
 
@@ -668,18 +751,24 @@ label {
 
     flex-wrap: wrap;
 
-    gap: 15px;
-
     justify-content: center;
 
-    margin: 20px 0;
+    align-items: flex-start;
+
+    gap: 16px;
+
+    width: 100%;
+
+    margin: 22px 0;
 }
 
 .question-figure {
 
+    display: block;
+
     max-width: 100%;
 
-    max-height: 420px;
+    max-height: 440px;
 
     width: auto;
 
@@ -687,20 +776,22 @@ label {
 
     object-fit: contain;
 
+    padding: 6px;
+
+    background: #ffffff;
+
     border: 1px solid #d4dde4;
 
     border-radius: 10px;
 
-    background: white;
-
-    padding: 6px;
-
-    cursor: zoom-in;
-
     box-shadow:
         0 5px 15px rgba(0, 0, 0, 0.10);
 
-    transition: 0.2s;
+    cursor: zoom-in;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .question-figure:hover {
@@ -708,37 +799,41 @@ label {
     transform: scale(1.015);
 
     box-shadow:
-        0 8px 22px rgba(0, 0, 0, 0.16);
+        0 9px 24px rgba(0, 0, 0, 0.15);
 }
 
 
 /* =========================================================
-   MARK BUTTON
+   MARK QUESTION
    ========================================================= */
 
 .markButton {
 
     width: 100%;
 
-    padding: 13px;
+    min-height: 46px;
 
     margin: 12px 0 18px;
 
-    font-size: 15px;
-
-    font-weight: 700;
-
-    cursor: pointer;
+    padding: 12px 15px;
 
     color: #6c5200;
 
-    background: #fff8dc;
+    font-size: 15px;
+
+    font-weight: 750;
+
+    background: #fff9df;
 
     border: 1px solid #ead27a;
 
     border-radius: 9px;
 
-    transition: 0.2s;
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        transform 0.18s ease;
 }
 
 .markButton:hover {
@@ -750,7 +845,7 @@ label {
 
 .markButton.marked {
 
-    color: white;
+    color: #ffffff;
 
     background:
         linear-gradient(
@@ -768,7 +863,6 @@ label {
    ========================================================= */
 
 #answers {
-
     margin-top: 10px;
 }
 
@@ -778,31 +872,38 @@ label {
 
     width: 100%;
 
-    padding: 17px 18px;
+    min-height: 54px;
 
     margin: 11px 0;
 
-    font-size: 17px;
-
-    line-height: 1.4;
-
-    text-align: left;
-
-    cursor: pointer;
+    padding: 16px 18px;
 
     color: #1d303e;
 
-    background: white;
+    font-size: 17px;
+
+    font-weight: 550;
+
+    line-height: 1.45;
+
+    text-align: left;
+
+    background: #ffffff;
 
     border: 1px solid #d1dce4;
 
     border-radius: 10px;
 
     box-shadow:
-        0 2px 6px rgba(0, 0, 0, 0.04);
+        0 2px 7px rgba(0, 0, 0, 0.035);
+
+    cursor: pointer;
 
     transition:
-        0.18s;
+        background 0.18s ease,
+        border-color 0.18s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
 }
 
 .option:hover {
@@ -812,6 +913,9 @@ label {
     border-color: #5391b4;
 
     transform: translateX(3px);
+
+    box-shadow:
+        0 4px 10px rgba(0,0,0,0.07);
 }
 
 
@@ -821,26 +925,26 @@ label {
 
 .option.correct {
 
+    color: #ffffff !important;
+
     background: #16834b !important;
 
     border-color: #16834b !important;
 
-    color: white !important;
-
     box-shadow:
-        0 5px 12px rgba(22, 131, 75, 0.2);
+        0 5px 13px rgba(22, 131, 75, 0.20);
 }
 
 .option.wrong {
+
+    color: #ffffff !important;
 
     background: #d93025 !important;
 
     border-color: #d93025 !important;
 
-    color: white !important;
-
     box-shadow:
-        0 5px 12px rgba(217, 48, 37, 0.2);
+        0 5px 13px rgba(217, 48, 37, 0.20);
 }
 
 
@@ -854,30 +958,34 @@ label {
 
     gap: 10px;
 
-    margin-top: 25px;
+    margin-top: 26px;
 }
 
 .navigation button {
 
     flex: 1;
 
-    padding: 14px 10px;
+    min-height: 48px;
+
+    padding: 13px 10px;
+
+    color: #ffffff;
 
     font-size: 15px;
 
-    font-weight: 700;
+    font-weight: 750;
 
-    cursor: pointer;
+    background: #173c55;
 
     border: none;
 
     border-radius: 9px;
 
-    color: white;
+    cursor: pointer;
 
-    background: #173c55;
-
-    transition: 0.2s;
+    transition:
+        background 0.18s ease,
+        transform 0.18s ease;
 }
 
 .navigation button:hover {
@@ -903,12 +1011,10 @@ label {
    ========================================================= */
 
 #resultsScreen {
-
     text-align: center;
 }
 
 #resultsScreen h2 {
-
     margin-bottom: 25px;
 }
 
@@ -921,17 +1027,16 @@ label {
 
     display: flex;
 
-    justify-content: center;
-
     align-items: center;
-
-    margin: 20px auto;
+    justify-content: center;
 
     width: 170px;
 
     height: 170px;
 
-    border-radius: 50%;
+    margin: 20px auto;
+
+    color: #ffffff;
 
     background:
         linear-gradient(
@@ -940,10 +1045,10 @@ label {
             #0b739f
         );
 
-    color: white;
+    border-radius: 50%;
 
     box-shadow:
-        0 10px 30px rgba(9, 47, 76, 0.25);
+        0 12px 32px rgba(9, 47, 76, 0.25);
 }
 
 #resultScore h1 {
@@ -952,13 +1057,17 @@ label {
 
     padding: 0;
 
-    background: none;
-
-    border-radius: 0;
+    color: #ffffff;
 
     font-size: 42px;
 
     letter-spacing: 0;
+
+    background: none;
+
+    border-radius: 0;
+
+    box-shadow: none;
 }
 
 #resultScore h1::after {
@@ -972,34 +1081,33 @@ label {
 
 #resultDetails {
 
-    max-width: 450px;
+    width: min(450px, 100%);
 
     margin: 25px auto;
 
     padding: 20px;
+
+    font-size: 17px;
+
+    text-align: left;
 
     background: #f6f9fb;
 
     border: 1px solid #dce5eb;
 
     border-radius: 12px;
-
-    font-size: 17px;
-
-    text-align: left;
 }
 
 #resultDetails p {
 
     margin: 10px 0;
 
-    padding-bottom: 8px;
+    padding-bottom: 9px;
 
     border-bottom: 1px solid #e2e8ed;
 }
 
 #resultDetails p:last-child {
-
     border-bottom: none;
 }
 
@@ -1009,12 +1117,10 @@ label {
    ========================================================= */
 
 #searchScreen input {
-
     margin-bottom: 12px;
 }
 
 #searchResults {
-
     margin-top: 25px;
 }
 
@@ -1026,20 +1132,22 @@ label {
 #searchResults > div,
 #markedQuestionsList > div {
 
-    background: white;
+    margin-bottom: 14px !important;
+
+    padding: 20px !important;
+
+    background: #ffffff !important;
 
     border: 1px solid #dce4ea !important;
 
     border-radius: 12px !important;
 
-    padding: 20px !important;
-
-    margin-bottom: 14px !important;
-
     box-shadow:
         0 4px 12px rgba(0, 0, 0, 0.05);
 
-    transition: 0.2s;
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
 }
 
 #searchResults > div:hover,
@@ -1048,7 +1156,7 @@ label {
     transform: translateY(-2px);
 
     box-shadow:
-        0 7px 18px rgba(0, 0, 0, 0.08);
+        0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
 
@@ -1058,9 +1166,9 @@ label {
 
 #markedScreen > p {
 
-    text-align: center;
-
     color: #607382;
+
+    text-align: center;
 }
 
 #markedQuizButtons {
@@ -1086,7 +1194,7 @@ label {
 
 #adminScreen {
 
-    max-width: 800px;
+    width: min(800px, 100%);
 
     margin: auto;
 }
@@ -1094,15 +1202,15 @@ label {
 #adminRequests > div,
 #approvedUsersList > div {
 
+    margin-bottom: 12px !important;
+
+    padding: 18px !important;
+
     background: #f8fafc !important;
 
     border: 1px solid #d9e2e8 !important;
 
     border-radius: 12px !important;
-
-    padding: 18px !important;
-
-    margin-bottom: 12px !important;
 
     box-shadow:
         0 3px 8px rgba(0, 0, 0, 0.04);
@@ -1111,11 +1219,11 @@ label {
 #adminScreen hr,
 #markedScreen hr {
 
+    margin: 30px 0;
+
     border: none;
 
     border-top: 1px solid #dce4ea;
-
-    margin: 30px 0;
 }
 
 
@@ -1127,43 +1235,27 @@ textarea {
 
     resize: vertical;
 
-    font-family: inherit;
+    min-height: 100px;
 }
 
 
 /* =========================================================
-   SCROLLBAR
+   FOCUS ACCESSIBILITY
    ========================================================= */
 
-::-webkit-scrollbar {
+button:focus-visible,
+select:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
 
-    width: 8px;
+    outline: 3px solid rgba(8, 114, 165, 0.25);
 
-}
-
-::-webkit-scrollbar-track {
-
-    background: #eef2f5;
-
-}
-
-::-webkit-scrollbar-thumb {
-
-    background: #9aabb8;
-
-    border-radius: 10px;
-
-}
-
-::-webkit-scrollbar-thumb:hover {
-
-    background: #708593;
-
+    outline-offset: 2px;
 }
 
 
 /* =========================================================
-   DISABLED BUTTON
+   DISABLED ELEMENTS
    ========================================================= */
 
 button:disabled,
@@ -1172,21 +1264,38 @@ select:disabled {
     opacity: 0.5;
 
     cursor: not-allowed;
+
+    transform: none !important;
 }
 
 
 /* =========================================================
-   BUTTON GENERAL
+   SCROLLBAR
    ========================================================= */
 
-button {
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
 
-    font-family: inherit;
+::-webkit-scrollbar-track {
+    background: #eef2f5;
+}
+
+::-webkit-scrollbar-thumb {
+
+    background: #9aabb8;
+
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #708593;
 }
 
 
 /* =========================================================
-   MOBILE RESPONSIVE
+   MOBILE / TABLET
    ========================================================= */
 
 @media (max-width: 700px) {
@@ -1196,9 +1305,9 @@ button {
         background:
             linear-gradient(
                 180deg,
-                #071a2d 0,
-                #0d2b45 130px,
-                #f3f6f9 130px,
+                #061a2d 0,
+                #0b304d 125px,
+                #f3f6f9 125px,
                 #f3f6f9 100%
             );
     }
@@ -1219,49 +1328,71 @@ button {
 
     h1 {
 
-        margin: -20px -20px 25px -20px;
+        margin: -20px -20px 25px;
 
         padding: 22px 15px;
 
         font-size: 24px;
 
+        letter-spacing: 1.5px;
+
         border-radius: 14px 14px 0 0;
     }
 
     h2 {
-
         font-size: 22px;
+    }
+
+    #loginScreen::before {
+
+        width: 70px;
+
+        height: 70px;
+
+        font-size: 34px;
     }
 
     .question {
 
-        font-size: 18px;
-
         padding: 18px;
 
-        line-height: 1.5;
+        font-size: 18px;
+
+        line-height: 1.55;
     }
 
     .option {
 
-        font-size: 16px;
+        min-height: 52px;
 
         padding: 15px;
+
+        font-size: 16px;
     }
 
     .navigation {
-
         gap: 6px;
     }
 
     .navigation button {
 
-        padding: 13px 6px;
+        min-height: 46px;
+
+        padding: 12px 6px;
 
         font-size: 13px;
     }
 
+    #navigator {
+
+        max-height: 155px;
+
+        padding: 10px;
+    }
+
     .navButton {
+
+        flex-basis: 34px;
 
         width: 34px;
 
@@ -1270,11 +1401,8 @@ button {
         font-size: 12px;
     }
 
-    #navigator {
-
-        max-height: 145px;
-
-        padding: 10px;
+    .question-images {
+        gap: 10px;
     }
 
     .question-figure {
@@ -1290,7 +1418,6 @@ button {
     }
 
     #markedQuizButtons .modeButton {
-
         font-size: 15px;
     }
 
@@ -1302,10 +1429,8 @@ button {
     }
 
     #resultScore h1 {
-
         font-size: 34px;
     }
-
 }
 
 
@@ -1317,60 +1442,128 @@ button {
 
     .container {
 
-        width: calc(100% - 12px);
+        width: calc(100% - 10px);
 
-        margin: 6px auto;
+        margin: 5px auto;
 
         padding: 15px;
+
+        border-radius: 12px;
     }
 
     h1 {
 
-        margin: -15px -15px 20px -15px;
+        margin: -15px -15px 20px;
 
         padding: 19px 10px;
 
         font-size: 21px;
+
+        letter-spacing: 1px;
     }
 
     h2 {
-
         font-size: 20px;
+    }
+
+    h3 {
+        font-size: 18px;
     }
 
     #homeScreen .modeButton {
 
-        font-size: 16px;
-
         min-height: 52px;
+
+        padding: 14px 17px;
+
+        font-size: 16px;
     }
 
     .question {
 
-        font-size: 17px;
+        margin: 20px 0;
 
         padding: 15px;
+
+        font-size: 17px;
+
+        line-height: 1.5;
+
+        border-left-width: 4px;
     }
 
     .option {
 
-        font-size: 15px;
+        min-height: 50px;
 
         padding: 14px;
+
+        font-size: 15px;
     }
 
     .navigation button {
 
-        font-size: 12px;
+        min-height: 44px;
 
-        padding: 12px 4px;
+        padding: 11px 4px;
+
+        font-size: 12px;
     }
 
     .markButton {
-
         font-size: 14px;
     }
 
+    .question-figure {
+        max-height: 280px;
+    }
+
+    #resultScore {
+
+        width: 125px;
+
+        height: 125px;
+    }
+
+    #resultScore h1 {
+        font-size: 31px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 350px) {
+
+    .container {
+        padding: 12px;
+    }
+
+    h1 {
+
+        margin: -12px -12px 18px;
+
+        font-size: 19px;
+    }
+
+    .navigation {
+        flex-direction: column;
+    }
+
+    .navigation button {
+        width: 100%;
+    }
+
+    .navButton {
+
+        flex-basis: 32px;
+
+        width: 32px;
+
+        height: 30px;
+    }
 }
 
 
@@ -1381,8 +1574,7 @@ button {
 @media print {
 
     body {
-
-        background: white;
+        background: #ffffff;
     }
 
     .container {
@@ -1391,12 +1583,14 @@ button {
 
         margin: 0;
 
+        padding: 20px;
+
         box-shadow: none;
+
+        border: none;
     }
 
     button {
-
         display: none !important;
     }
-
 }
