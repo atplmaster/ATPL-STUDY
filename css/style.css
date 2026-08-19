@@ -1,6 +1,7 @@
 /* =========================================================
    ATPL STUDY PLATFORM
    PROFESSIONAL AVIATION LEARNING DESIGN
+   HIGH-CONTRAST VERSION
    ========================================================= */
 
 
@@ -67,7 +68,7 @@ textarea {
 
     background: #ffffff;
 
-    border: 1px solid rgba(16, 48, 70, 0.08);
+    border: 1px solid #cbd8e2;
 
     border-radius: 18px;
 
@@ -107,7 +108,7 @@ h1 {
     border-radius: 18px 18px 0 0;
 
     box-shadow:
-        inset 0 -1px 0 rgba(255,255,255,0.08);
+        inset 0 -1px 0 rgba(255,255,255,0.12);
 }
 
 h1::after {
@@ -119,7 +120,7 @@ h1::after {
 
     font-size: 19px;
 
-    opacity: 0.75;
+    opacity: 0.85;
 }
 
 
@@ -149,6 +150,7 @@ h3 {
 
 p {
     line-height: 1.65;
+    color: #263b49;
 }
 
 
@@ -222,9 +224,9 @@ p {
 
     font-size: 16px;
 
-    background: #f8fafc;
+    background: #ffffff;
 
-    border: 1px solid #d2dce4;
+    border: 1px solid #b8c8d4;
 
     border-radius: 10px;
 
@@ -234,6 +236,12 @@ p {
         border-color 0.2s ease,
         box-shadow 0.2s ease,
         background 0.2s ease;
+}
+
+#loginScreen input::placeholder,
+#accessRequestScreen input::placeholder,
+#searchInput::placeholder {
+    color: #657785;
 }
 
 #loginScreen input:focus,
@@ -246,7 +254,7 @@ p {
     border-color: #0872a5;
 
     box-shadow:
-        0 0 0 4px rgba(8, 114, 165, 0.11);
+        0 0 0 4px rgba(8, 114, 165, 0.14);
 }
 
 
@@ -257,6 +265,8 @@ p {
 #loginMessage,
 #accessRequestMessage {
     margin-top: 15px;
+
+    color: #17394f;
 
     text-align: center;
 
@@ -274,7 +284,7 @@ label {
     margin-top: 20px;
     margin-bottom: 8px;
 
-    color: #25465d;
+    color: #173d56;
 
     font-size: 14px;
 
@@ -302,9 +312,9 @@ label {
 
     font-size: 16px;
 
-    background: #f8fafc;
+    background: #ffffff;
 
-    border: 1px solid #ccd8e1;
+    border: 1px solid #b8c8d4;
 
     border-radius: 10px;
 
@@ -318,6 +328,14 @@ label {
         background 0.2s ease;
 }
 
+#subjectSelect:hover,
+#practiceSubjectSelect:hover,
+#questionCount:hover,
+#combinedQuestionCount:hover,
+#searchSubject:hover {
+    border-color: #6d94ab;
+}
+
 #subjectSelect:focus,
 #practiceSubjectSelect:focus,
 #questionCount:focus,
@@ -329,7 +347,7 @@ label {
     border-color: #0872a5;
 
     box-shadow:
-        0 0 0 4px rgba(8, 114, 165, 0.11);
+        0 0 0 4px rgba(8, 114, 165, 0.14);
 }
 
 
@@ -433,15 +451,15 @@ label {
 
     padding: 13px 18px;
 
-    color: #294254;
+    color: #17394f;
 
     font-size: 16px;
 
     font-weight: 700;
 
-    background: #f1f5f8;
+    background: #edf3f7;
 
-    border: 1px solid #d5dfe6;
+    border: 1px solid #c2d0da;
 
     border-radius: 10px;
 
@@ -453,7 +471,7 @@ label {
 }
 
 .backButton:hover {
-    background: #e5edf3;
+    background: #dfeaf1;
 
     transform: translateY(-1px);
 }
@@ -520,9 +538,9 @@ label {
 
     padding: 20px;
 
-    background: #fafbfc;
+    background: #fffafa;
 
-    border: 1px solid #dce5ec;
+    border: 1px solid #e5caca;
 
     border-radius: 12px;
 }
@@ -545,17 +563,17 @@ label {
 
     padding: 15px;
 
-    color: #17496b;
+    color: #124466;
 
     font-size: 16px;
 
-    font-weight: 650;
+    font-weight: 700;
 
     text-align: center;
 
-    background: #eef7fc;
+    background: #e8f4fb;
 
-    border: 1px solid #d4e8f5;
+    border: 1px solid #b9d9ea;
 
     border-radius: 10px;
 }
@@ -598,7 +616,7 @@ label {
 
     margin-bottom: 18px;
 
-    color: #657987;
+    color: #405866;
 
     font-size: 14px;
 
@@ -628,9 +646,9 @@ label {
 
     overflow-y: auto;
 
-    background: #f5f8fa;
+    background: #eef3f6;
 
-    border: 1px solid #dce4ea;
+    border: 1px solid #cbd7df;
 
     border-radius: 12px;
 }
@@ -645,7 +663,7 @@ label {
 
     padding: 0;
 
-    color: #334957;
+    color: #243b4a;
 
     font-size: 13px;
 
@@ -653,7 +671,7 @@ label {
 
     background: #ffffff;
 
-    border: 1px solid #cbd5dc;
+    border: 1px solid #aebfcb;
 
     border-radius: 7px;
 
@@ -661,12 +679,15 @@ label {
 
     transition:
         transform 0.15s ease,
-        box-shadow 0.15s ease;
+        box-shadow 0.15s ease,
+        border-color 0.15s ease;
 }
 
 .navButton:hover {
 
     transform: scale(1.06);
+
+    border-color: #4f829f;
 
     box-shadow:
         0 3px 8px rgba(0,0,0,0.10);
@@ -681,34 +702,36 @@ label {
 
     background: #ffffff;
 
-    color: #334957;
+    color: #243b4a;
+
+    border-color: #aebfcb;
 }
 
 .navButton.correct {
 
     color: #ffffff !important;
 
-    background: #16834b !important;
+    background: #137a45 !important;
 
-    border-color: #16834b !important;
+    border-color: #137a45 !important;
 }
 
 .navButton.wrong {
 
     color: #ffffff !important;
 
-    background: #d93025 !important;
+    background: #c9251b !important;
 
-    border-color: #d93025 !important;
+    border-color: #c9251b !important;
 }
 
 .navButton.skipped {
 
     color: #ffffff !important;
 
-    background: #e69a12 !important;
+    background: #c77c00 !important;
 
-    border-color: #e69a12 !important;
+    border-color: #c77c00 !important;
 }
 
 
@@ -730,14 +753,14 @@ label {
 
     line-height: 1.65;
 
-    background: #f8fafc;
+    background: #f4f7f9;
 
     border-left: 5px solid #0b638e;
 
     border-radius: 12px;
 
     box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.045);
+        0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
 
@@ -780,7 +803,7 @@ label {
 
     background: #ffffff;
 
-    border: 1px solid #d4dde4;
+    border: 1px solid #bccbd5;
 
     border-radius: 10px;
 
@@ -817,15 +840,15 @@ label {
 
     padding: 12px 15px;
 
-    color: #6c5200;
+    color: #634800;
 
     font-size: 15px;
 
     font-weight: 750;
 
-    background: #fff9df;
+    background: #fff8d8;
 
-    border: 1px solid #ead27a;
+    border: 1px solid #d9bc52;
 
     border-radius: 9px;
 
@@ -838,7 +861,7 @@ label {
 
 .markButton:hover {
 
-    background: #fff1b8;
+    background: #fff0b0;
 
     transform: translateY(-1px);
 }
@@ -850,11 +873,11 @@ label {
     background:
         linear-gradient(
             135deg,
-            #c78b00,
-            #e2a900
+            #a96f00,
+            #d49600
         );
 
-    border-color: #c78b00;
+    border-color: #a96f00;
 }
 
 
@@ -890,7 +913,7 @@ label {
 
     background: #ffffff;
 
-    border: 1px solid #d1dce4;
+    border: 1px solid #bccbd5;
 
     border-radius: 10px;
 
@@ -908,9 +931,9 @@ label {
 
 .option:hover {
 
-    background: #f0f7fb;
+    background: #edf7fc;
 
-    border-color: #5391b4;
+    border-color: #4b88aa;
 
     transform: translateX(3px);
 
@@ -927,24 +950,24 @@ label {
 
     color: #ffffff !important;
 
-    background: #16834b !important;
+    background: #137a45 !important;
 
-    border-color: #16834b !important;
+    border-color: #137a45 !important;
 
     box-shadow:
-        0 5px 13px rgba(22, 131, 75, 0.20);
+        0 5px 13px rgba(19, 122, 69, 0.20);
 }
 
 .option.wrong {
 
     color: #ffffff !important;
 
-    background: #d93025 !important;
+    background: #c9251b !important;
 
-    border-color: #d93025 !important;
+    border-color: #c9251b !important;
 
     box-shadow:
-        0 5px 13px rgba(217, 48, 37, 0.20);
+        0 5px 13px rgba(201, 37, 27, 0.20);
 }
 
 
@@ -997,12 +1020,14 @@ label {
 
 #skipBtn {
 
-    background: #d98a0b;
+    color: #ffffff;
+
+    background: #c77b00;
 }
 
 #skipBtn:hover {
 
-    background: #b87300;
+    background: #a86600;
 }
 
 
@@ -1087,13 +1112,15 @@ label {
 
     padding: 20px;
 
+    color: #263b49;
+
     font-size: 17px;
 
     text-align: left;
 
-    background: #f6f9fb;
+    background: #f3f7f9;
 
-    border: 1px solid #dce5eb;
+    border: 1px solid #cbd8e1;
 
     border-radius: 12px;
 }
@@ -1104,7 +1131,9 @@ label {
 
     padding-bottom: 9px;
 
-    border-bottom: 1px solid #e2e8ed;
+    color: #263b49;
+
+    border-bottom: 1px solid #d4dfe6;
 }
 
 #resultDetails p:last-child {
@@ -1136,9 +1165,11 @@ label {
 
     padding: 20px !important;
 
+    color: #1d303e !important;
+
     background: #ffffff !important;
 
-    border: 1px solid #dce4ea !important;
+    border: 1px solid #cbd8e1 !important;
 
     border-radius: 12px !important;
 
@@ -1160,13 +1191,26 @@ label {
 }
 
 
+/* Ensure text INSIDE search/marked cards remains readable */
+
+#searchResults > div *,
+#markedQuestionsList > div * {
+    color: #1d303e;
+}
+
+#searchResults > div button,
+#markedQuestionsList > div button {
+    color: #ffffff;
+}
+
+
 /* =========================================================
    MARKED QUESTIONS
    ========================================================= */
 
 #markedScreen > p {
 
-    color: #607382;
+    color: #425967;
 
     text-align: center;
 }
@@ -1206,14 +1250,29 @@ label {
 
     padding: 18px !important;
 
-    background: #f8fafc !important;
+    color: #1d303e !important;
 
-    border: 1px solid #d9e2e8 !important;
+    background: #f4f7f9 !important;
+
+    border: 1px solid #c6d4dd !important;
 
     border-radius: 12px !important;
 
     box-shadow:
         0 3px 8px rgba(0, 0, 0, 0.04);
+}
+
+
+/* Make all admin text readable */
+
+#adminRequests > div *,
+#approvedUsersList > div * {
+    color: #1d303e;
+}
+
+#adminRequests > div button,
+#approvedUsersList > div button {
+    color: #ffffff;
 }
 
 #adminScreen hr,
@@ -1223,7 +1282,7 @@ label {
 
     border: none;
 
-    border-top: 1px solid #dce4ea;
+    border-top: 1px solid #cbd7df;
 }
 
 
@@ -1236,6 +1295,8 @@ textarea {
     resize: vertical;
 
     min-height: 100px;
+
+    color: #17212b;
 }
 
 
@@ -1248,7 +1309,7 @@ select:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
 
-    outline: 3px solid rgba(8, 114, 165, 0.25);
+    outline: 3px solid rgba(8, 114, 165, 0.35);
 
     outline-offset: 2px;
 }
@@ -1261,7 +1322,7 @@ textarea:focus-visible {
 button:disabled,
 select:disabled {
 
-    opacity: 0.5;
+    opacity: 0.65;
 
     cursor: not-allowed;
 
@@ -1284,13 +1345,13 @@ select:disabled {
 
 ::-webkit-scrollbar-thumb {
 
-    background: #9aabb8;
+    background: #8fa4b2;
 
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #708593;
+    background: #627c8b;
 }
 
 
