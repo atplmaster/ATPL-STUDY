@@ -1,7 +1,7 @@
 /* =========================================================
    ATPL STUDY PLATFORM
    PROFESSIONAL AVIATION LEARNING DESIGN
-   HIGH-CONTRAST VERSION
+   HIGH CONTRAST VERSION
    ========================================================= */
 
 
@@ -28,7 +28,8 @@ body {
         Helvetica,
         sans-serif;
 
-    color: #17212b;
+    /* DARK TEXT FOR GENERAL READABILITY */
+    color: #14212b;
 
     background:
         linear-gradient(
@@ -68,7 +69,7 @@ textarea {
 
     background: #ffffff;
 
-    border: 1px solid #cbd8e2;
+    border: 1px solid #cbd7df;
 
     border-radius: 18px;
 
@@ -120,7 +121,9 @@ h1::after {
 
     font-size: 19px;
 
-    opacity: 0.85;
+    color: #ffffff;
+
+    opacity: 0.9;
 }
 
 
@@ -133,7 +136,7 @@ h2 {
 
     text-align: center;
 
-    color: #092f4c;
+    color: #082f4b;
 
     font-size: 25px;
 
@@ -143,14 +146,17 @@ h2 {
 h3 {
     margin-top: 26px;
 
-    color: #123e5d;
+    color: #0b3858;
 
     font-size: 19px;
+
+    font-weight: 750;
 }
 
 p {
+    color: #17212b;
+
     line-height: 1.65;
-    color: #263b49;
 }
 
 
@@ -168,6 +174,8 @@ p {
 
 #loginScreen h2 {
     margin-top: 8px;
+
+    color: #082f4b;
 }
 
 #loginScreen::before {
@@ -220,13 +228,13 @@ p {
 
     padding: 14px 16px;
 
-    color: #17212b;
+    color: #14212b;
 
     font-size: 16px;
 
     background: #ffffff;
 
-    border: 1px solid #b8c8d4;
+    border: 1px solid #b9c8d2;
 
     border-radius: 10px;
 
@@ -240,8 +248,12 @@ p {
 
 #loginScreen input::placeholder,
 #accessRequestScreen input::placeholder,
+#accessRequestScreen textarea::placeholder,
 #searchInput::placeholder {
-    color: #657785;
+
+    color: #60717e;
+
+    opacity: 1;
 }
 
 #loginScreen input:focus,
@@ -264,9 +276,10 @@ p {
 
 #loginMessage,
 #accessRequestMessage {
+
     margin-top: 15px;
 
-    color: #17394f;
+    color: #17212b;
 
     text-align: center;
 
@@ -284,7 +297,7 @@ label {
     margin-top: 20px;
     margin-bottom: 8px;
 
-    color: #173d56;
+    color: #183b53;
 
     font-size: 14px;
 
@@ -308,13 +321,13 @@ label {
 
     padding: 13px 15px;
 
-    color: #17212b;
+    color: #14212b;
 
     font-size: 16px;
 
     background: #ffffff;
 
-    border: 1px solid #b8c8d4;
+    border: 1px solid #b9c8d2;
 
     border-radius: 10px;
 
@@ -326,14 +339,6 @@ label {
         border-color 0.2s ease,
         box-shadow 0.2s ease,
         background 0.2s ease;
-}
-
-#subjectSelect:hover,
-#practiceSubjectSelect:hover,
-#questionCount:hover,
-#combinedQuestionCount:hover,
-#searchSubject:hover {
-    border-color: #6d94ab;
 }
 
 #subjectSelect:focus,
@@ -367,7 +372,7 @@ label {
 
     padding: 15px 20px;
 
-    color: #ffffff;
+    color: #ffffff !important;
 
     font-size: 17px;
 
@@ -400,6 +405,9 @@ label {
 }
 
 .modeButton:hover {
+
+    color: #ffffff !important;
+
     transform: translateY(-2px);
 
     box-shadow:
@@ -419,6 +427,8 @@ label {
 
 #homeScreen h2 {
     margin-bottom: 26px;
+
+    color: #082f4b;
 }
 
 #homeScreen .modeButton {
@@ -451,15 +461,15 @@ label {
 
     padding: 13px 18px;
 
-    color: #17394f;
+    color: #17384d !important;
 
     font-size: 16px;
 
     font-weight: 700;
 
-    background: #edf3f7;
+    background: #e8eef3;
 
-    border: 1px solid #c2d0da;
+    border: 1px solid #b9c8d2;
 
     border-radius: 10px;
 
@@ -471,7 +481,10 @@ label {
 }
 
 .backButton:hover {
-    background: #dfeaf1;
+
+    color: #0b2c40 !important;
+
+    background: #dce6ed;
 
     transform: translateY(-1px);
 }
@@ -493,7 +506,7 @@ label {
 
     padding: 13px 18px;
 
-    color: #ffffff;
+    color: #ffffff !important;
 
     font-size: 16px;
 
@@ -521,6 +534,9 @@ label {
 }
 
 .resetButton:hover {
+
+    color: #ffffff !important;
+
     transform: translateY(-2px);
 
     box-shadow:
@@ -538,9 +554,9 @@ label {
 
     padding: 20px;
 
-    background: #fffafa;
+    background: #f3f6f8;
 
-    border: 1px solid #e5caca;
+    border: 1px solid #cbd7df;
 
     border-radius: 12px;
 }
@@ -549,7 +565,7 @@ label {
 
     margin-top: 0;
 
-    color: #9d1c15;
+    color: #8f1913;
 }
 
 
@@ -563,7 +579,7 @@ label {
 
     padding: 15px;
 
-    color: #124466;
+    color: #123e5a;
 
     font-size: 16px;
 
@@ -571,9 +587,9 @@ label {
 
     text-align: center;
 
-    background: #e8f4fb;
+    background: #e6f3fa;
 
-    border: 1px solid #b9d9ea;
+    border: 1px solid #b8d9ea;
 
     border-radius: 10px;
 }
@@ -596,7 +612,7 @@ label {
 
     margin: 4px 0 7px;
 
-    color: #084568;
+    color: #073f61;
 
     font-size: 22px;
 
@@ -616,11 +632,11 @@ label {
 
     margin-bottom: 18px;
 
-    color: #405866;
+    color: #465d6b;
 
     font-size: 14px;
 
-    font-weight: 700;
+    font-weight: 750;
 
     text-align: center;
 }
@@ -646,9 +662,9 @@ label {
 
     overflow-y: auto;
 
-    background: #eef3f6;
+    background: #edf2f5;
 
-    border: 1px solid #cbd7df;
+    border: 1px solid #c8d4dc;
 
     border-radius: 12px;
 }
@@ -663,7 +679,7 @@ label {
 
     padding: 0;
 
-    color: #243b4a;
+    color: #1b3545 !important;
 
     font-size: 13px;
 
@@ -671,7 +687,7 @@ label {
 
     background: #ffffff;
 
-    border: 1px solid #aebfcb;
+    border: 1px solid #aebfc9;
 
     border-radius: 7px;
 
@@ -679,15 +695,14 @@ label {
 
     transition:
         transform 0.15s ease,
-        box-shadow 0.15s ease,
-        border-color 0.15s ease;
+        box-shadow 0.15s ease;
 }
 
 .navButton:hover {
 
-    transform: scale(1.06);
+    color: #082f4b !important;
 
-    border-color: #4f829f;
+    transform: scale(1.06);
 
     box-shadow:
         0 3px 8px rgba(0,0,0,0.10);
@@ -700,38 +715,38 @@ label {
 
 .navButton.notAttempted {
 
-    background: #ffffff;
+    background: #ffffff !important;
 
-    color: #243b4a;
+    color: #1b3545 !important;
 
-    border-color: #aebfcb;
+    border-color: #aebfc9 !important;
 }
 
 .navButton.correct {
 
     color: #ffffff !important;
 
-    background: #137a45 !important;
+    background: #16834b !important;
 
-    border-color: #137a45 !important;
+    border-color: #16834b !important;
 }
 
 .navButton.wrong {
 
     color: #ffffff !important;
 
-    background: #c9251b !important;
+    background: #d93025 !important;
 
-    border-color: #c9251b !important;
+    border-color: #d93025 !important;
 }
 
 .navButton.skipped {
 
     color: #ffffff !important;
 
-    background: #c77c00 !important;
+    background: #c77700 !important;
 
-    border-color: #c77c00 !important;
+    border-color: #c77700 !important;
 }
 
 
@@ -745,7 +760,7 @@ label {
 
     padding: 25px 25px 25px 27px;
 
-    color: #17212b;
+    color: #101c25;
 
     font-size: 21px;
 
@@ -753,14 +768,14 @@ label {
 
     line-height: 1.65;
 
-    background: #f4f7f9;
+    background: #f5f8fa;
 
     border-left: 5px solid #0b638e;
 
     border-radius: 12px;
 
     box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.06);
+        0 4px 12px rgba(0, 0, 0, 0.055);
 }
 
 
@@ -803,7 +818,7 @@ label {
 
     background: #ffffff;
 
-    border: 1px solid #bccbd5;
+    border: 1px solid #c2cfd7;
 
     border-radius: 10px;
 
@@ -840,15 +855,15 @@ label {
 
     padding: 12px 15px;
 
-    color: #634800;
+    color: #594500 !important;
 
     font-size: 15px;
 
     font-weight: 750;
 
-    background: #fff8d8;
+    background: #fff6cf;
 
-    border: 1px solid #d9bc52;
+    border: 1px solid #d9bd52;
 
     border-radius: 9px;
 
@@ -861,23 +876,25 @@ label {
 
 .markButton:hover {
 
-    background: #fff0b0;
+    color: #493a00 !important;
+
+    background: #ffed9d;
 
     transform: translateY(-1px);
 }
 
 .markButton.marked {
 
-    color: #ffffff;
+    color: #ffffff !important;
 
     background:
         linear-gradient(
             135deg,
-            #a96f00,
-            #d49600
+            #b77e00,
+            #d89c00
         );
 
-    border-color: #a96f00;
+    border-color: #b77e00;
 }
 
 
@@ -901,7 +918,7 @@ label {
 
     padding: 16px 18px;
 
-    color: #1d303e;
+    color: #152733 !important;
 
     font-size: 17px;
 
@@ -913,7 +930,7 @@ label {
 
     background: #ffffff;
 
-    border: 1px solid #bccbd5;
+    border: 1px solid #c3d0d9;
 
     border-radius: 10px;
 
@@ -931,9 +948,11 @@ label {
 
 .option:hover {
 
-    background: #edf7fc;
+    color: #102b3c !important;
 
-    border-color: #4b88aa;
+    background: #e9f4fa;
+
+    border-color: #4284a8;
 
     transform: translateX(3px);
 
@@ -950,24 +969,24 @@ label {
 
     color: #ffffff !important;
 
-    background: #137a45 !important;
+    background: #16834b !important;
 
-    border-color: #137a45 !important;
+    border-color: #16834b !important;
 
     box-shadow:
-        0 5px 13px rgba(19, 122, 69, 0.20);
+        0 5px 13px rgba(22, 131, 75, 0.20);
 }
 
 .option.wrong {
 
     color: #ffffff !important;
 
-    background: #c9251b !important;
+    background: #d93025 !important;
 
-    border-color: #c9251b !important;
+    border-color: #d93025 !important;
 
     box-shadow:
-        0 5px 13px rgba(201, 37, 27, 0.20);
+        0 5px 13px rgba(217, 48, 37, 0.20);
 }
 
 
@@ -992,7 +1011,7 @@ label {
 
     padding: 13px 10px;
 
-    color: #ffffff;
+    color: #ffffff !important;
 
     font-size: 15px;
 
@@ -1013,6 +1032,8 @@ label {
 
 .navigation button:hover {
 
+    color: #ffffff !important;
+
     background: #0b628d;
 
     transform: translateY(-2px);
@@ -1020,14 +1041,16 @@ label {
 
 #skipBtn {
 
-    color: #ffffff;
+    color: #ffffff !important;
 
-    background: #c77b00;
+    background: #c77700;
 }
 
 #skipBtn:hover {
 
-    background: #a86600;
+    color: #ffffff !important;
+
+    background: #a96200;
 }
 
 
@@ -1041,6 +1064,8 @@ label {
 
 #resultsScreen h2 {
     margin-bottom: 25px;
+
+    color: #082f4b;
 }
 
 
@@ -1112,15 +1137,15 @@ label {
 
     padding: 20px;
 
-    color: #263b49;
+    color: #17212b;
 
     font-size: 17px;
 
     text-align: left;
 
-    background: #f3f7f9;
+    background: #f2f6f8;
 
-    border: 1px solid #cbd8e1;
+    border: 1px solid #cbd7df;
 
     border-radius: 12px;
 }
@@ -1131,9 +1156,9 @@ label {
 
     padding-bottom: 9px;
 
-    color: #263b49;
+    color: #17212b;
 
-    border-bottom: 1px solid #d4dfe6;
+    border-bottom: 1px solid #d3dde3;
 }
 
 #resultDetails p:last-child {
@@ -1165,11 +1190,11 @@ label {
 
     padding: 20px !important;
 
-    color: #1d303e !important;
+    color: #17212b !important;
 
     background: #ffffff !important;
 
-    border: 1px solid #cbd8e1 !important;
+    border: 1px solid #cbd7df !important;
 
     border-radius: 12px !important;
 
@@ -1191,16 +1216,12 @@ label {
 }
 
 
-/* Ensure text INSIDE search/marked cards remains readable */
+/* FORCE TEXT INSIDE SEARCH / MARKED CARDS */
 
 #searchResults > div *,
 #markedQuestionsList > div * {
-    color: #1d303e;
-}
 
-#searchResults > div button,
-#markedQuestionsList > div button {
-    color: #ffffff;
+    color: #17212b;
 }
 
 
@@ -1210,7 +1231,7 @@ label {
 
 #markedScreen > p {
 
-    color: #425967;
+    color: #405866;
 
     text-align: center;
 }
@@ -1250,11 +1271,11 @@ label {
 
     padding: 18px !important;
 
-    color: #1d303e !important;
+    color: #17212b !important;
 
-    background: #f4f7f9 !important;
+    background: #f3f6f8 !important;
 
-    border: 1px solid #c6d4dd !important;
+    border: 1px solid #cbd7df !important;
 
     border-radius: 12px !important;
 
@@ -1263,17 +1284,23 @@ label {
 }
 
 
-/* Make all admin text readable */
+/* FORCE ADMIN TEXT TO BE DARK */
 
 #adminRequests > div *,
 #approvedUsersList > div * {
-    color: #1d303e;
+
+    color: #17212b;
 }
 
-#adminRequests > div button,
-#approvedUsersList > div button {
-    color: #ffffff;
+
+/* ADMIN BUTTONS MUST REMAIN WHITE */
+
+#adminRequests button,
+#approvedUsersList button {
+
+    color: #ffffff !important;
 }
+
 
 #adminScreen hr,
 #markedScreen hr {
@@ -1295,8 +1322,6 @@ textarea {
     resize: vertical;
 
     min-height: 100px;
-
-    color: #17212b;
 }
 
 
@@ -1322,7 +1347,7 @@ textarea:focus-visible {
 button:disabled,
 select:disabled {
 
-    opacity: 0.65;
+    opacity: 0.55;
 
     cursor: not-allowed;
 
@@ -1340,18 +1365,18 @@ select:disabled {
 }
 
 ::-webkit-scrollbar-track {
-    background: #eef2f5;
+    background: #e5ebef;
 }
 
 ::-webkit-scrollbar-thumb {
 
-    background: #8fa4b2;
+    background: #8297a5;
 
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #627c8b;
+    background: #5e7483;
 }
 
 
@@ -1417,6 +1442,8 @@ select:disabled {
 
         padding: 18px;
 
+        color: #101c25;
+
         font-size: 18px;
 
         line-height: 1.55;
@@ -1427,6 +1454,8 @@ select:disabled {
         min-height: 52px;
 
         padding: 15px;
+
+        color: #152733 !important;
 
         font-size: 16px;
     }
