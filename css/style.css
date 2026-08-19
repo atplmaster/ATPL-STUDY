@@ -1,393 +1,415 @@
 /* =========================================================
    ATPL STUDY
-   PROFESSIONAL AVIATION TRAINING PLATFORM
+   MODERN AVIATION TRAINING PLATFORM
    COMPLETE STYLE SHEET
    ========================================================= */
 
 
 /* =========================================================
-   1. GLOBAL RESET
+   ROOT
    ========================================================= */
 
-* {
-    box-sizing: border-box;
+:root {
+
+    --navy-950: #071522;
+    --navy-900: #0b1f31;
+    --navy-800: #102c43;
+    --navy-700: #163d59;
+
+    --blue-700: #08699b;
+    --blue-600: #0b7db8;
+    --blue-500: #1596d1;
+    --blue-100: #eaf6fc;
+
+    --sky-50: #f5faff;
+    --sky-100: #eef7fc;
+
+    --white: #ffffff;
+
+    --gray-950: #18232d;
+    --gray-800: #2b3a46;
+    --gray-700: #40515e;
+    --gray-600: #61727f;
+    --gray-500: #7b8b96;
+    --gray-400: #aebbc4;
+    --gray-300: #d4dee5;
+    --gray-200: #e5ebef;
+    --gray-100: #f3f6f8;
+
+    --green: #14804a;
+    --green-light: #eaf8f0;
+
+    --red: #d93025;
+    --red-light: #fff0ef;
+
+    --orange: #d88908;
+    --orange-light: #fff7e4;
+
+    --shadow-sm:
+        0 2px 8px rgba(7, 31, 48, 0.06);
+
+    --shadow-md:
+        0 8px 25px rgba(7, 31, 48, 0.09);
+
+    --shadow-lg:
+        0 18px 45px rgba(7, 31, 48, 0.12);
+
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+
 }
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+
+    box-sizing: border-box;
+
+}
+
 
 html {
+
     scroll-behavior: smooth;
+
     -webkit-text-size-adjust: 100%;
+
 }
 
-html,
+
 body {
+
     margin: 0;
-    padding: 0;
-    min-height: 100%;
-}
 
-body {
+    min-height: 100vh;
+
     font-family:
-        Inter,
         "Segoe UI",
-        Roboto,
         Arial,
         Helvetica,
         sans-serif;
 
-    color: #172b3a;
+    color: var(--gray-950);
 
-    background: #f4f7fa;
+    background:
+        #f3f6f8;
 
     overflow-x: hidden;
+
 }
+
 
 button,
 input,
 select,
 textarea {
+
     font-family: inherit;
+
 }
+
 
 button {
+
     -webkit-tap-highlight-color: transparent;
+
 }
 
+
 img {
+
     max-width: 100%;
+
 }
 
 
 /* =========================================================
-   2. APP
+   APP
    ========================================================= */
 
 .app {
+
     min-height: 100vh;
-    width: 100%;
+
 }
 
 
 /* =========================================================
-   3. LOGIN / AUTHENTICATION
+   AUTHENTICATION
    ========================================================= */
 
 #loginArea {
+
     min-height: 100vh;
-    width: 100%;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
-    padding: 30px 20px;
+    padding: 30px;
 
     background:
-        radial-gradient(
-            circle at 15% 20%,
-            rgba(28, 126, 170, 0.18),
-            transparent 35%
-        ),
-        radial-gradient(
-            circle at 85% 80%,
-            rgba(20, 75, 105, 0.20),
-            transparent 35%
-        ),
-        #061d2e;
+        linear-gradient(
+            135deg,
+            #071522 0%,
+            #0c2940 48%,
+            #eaf3f8 48%,
+            #f5f8fa 100%
+        );
+
 }
 
 
 .authScreen {
+
     width: 100%;
+
 }
 
 
 .authCard {
-    width: min(460px, 100%);
+
+    width: min(450px, 100%);
 
     margin: auto;
 
     padding: 42px;
 
-    background: #ffffff;
+    background: var(--white);
 
-    border-radius: 18px;
+    border: 1px solid var(--gray-200);
 
-    box-shadow:
-        0 25px 70px rgba(0, 0, 0, 0.28);
+    border-radius: 20px;
+
+    box-shadow: var(--shadow-lg);
 
     text-align: center;
+
 }
 
 
 .authLogo {
-    width: 74px;
-    height: 74px;
+
+    width: 76px;
+
+    height: 76px;
 
     margin: 0 auto 20px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
-    color: #ffffff;
+    color: white;
 
-    font-size: 34px;
+    font-size: 35px;
 
     background:
         linear-gradient(
             135deg,
-            #0b4668,
-            #087ca9
+            var(--navy-800),
+            var(--blue-600)
         );
 
-    border-radius: 20px;
+    border-radius: 18px;
 
     box-shadow:
-        0 10px 25px rgba(8, 78, 110, 0.25);
+        0 10px 25px rgba(8, 105, 155, 0.22);
+
 }
 
 
 .authCard h1 {
+
     margin: 0;
 
-    color: #082c43;
+    padding: 0;
+
+    color: var(--navy-900);
 
     font-size: 28px;
 
     font-weight: 800;
 
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
+
 }
 
 
-.authSubtitle {
-    margin: 7px 0 35px;
+.authCard h1::after {
 
-    color: #6b7d89;
+    display: none;
 
-    font-size: 14px;
 }
 
 
 .authCard h2 {
-    margin: 0 0 8px;
 
-    color: #17394f;
+    margin: 30px 0 8px;
 
-    font-size: 23px;
+    color: var(--navy-900);
+
+    font-size: 25px;
+
+    font-weight: 750;
+
+}
+
+
+.authSubtitle {
+
+    margin: 8px 0 25px;
+
+    color: var(--gray-600);
+
+    font-size: 14px;
+
 }
 
 
 .authDescription {
-    margin: 0 0 25px;
 
-    color: #71818d;
+    margin: 0 0 22px;
 
-    font-size: 14px;
+    color: var(--gray-600);
+
+    font-size: 15px;
 
     line-height: 1.6;
+
 }
 
 
 /* =========================================================
-   4. INPUTS
+   INPUTS
    ========================================================= */
 
-.authCard input,
-.authCard textarea,
+input,
+textarea,
+select {
+
+    outline: none;
+
+}
+
+
+#loginScreen input,
+#accessRequestScreen input,
+#accessRequestScreen textarea,
 #searchInput {
 
     display: block;
 
     width: 100%;
 
-    min-height: 50px;
+    min-height: 52px;
 
     margin: 12px 0;
 
-    padding: 14px 15px;
+    padding: 14px 16px;
 
-    color: #172b3a;
+    color: var(--gray-950);
 
-    background: #f8fafc;
+    font-size: 15px;
 
-    border: 1px solid #d5dfe6;
+    background: #fbfcfd;
 
-    border-radius: 9px;
+    border: 1px solid var(--gray-300);
+
+    border-radius: var(--radius-sm);
 
     outline: none;
 
-    font-size: 15px;
-
     transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        background 0.2s ease;
+        border-color .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
+
 }
 
 
-.authCard textarea {
-    resize: vertical;
-}
-
-
-.authCard input::placeholder,
-.authCard textarea::placeholder,
+#loginScreen input::placeholder,
+#accessRequestScreen input::placeholder,
+#accessRequestScreen textarea::placeholder,
 #searchInput::placeholder {
-    color: #8a9aa5;
+
+    color: var(--gray-500);
+
 }
 
 
-.authCard input:focus,
-.authCard textarea:focus,
+#loginScreen input:focus,
+#accessRequestScreen input:focus,
+#accessRequestScreen textarea:focus,
 #searchInput:focus {
 
-    background: #ffffff;
+    background: white;
 
-    border-color: #1684b5;
+    border-color: var(--blue-600);
 
     box-shadow:
-        0 0 0 4px rgba(22, 132, 181, 0.12);
+        0 0 0 4px rgba(11, 125, 184, .12);
+
 }
 
 
 /* =========================================================
-   5. BUTTON SYSTEM
+   TEXTAREA
    ========================================================= */
 
-.modeButton {
+textarea {
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    resize: vertical;
 
-    width: 100%;
+    min-height: 110px;
 
-    min-height: 50px;
-
-    margin: 11px 0;
-
-    padding: 13px 18px;
-
-    border: none;
-
-    border-radius: 9px;
-
-    cursor: pointer;
-
-    font-size: 15px;
-
-    font-weight: 700;
-
-    transition:
-        transform 0.18s ease,
-        box-shadow 0.18s ease,
-        background 0.18s ease;
-}
-
-
-.primaryButton {
-
-    color: #ffffff;
-
-    background:
-        linear-gradient(
-            135deg,
-            #0a4668,
-            #087eaa
-        );
-
-    box-shadow:
-        0 5px 15px rgba(7, 73, 105, 0.20);
-}
-
-
-.primaryButton:hover {
-
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 9px 22px rgba(7, 73, 105, 0.28);
-}
-
-
-.secondaryButton {
-
-    color: #12405b;
-
-    background: #edf4f8;
-
-    border: 1px solid #d2e0e8;
-}
-
-
-.secondaryButton:hover {
-
-    background: #e1edf3;
-
-    transform: translateY(-1px);
-}
-
-
-.textButton {
-
-    margin-top: 16px;
-
-    color: #0874a0;
-
-    background: transparent;
-
-    border: none;
-
-    cursor: pointer;
-
-    font-size: 14px;
-
-    font-weight: 700;
-}
-
-
-.textButton:hover {
-    text-decoration: underline;
 }
 
 
 /* =========================================================
-   6. MESSAGES
+   MESSAGES
    ========================================================= */
 
-.message {
+.message,
+#loginMessage,
+#accessRequestMessage {
 
     min-height: 20px;
 
     margin-top: 15px;
 
-    color: #c62d25;
+    color: var(--gray-700);
 
     font-size: 14px;
 
-    font-weight: 700;
+    font-weight: 600;
+
 }
 
 
 /* =========================================================
-   7. MAIN APPLICATION
+   MAIN APPLICATION
    ========================================================= */
 
 #mainApplication {
 
-    width: 100%;
-
     min-height: 100vh;
 
-    display: flex;
-
-    background: #f4f7fa;
 }
 
 
 /* =========================================================
-   8. SIDEBAR
+   SIDEBAR
    ========================================================= */
 
 .sidebar {
@@ -395,6 +417,7 @@ img {
     position: fixed;
 
     top: 0;
+
     left: 0;
 
     z-index: 1000;
@@ -407,23 +430,25 @@ img {
 
     flex-direction: column;
 
-    color: #ffffff;
+    color: white;
 
     background:
         linear-gradient(
             180deg,
-            #061e30 0%,
-            #082c43 55%,
-            #061c2c 100%
+            #071522 0%,
+            #0b2032 100%
         );
 
+    border-right: 1px solid rgba(255,255,255,.06);
+
     box-shadow:
-        5px 0 25px rgba(4, 24, 38, 0.16);
+        5px 0 25px rgba(0,0,0,.08);
+
 }
 
 
 /* =========================================================
-   9. SIDEBAR HEADER
+   SIDEBAR HEADER
    ========================================================= */
 
 .sidebarHeader {
@@ -437,44 +462,52 @@ img {
     padding: 24px 20px;
 
     border-bottom:
-        1px solid rgba(255,255,255,0.08);
+        1px solid rgba(255,255,255,.07);
+
 }
 
 
 .sidebarLogo {
 
     width: 44px;
+
     height: 44px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     flex-shrink: 0;
 
-    font-size: 21px;
+    font-size: 22px;
 
     background:
         linear-gradient(
             135deg,
-            #0b709c,
-            #0c9ac8
+            #0b7db8,
+            #1596d1
         );
 
     border-radius: 11px;
 
     box-shadow:
-        0 5px 15px rgba(0,0,0,0.20);
+        0 7px 18px rgba(0,0,0,.2);
+
 }
 
 
 .sidebarTitle {
 
-    font-size: 17px;
+    color: white;
+
+    font-size: 16px;
 
     font-weight: 800;
 
     letter-spacing: 1px;
+
 }
 
 
@@ -482,39 +515,40 @@ img {
 
     margin-top: 3px;
 
-    color: #91adbd;
+    color: #9eb0bd;
 
     font-size: 11px;
 
-    letter-spacing: 0.4px;
 }
 
 
 /* =========================================================
-   10. SIDEBAR NAVIGATION
+   SIDEBAR NAVIGATION
    ========================================================= */
 
 .sidebarNavigation {
 
     flex: 1;
 
-    padding: 20px 12px;
+    padding: 18px 12px;
 
     overflow-y: auto;
+
 }
 
 
 .sidebarSectionTitle {
 
-    margin: 8px 12px 9px;
+    padding: 10px 12px 7px;
 
-    color: #6f92a7;
+    color: #708594;
 
     font-size: 10px;
 
     font-weight: 800;
 
     letter-spacing: 1.4px;
+
 }
 
 
@@ -528,71 +562,75 @@ img {
 
     width: 100%;
 
-    min-height: 45px;
+    min-height: 44px;
 
-    margin: 4px 0;
+    margin: 3px 0;
 
     padding: 10px 12px;
 
-    color: #c8d7e0;
+    color: #b9c8d2;
 
-    background: transparent;
-
-    border: none;
-
-    border-radius: 8px;
-
-    cursor: pointer;
-
-    text-align: left;
-
-    font-size: 14px;
+    font-size: 13px;
 
     font-weight: 600;
 
+    text-align: left;
+
+    background: transparent;
+
+    border: 0;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
     transition:
-        background 0.18s ease,
-        color 0.18s ease,
-        transform 0.18s ease;
+        color .18s ease,
+        background .18s ease,
+        transform .18s ease;
+
 }
 
 
 .sidebarButton:hover {
 
-    color: #ffffff;
+    color: white;
 
     background:
-        rgba(255,255,255,0.08);
+        rgba(255,255,255,.07);
 
     transform: translateX(2px);
+
 }
 
 
 .sidebarButton.active {
 
-    color: #ffffff;
+    color: white;
 
     background:
         linear-gradient(
             90deg,
-            rgba(13, 133, 178, 0.95),
-            rgba(8, 98, 139, 0.85)
+            rgba(11,125,184,.9),
+            rgba(11,125,184,.55)
         );
 
     box-shadow:
-        0 5px 15px rgba(0,0,0,0.14);
+        inset 3px 0 0 #55b9eb;
+
 }
 
 
 .sidebarIcon {
 
-    width: 23px;
+    width: 22px;
 
     flex-shrink: 0;
 
     text-align: center;
 
     font-size: 16px;
+
 }
 
 
@@ -600,20 +638,22 @@ img {
 
     height: 1px;
 
-    margin: 18px 5px;
+    margin: 16px 8px;
 
     background:
-        rgba(255,255,255,0.08);
+        rgba(255,255,255,.07);
+
 }
 
 
 /* =========================================================
-   11. SIDEBAR BOTTOM
+   SIDEBAR BOTTOM
    ========================================================= */
 
 .sidebarBottom {
 
     padding: 0 12px 15px;
+
 }
 
 
@@ -625,49 +665,61 @@ img {
 
     gap: 10px;
 
-    padding: 9px 8px;
+    padding: 12px;
 
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+
+    background:
+        rgba(255,255,255,.045);
+
+    border-radius: 10px;
+
 }
 
 
 .userAvatar {
 
-    width: 38px;
-    height: 38px;
+    width: 34px;
+
+    height: 34px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     flex-shrink: 0;
 
-    background: #173f57;
+    background:
+        #29465b;
 
     border-radius: 50%;
+
 }
 
 
 .userInfo {
+
     min-width: 0;
+
 }
 
 
 .userName {
 
-    max-width: 160px;
-
     overflow: hidden;
+
+    color: white;
+
+    font-size: 12px;
+
+    font-weight: 700;
 
     text-overflow: ellipsis;
 
     white-space: nowrap;
 
-    color: #ffffff;
-
-    font-size: 13px;
-
-    font-weight: 700;
 }
 
 
@@ -675,69 +727,95 @@ img {
 
     margin-top: 2px;
 
-    color: #88a4b5;
+    color: #8ea3b1;
 
-    font-size: 11px;
+    font-size: 10px;
+
 }
 
 
 .logoutButton {
-    color: #d4e0e7;
+
+    color: #e3a7a3;
+
+}
+
+
+.logoutButton:hover {
+
+    color: white;
+
+    background:
+        rgba(217,48,37,.18);
+
 }
 
 
 /* =========================================================
-   12. MAIN CONTENT
+   MOBILE HEADER
+   ========================================================= */
+
+.mobileHeader {
+
+    display: none;
+
+}
+
+
+/* =========================================================
+   MAIN CONTENT
    ========================================================= */
 
 .mainContent {
-
-    width: calc(100% - 265px);
 
     min-height: 100vh;
 
     margin-left: 265px;
 
-    padding: 40px;
+    padding: 38px 45px 60px;
 
     background:
-        #f4f7fa;
+        #f4f7f9;
+
 }
 
 
 /* =========================================================
-   13. CONTENT SCREENS
+   CONTENT SCREEN
    ========================================================= */
 
 .contentScreen {
 
-    width: min(1100px, 100%);
+    width: min(1050px, 100%);
 
     margin: 0 auto;
+
 }
 
 
 /* =========================================================
-   14. PAGE HEADER
+   PAGE HEADER
    ========================================================= */
 
 .pageHeader {
 
     margin-bottom: 30px;
+
 }
 
 
 .pageEyebrow {
 
-    margin: 0 0 7px;
+    margin: 0 0 8px;
 
-    color: #1681ad;
+    color: var(--blue-700);
 
     font-size: 11px;
 
     font-weight: 800;
 
     letter-spacing: 1.5px;
+
 }
 
 
@@ -745,13 +823,31 @@ img {
 
     margin: 0;
 
-    color: #102f43;
+    padding: 0;
 
-    font-size: 31px;
+    color: var(--navy-900);
+
+    font-size: 32px;
 
     font-weight: 800;
 
-    letter-spacing: -0.4px;
+    letter-spacing: -.5px;
+
+    text-align: left;
+
+    background: none;
+
+    border-radius: 0;
+
+    box-shadow: none;
+
+}
+
+
+.pageHeader h1::after {
+
+    display: none;
+
 }
 
 
@@ -759,18 +855,19 @@ img {
 
     max-width: 700px;
 
-    margin: 9px 0 0;
+    margin: 8px 0 0;
 
-    color: #687c89;
+    color: var(--gray-600);
 
     font-size: 15px;
 
     line-height: 1.6;
+
 }
 
 
 /* =========================================================
-   15. DASHBOARD CARDS
+   DASHBOARD CARDS
    ========================================================= */
 
 .dashboardCards {
@@ -783,6 +880,7 @@ img {
     gap: 16px;
 
     margin-bottom: 32px;
+
 }
 
 
@@ -790,22 +888,26 @@ img {
 
     display: flex;
 
+    align-items: flex-start;
+
     gap: 14px;
+
+    min-height: 140px;
 
     padding: 20px;
 
-    background: #ffffff;
+    background: white;
 
-    border: 1px solid #e0e7ec;
+    border: 1px solid var(--gray-200);
 
-    border-radius: 13px;
+    border-radius: var(--radius-md);
 
-    box-shadow:
-        0 4px 15px rgba(15, 44, 62, 0.05);
+    box-shadow: var(--shadow-sm);
 
     transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+        transform .2s ease,
+        box-shadow .2s ease;
+
 }
 
 
@@ -813,38 +915,42 @@ img {
 
     transform: translateY(-3px);
 
-    box-shadow:
-        0 10px 25px rgba(15, 44, 62, 0.09);
+    box-shadow: var(--shadow-md);
+
 }
 
 
 .dashboardCardIcon {
 
-    width: 45px;
-    height: 45px;
+    width: 46px;
+
+    height: 46px;
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     flex-shrink: 0;
 
-    font-size: 20px;
+    font-size: 22px;
 
-    background: #eaf5fa;
+    background: var(--blue-100);
 
-    border-radius: 10px;
+    border-radius: 11px;
+
 }
 
 
 .dashboardCard h3 {
 
-    margin: 1px 0 6px;
+    margin: 2px 0 7px;
 
-    color: #173b52;
+    color: var(--navy-900);
 
     font-size: 16px;
+
 }
 
 
@@ -852,21 +958,30 @@ img {
 
     margin: 0;
 
-    color: #70828d;
+    color: var(--gray-600);
 
     font-size: 13px;
 
-    line-height: 1.5;
+    line-height: 1.55;
+
 }
 
 
 /* =========================================================
-   16. DASHBOARD SECTIONS
+   DASHBOARD SECTION
    ========================================================= */
 
 .dashboardSection {
 
-    margin-top: 25px;
+    margin-top: 30px;
+
+}
+
+
+.sectionHeader {
+
+    margin-bottom: 15px;
+
 }
 
 
@@ -874,31 +989,39 @@ img {
 
     margin: 0;
 
-    color: #16394e;
+    color: var(--navy-900);
 
     font-size: 20px;
+
+    text-align: left;
+
 }
 
 
 .sectionHeader p {
 
-    margin: 5px 0 16px;
+    margin: 5px 0 0;
 
-    color: #7b8c97;
+    color: var(--gray-600);
 
     font-size: 13px;
+
 }
 
 
 /* =========================================================
-   17. QUICK ACTIONS
+   QUICK ACTIONS
    ========================================================= */
 
 .quickActions {
 
     display: grid;
 
-    gap: 10px;
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 14px;
+
 }
 
 
@@ -908,57 +1031,67 @@ img {
 
     align-items: center;
 
+    gap: 13px;
+
     width: 100%;
 
-    padding: 17px 19px;
+    min-height: 92px;
 
-    color: #193b4f;
+    padding: 16px;
 
-    background: #ffffff;
-
-    border: 1px solid #dde6ec;
-
-    border-radius: 11px;
-
-    cursor: pointer;
+    color: var(--gray-950);
 
     text-align: left;
 
+    background: white;
+
+    border: 1px solid var(--gray-200);
+
+    border-radius: var(--radius-md);
+
+    cursor: pointer;
+
+    box-shadow: var(--shadow-sm);
+
     transition:
-        transform 0.18s ease,
-        box-shadow 0.18s ease,
-        border-color 0.18s ease;
+        transform .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease;
+
 }
 
 
 .quickActionCard:hover {
 
-    transform: translateX(4px);
+    transform: translateY(-3px);
 
-    border-color: #8cbdd1;
+    border-color: #b8d8e8;
 
-    box-shadow:
-        0 7px 20px rgba(15, 50, 70, 0.08);
+    box-shadow: var(--shadow-md);
+
 }
 
 
 .quickActionIcon {
 
     width: 42px;
+
     height: 42px;
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
-    margin-right: 14px;
+    flex-shrink: 0;
 
-    background: #edf6fa;
+    font-size: 20px;
 
-    border-radius: 9px;
+    background: var(--blue-100);
 
-    font-size: 19px;
+    border-radius: 10px;
+
 }
 
 
@@ -968,40 +1101,46 @@ img {
 
     min-width: 0;
 
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 4px;
 }
 
 
 .quickActionText strong {
 
-    color: #16384d;
+    display: block;
 
-    font-size: 15px;
+    color: var(--navy-900);
+
+    font-size: 14px;
+
 }
 
 
 .quickActionText small {
 
-    color: #778995;
+    display: block;
 
-    font-size: 12px;
+    margin-top: 4px;
+
+    color: var(--gray-600);
+
+    font-size: 11px;
+
+    line-height: 1.4;
+
 }
 
 
 .quickActionArrow {
 
-    color: #1982ab;
+    color: var(--blue-600);
 
-    font-size: 22px;
+    font-size: 20px;
+
 }
 
 
 /* =========================================================
-   18. SECONDARY ACTIONS
+   SECONDARY ACTIONS
    ========================================================= */
 
 .secondaryActions {
@@ -1012,6 +1151,7 @@ img {
         repeat(4, 1fr);
 
     gap: 10px;
+
 }
 
 
@@ -1020,47 +1160,56 @@ img {
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     gap: 8px;
 
-    min-height: 50px;
+    min-height: 48px;
 
-    padding: 12px;
+    padding: 10px;
 
-    color: #345263;
+    color: var(--gray-700);
 
-    background: #ffffff;
+    font-size: 12px;
 
-    border: 1px solid #dce5eb;
+    font-weight: 700;
+
+    background: white;
+
+    border: 1px solid var(--gray-200);
 
     border-radius: 9px;
 
     cursor: pointer;
 
-    font-size: 13px;
+    transition:
+        background .18s ease,
+        color .18s ease,
+        border-color .18s ease;
 
-    font-weight: 700;
 }
 
 
 .secondaryAction:hover {
 
-    color: #0b628b;
+    color: var(--blue-700);
 
-    background: #f1f8fb;
+    background: var(--blue-100);
 
-    border-color: #9ec8d8;
+    border-color: #b9d9e9;
+
 }
 
 
 /* =========================================================
-   19. SETUP SCREENS
+   SETUP CARDS
    ========================================================= */
 
 .setupScreen {
 
     max-width: 720px;
+
 }
 
 
@@ -1068,19 +1217,20 @@ img {
 .searchCard,
 .adminCard,
 .markedListCard,
-.progressCard,
-.resultsCard {
+.progressCard {
 
     padding: 28px;
 
-    background: #ffffff;
+    margin-bottom: 20px;
 
-    border: 1px solid #dfe7ec;
+    background: white;
 
-    border-radius: 15px;
+    border: 1px solid var(--gray-200);
 
-    box-shadow:
-        0 5px 20px rgba(17, 46, 63, 0.055);
+    border-radius: var(--radius-md);
+
+    box-shadow: var(--shadow-sm);
+
 }
 
 
@@ -1088,82 +1238,192 @@ img {
 
     display: block;
 
-    margin: 18px 0 8px;
+    margin: 0 0 8px;
 
-    color: #345365;
+    color: var(--gray-800);
 
     font-size: 13px;
 
-    font-weight: 750;
+    font-weight: 700;
+
 }
 
 
-.setupCard select,
-.searchCard select {
+.setupCard label:not(:first-child) {
+
+    margin-top: 20px;
+
+}
+
+
+#practiceSubjectSelect,
+#subjectSelect,
+#questionCount,
+#combinedQuestionCount,
+#searchSubject {
+
+    width: 100%;
+
+    min-height: 52px;
+
+    padding: 13px 15px;
+
+    color: var(--gray-950);
+
+    font-size: 15px;
+
+    background: white;
+
+    border: 1px solid var(--gray-300);
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+}
+
+
+#practiceSubjectSelect:focus,
+#subjectSelect:focus,
+#questionCount:focus,
+#combinedQuestionCount:focus,
+#searchSubject:focus {
+
+    border-color: var(--blue-600);
+
+    box-shadow:
+        0 0 0 4px rgba(11,125,184,.1);
+
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.modeButton {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
 
     width: 100%;
 
     min-height: 50px;
 
-    padding: 12px 14px;
+    margin: 12px 0;
 
-    color: #1d3545;
+    padding: 13px 18px;
 
-    background: #f8fafc;
-
-    border: 1px solid #d4dfe6;
-
-    border-radius: 9px;
-
-    outline: none;
-
-    font-size: 15px;
-
-    cursor: pointer;
-}
-
-
-.setupCard select:focus,
-.searchCard select:focus {
-
-    border-color: #1682ad;
-
-    box-shadow:
-        0 0 0 4px rgba(22,130,173,0.10);
-}
-
-
-/* =========================================================
-   20. AVAILABLE QUESTIONS
-   ========================================================= */
-
-.availableQuestions {
-
-    margin: 0 0 20px;
-
-    padding: 14px;
-
-    color: #155b79;
-
-    background: #edf7fb;
-
-    border: 1px solid #cfe7f0;
-
-    border-radius: 9px;
-
-    text-align: center;
+    color: white;
 
     font-size: 14px;
 
-    font-weight: 700;
+    font-weight: 750;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0b6797,
+            #0b8ac5
+        );
+
+    border: none;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 5px 14px rgba(8,105,155,.16);
+
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        filter .18s ease;
+
 }
 
 
-/* =========================================================
-   21. BACK BUTTON
-   ========================================================= */
+.modeButton:hover {
+
+    transform: translateY(-2px);
+
+    filter: brightness(1.04);
+
+    box-shadow:
+        0 8px 20px rgba(8,105,155,.22);
+
+}
+
+
+.primaryButton {
+
+    background:
+        linear-gradient(
+            135deg,
+            #075d8c,
+            #0b83bd
+        );
+
+}
+
+
+.secondaryButton {
+
+    color: var(--navy-800);
+
+    background: #eaf2f6;
+
+    box-shadow: none;
+
+}
+
+
+.secondaryButton:hover {
+
+    background: #dcebf2;
+
+}
+
+
+.textButton {
+
+    margin-top: 10px;
+
+    padding: 8px;
+
+    color: var(--blue-700);
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    background: transparent;
+
+    border: none;
+
+    cursor: pointer;
+
+}
+
+
+.textButton:hover {
+
+    text-decoration: underline;
+
+}
+
 
 .backButton {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
 
     width: 100%;
 
@@ -1173,324 +1433,111 @@ img {
 
     padding: 12px 16px;
 
-    color: #405968;
+    color: var(--gray-700);
 
-    background: #ffffff;
+    font-size: 14px;
 
-    border: 1px solid #d3dfe6;
+    font-weight: 700;
+
+    background: white;
+
+    border: 1px solid var(--gray-300);
 
     border-radius: 9px;
 
     cursor: pointer;
 
-    font-size: 14px;
+    transition:
+        background .18s ease,
+        border-color .18s ease;
 
-    font-weight: 700;
 }
 
 
 .backButton:hover {
 
-    color: #163f58;
+    background: var(--gray-100);
 
-    background: #eef5f8;
+    border-color: #b9c8d1;
 
-    border-color: #b9ccd7;
 }
 
 
 /* =========================================================
-   22. RESET PROGRESS
+   AVAILABLE QUESTIONS
    ========================================================= */
 
-#resetProgressSection {
+.availableQuestions {
 
-    margin-top: 25px;
+    margin: 0 0 20px;
 
-    padding: 18px;
+    padding: 14px 16px;
 
-    background: #fff8f7;
-
-    border: 1px solid #f0d5d2;
-
-    border-radius: 10px;
-}
-
-
-#resetProgressSection h3 {
-
-    margin-top: 0;
-
-    color: #a52920;
-}
-
-
-.resetButton {
-
-    width: 100%;
-
-    min-height: 46px;
-
-    color: #ffffff;
-
-    background:
-        linear-gradient(
-            135deg,
-            #a92820,
-            #d53a31
-        );
-
-    border: none;
-
-    border-radius: 8px;
-
-    cursor: pointer;
-
-    font-weight: 700;
-}
-
-
-/* =========================================================
-   23. SEARCH
-   ========================================================= */
-
-.searchCard {
-
-    margin-bottom: 25px;
-}
-
-
-.searchCard input {
-
-    margin: 0 0 12px;
-}
-
-
-.searchResults {
-
-    width: 100%;
-}
-
-
-#searchResults > div {
-
-    margin-bottom: 12px;
-
-    padding: 19px;
-
-    color: #243b49;
-
-    background: #ffffff;
-
-    border: 1px solid #dce5eb;
-
-    border-radius: 11px;
-
-    box-shadow:
-        0 3px 12px rgba(0,0,0,0.04);
-}
-
-
-/* =========================================================
-   24. MARKED QUESTIONS
-   ========================================================= */
-
-.markedQuizGrid {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(4, 1fr);
-
-    gap: 10px;
-
-    margin-bottom: 25px;
-}
-
-
-.markedQuizCard {
-
-    min-height: 90px;
-
-    padding: 14px;
-
-    color: #17394d;
-
-    background: #ffffff;
-
-    border: 1px solid #dce5eb;
-
-    border-radius: 10px;
-
-    cursor: pointer;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 7px;
+    color: #075779;
 
     font-size: 13px;
-}
 
-
-.markedQuizCard span {
-
-    font-size: 21px;
-}
-
-
-.markedQuizCard:hover {
-
-    background: #f0f7fa;
-
-    border-color: #9fc7d6;
-}
-
-
-.markedListCard h2 {
-
-    margin-top: 0;
-
-    color: #173b51;
-
-    font-size: 20px;
-}
-
-
-#markedQuestionsList > div {
-
-    margin-bottom: 12px;
-
-    padding: 18px;
-
-    background: #f8fafc;
-
-    border: 1px solid #dce5eb;
-
-    border-radius: 9px;
-}
-
-
-/* =========================================================
-   25. PROGRESS
-   ========================================================= */
-
-.progressCard {
-
-    margin-bottom: 16px;
-}
-
-
-.progressCard h3 {
-
-    margin: 0 0 17px;
-
-    color: #173b50;
-
-    font-size: 18px;
-}
-
-
-#progressLoading {
-
-    color: #70828d;
+    font-weight: 700;
 
     text-align: center;
-}
 
+    background: var(--blue-100);
 
-/* =========================================================
-   26. ADMIN
-   ========================================================= */
-
-.adminCard {
-
-    margin-bottom: 20px;
-}
-
-
-.adminCard h2 {
-
-    margin-top: 0;
-
-    color: #183b51;
-
-    font-size: 20px;
-}
-
-
-#adminRequests > div,
-#approvedUsersList > div {
-
-    margin-bottom: 10px;
-
-    padding: 17px;
-
-    background: #f8fafc;
-
-    border: 1px solid #dce5eb;
+    border: 1px solid #cde7f3;
 
     border-radius: 9px;
+
 }
 
 
 /* =========================================================
-   27. QUESTION SCREEN
+   QUESTION SCREEN
    ========================================================= */
 
-/*
-   IMPORTANT:
-   When quizMode is active, this becomes the ONLY visible
-   application area.
-*/
+.questionScreen {
 
-#quizScreen {
+    width: min(1000px, 100%);
 
-    width: 100%;
-
-    min-height: calc(100vh - 80px);
 }
 
 
 .questionTopBar {
 
-    width: 100%;
-
-    margin-bottom: 20px;
+    padding: 8px 0 18px;
 
     text-align: center;
+
 }
 
 
 .questionSubject {
 
-    color: #0b496c;
+    margin-bottom: 5px;
 
-    font-size: 23px;
+    color: var(--blue-700);
+
+    font-size: 17px;
 
     font-weight: 800;
+
+    letter-spacing: .3px;
+
 }
 
 
 .questionCounter {
 
-    margin-top: 5px;
+    color: var(--gray-600);
 
-    color: #687c88;
-
-    font-size: 14px;
+    font-size: 12px;
 
     font-weight: 700;
+
 }
 
 
 /* =========================================================
-   28. QUESTION NAVIGATOR
+   QUESTION NAVIGATOR
    ========================================================= */
 
 .questionNavigator {
@@ -1501,129 +1548,140 @@ img {
 
     gap: 6px;
 
-    max-height: 170px;
+    max-height: 145px;
 
     margin-bottom: 20px;
 
-    padding: 13px;
+    padding: 12px;
 
     overflow-y: auto;
 
-    background: #ffffff;
+    background: white;
 
-    border: 1px solid #dce5eb;
+    border: 1px solid var(--gray-200);
 
-    border-radius: 11px;
+    border-radius: 10px;
+
 }
 
 
 .navButton {
 
-    width: 36px;
-    height: 34px;
-
     flex: 0 0 36px;
+
+    width: 36px;
+
+    height: 34px;
 
     padding: 0;
 
-    color: #405664;
+    color: var(--gray-700);
 
-    background: #ffffff;
+    font-size: 11px;
 
-    border: 1px solid #cbd8df;
+    font-weight: 750;
 
-    border-radius: 6px;
+    background: white;
+
+    border: 1px solid var(--gray-300);
+
+    border-radius: 7px;
 
     cursor: pointer;
 
-    font-size: 12px;
-
-    font-weight: 750;
 }
 
 
 .navButton:hover {
 
-    background: #edf6fa;
+    border-color: var(--blue-500);
 
-    border-color: #70a9c0;
+}
+
+
+.navButton.notAttempted {
+
+    color: var(--gray-700);
+
+    background: white;
+
 }
 
 
 .navButton.correct {
 
-    color: #ffffff !important;
+    color: white !important;
 
-    background: #16834b !important;
+    background: var(--green) !important;
 
-    border-color: #16834b !important;
+    border-color: var(--green) !important;
+
 }
 
 
 .navButton.wrong {
 
-    color: #ffffff !important;
+    color: white !important;
 
-    background: #d93025 !important;
+    background: var(--red) !important;
 
-    border-color: #d93025 !important;
+    border-color: var(--red) !important;
+
 }
 
 
 .navButton.skipped {
 
-    color: #ffffff !important;
+    color: white !important;
 
-    background: #d99210 !important;
+    background: var(--orange) !important;
 
-    border-color: #d99210 !important;
+    border-color: var(--orange) !important;
+
 }
 
 
 /* =========================================================
-   29. QUESTION CARD
+   QUESTION CARD
    ========================================================= */
 
 .questionCard {
 
-    width: 100%;
-
     padding: 30px;
 
-    background: #ffffff;
+    background: white;
 
-    border: 1px solid #dce5eb;
+    border: 1px solid var(--gray-200);
 
-    border-radius: 15px;
+    border-radius: var(--radius-md);
 
-    box-shadow:
-        0 6px 25px rgba(17, 47, 65, 0.07);
+    box-shadow: var(--shadow-md);
+
 }
 
 
 .question {
 
-    margin: 0 0 24px;
+    margin: 0;
 
     padding: 0;
 
-    color: #152f40;
+    color: #17232d;
+
+    font-size: 20px;
+
+    font-weight: 650;
+
+    line-height: 1.65;
 
     background: transparent;
 
     border: none;
 
-    font-size: 21px;
+    box-shadow: none;
 
-    font-weight: 650;
-
-    line-height: 1.65;
 }
 
-
-/* =========================================================
-   30. QUESTION IMAGES
-   ========================================================= */
 
 .question-images {
 
@@ -1639,7 +1697,8 @@ img {
 
     width: 100%;
 
-    margin: 22px 0;
+    margin: 25px 0;
+
 }
 
 
@@ -1647,81 +1706,93 @@ img {
 
     display: block;
 
-    width: auto;
-
     max-width: 100%;
 
     max-height: 500px;
 
-    padding: 7px;
+    width: auto;
+
+    height: auto;
 
     object-fit: contain;
 
-    background: #ffffff;
+    padding: 5px;
 
-    border: 1px solid #d2dce3;
+    background: white;
 
-    border-radius: 9px;
+    border: 1px solid var(--gray-300);
 
-    box-shadow:
-        0 5px 15px rgba(0,0,0,0.08);
+    border-radius: 8px;
+
+    box-shadow: var(--shadow-sm);
 
     cursor: zoom-in;
+
 }
 
 
 /* =========================================================
-   31. MARK QUESTION
+   MARK QUESTION
    ========================================================= */
 
 .markButton {
 
     width: 100%;
 
-    min-height: 46px;
+    min-height: 44px;
 
-    margin: 10px 0 18px;
+    margin: 20px 0 16px;
 
-    padding: 12px;
+    padding: 11px 15px;
 
-    color: #6c5100;
+    color: #765500;
 
-    background: #fff8dc;
+    font-size: 13px;
 
-    border: 1px solid #ead27a;
+    font-weight: 750;
+
+    background: var(--orange-light);
+
+    border: 1px solid #ecd489;
 
     border-radius: 8px;
 
     cursor: pointer;
 
-    font-size: 14px;
-
-    font-weight: 750;
 }
 
 
 .markButton:hover {
 
-    background: #fff0b4;
+    background: #fff0bf;
+
 }
 
 
 .markButton.marked {
 
-    color: #ffffff;
+    color: white;
 
-    background: #c48a00;
+    background:
+        linear-gradient(
+            135deg,
+            #c38200,
+            #e0a500
+        );
 
-    border-color: #c48a00;
+    border-color: #c38200;
+
 }
 
 
 /* =========================================================
-   32. ANSWERS
+   ANSWERS
    ========================================================= */
 
 .answers {
-    width: 100%;
+
+    margin-top: 8px;
+
 }
 
 
@@ -1731,23 +1802,13 @@ img {
 
     width: 100%;
 
-    min-height: 53px;
+    min-height: 55px;
 
-    margin: 11px 0;
+    margin: 10px 0;
 
     padding: 15px 17px;
 
-    color: #203845;
-
-    background: #ffffff;
-
-    border: 1px solid #d2dde4;
-
-    border-radius: 9px;
-
-    cursor: pointer;
-
-    text-align: left;
+    color: #24343f;
 
     font-size: 16px;
 
@@ -1755,58 +1816,74 @@ img {
 
     line-height: 1.5;
 
+    text-align: left;
+
+    background: white;
+
+    border: 1px solid var(--gray-300);
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 2px 5px rgba(0,0,0,.025);
+
     transition:
-        background 0.15s ease,
-        border-color 0.15s ease,
-        transform 0.15s ease;
+        background .15s ease,
+        border-color .15s ease,
+        transform .15s ease;
+
 }
 
 
 .option:hover {
 
-    color: #15394f;
+    color: #17232d;
 
-    background: #f0f7fa;
+    background: #f2f8fb;
 
-    border-color: #6ba4ba;
+    border-color: #6aa4c1;
 
-    transform: translateX(3px);
+    transform: translateX(2px);
+
 }
 
 
 .option.correct {
 
-    color: #ffffff !important;
+    color: white !important;
 
-    background: #16834b !important;
+    background: var(--green) !important;
 
-    border-color: #16834b !important;
+    border-color: var(--green) !important;
+
 }
 
 
 .option.wrong {
 
-    color: #ffffff !important;
+    color: white !important;
 
-    background: #d93025 !important;
+    background: var(--red) !important;
 
-    border-color: #d93025 !important;
+    border-color: var(--red) !important;
+
 }
 
 
 /* =========================================================
-   33. QUESTION NAVIGATION
+   QUESTION NAVIGATION
    ========================================================= */
 
 .navigation {
 
     display: flex;
 
-    width: 100%;
-
     gap: 10px;
 
-    margin-top: 20px;
+    margin-top: 18px;
+
 }
 
 
@@ -1814,13 +1891,17 @@ img {
 
     flex: 1;
 
-    min-height: 50px;
+    min-height: 48px;
 
     padding: 12px;
 
-    color: #ffffff;
+    color: white;
 
-    background: #173f57;
+    font-size: 13px;
+
+    font-weight: 750;
+
+    background: var(--navy-800);
 
     border: none;
 
@@ -1828,101 +1909,193 @@ img {
 
     cursor: pointer;
 
-    font-size: 14px;
-
-    font-weight: 750;
 }
 
 
 .navigation button:hover {
 
-    background: #0876a2;
+    background: var(--blue-700);
 
-    transform: translateY(-1px);
 }
 
 
 #skipBtn {
 
-    background: #d88c0b;
+    background: var(--orange);
+
 }
 
 
 #skipBtn:hover {
 
-    background: #b87300;
+    background: #b97300;
+
 }
 
 
 /* =========================================================
-   34. RESULTS
+   IMPORTANT:
+   HIDE SIDEBAR WHEN PRACTICING
+   ========================================================= */
+
+/*
+   The quiz screen is the only screen where we want the
+   question interface to take the entire browser width.
+
+   Modern browsers support :has(), which lets CSS detect
+   when the quiz screen is visible.
+*/
+
+#mainApplication:has(
+    #quizScreen[style*="display: block"]
+) .sidebar {
+
+    display: none;
+
+}
+
+
+#mainApplication:has(
+    #quizScreen[style*="display: block"]
+) .mobileHeader {
+
+    display: none;
+
+}
+
+
+#mainApplication:has(
+    #quizScreen[style*="display: block"]
+) .mainContent {
+
+    margin-left: 0;
+
+    padding:
+        30px
+        5vw
+        50px;
+
+}
+
+
+#mainApplication:has(
+    #quizScreen[style*="display: block"]
+) .questionScreen {
+
+    width: min(1050px, 100%);
+
+}
+
+
+/* =========================================================
+   RESULTS
    ========================================================= */
 
 .resultsScreen {
 
-    max-width: 750px;
+    max-width: 700px;
+
+    margin: auto;
+
 }
 
 
 .resultsCard {
 
+    padding: 35px;
+
     text-align: center;
+
+    background: white;
+
+    border: 1px solid var(--gray-200);
+
+    border-radius: var(--radius-lg);
+
+    box-shadow: var(--shadow-md);
+
 }
 
 
 .resultsIcon {
 
-    font-size: 45px;
+    font-size: 48px;
 
-    margin-bottom: 10px;
+    margin-bottom: 8px;
+
 }
 
 
 .resultsCard h1 {
 
-    margin: 0 0 20px;
+    margin: 0;
 
-    color: #16394e;
+    padding: 0;
+
+    color: var(--navy-900);
 
     font-size: 28px;
+
+    background: none;
+
+    border-radius: 0;
+
+    box-shadow: none;
+
+}
+
+
+.resultsCard h1::after {
+
+    display: none;
+
 }
 
 
 #resultScore {
 
-    width: 170px;
-    height: 170px;
+    width: 155px;
 
-    margin: 20px auto;
+    height: 155px;
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
-    color: #ffffff;
+    margin: 25px auto;
+
+    color: white;
 
     background:
         linear-gradient(
             135deg,
-            #0a3d5a,
-            #087da9
+            var(--navy-800),
+            var(--blue-600)
         );
 
     border-radius: 50%;
 
     box-shadow:
-        0 12px 30px rgba(8, 62, 88, 0.22);
+        0 12px 30px rgba(8,105,155,.2);
+
 }
 
 
 #resultScore h1 {
 
-    margin: 0;
+    color: white;
 
-    color: #ffffff;
+    font-size: 38px;
 
-    font-size: 40px;
+}
+
+
+#resultScore h1::after {
+
+    display: none;
+
 }
 
 
@@ -1930,167 +2103,301 @@ img {
 
     width: min(500px, 100%);
 
-    margin: 25px auto;
+    margin: 20px auto;
 
     padding: 20px;
 
-    color: #344d5c;
+    color: var(--gray-800);
 
-    background: #f6f9fb;
+    text-align: left;
 
-    border: 1px solid #dce5eb;
+    background: var(--gray-100);
+
+    border: 1px solid var(--gray-200);
 
     border-radius: 10px;
 
-    text-align: left;
+}
+
+
+#resultDetails p {
+
+    margin: 0;
+
+    padding: 11px 0;
+
+    border-bottom: 1px solid var(--gray-200);
+
+}
+
+
+#resultDetails p:last-child {
+
+    border-bottom: none;
+
 }
 
 
 .resultsActions {
 
-    width: min(500px, 100%);
+    margin-top: 20px;
 
-    margin: auto;
 }
 
 
 /* =========================================================
-   35. MOBILE HEADER
+   PROGRESS
    ========================================================= */
 
-.mobileHeader {
+.progressCard h3 {
 
-    display: none;
+    margin: 0 0 18px;
 
-    position: fixed;
+    color: var(--navy-900);
 
-    top: 0;
-    left: 0;
+    font-size: 17px;
 
-    z-index: 1100;
-
-    width: 100%;
-
-    height: 60px;
-
-    align-items: center;
-
-    padding: 0 15px;
-
-    color: #ffffff;
-
-    background: #071f31;
-
-    box-shadow:
-        0 3px 15px rgba(0,0,0,0.15);
 }
 
 
-.mobileMenuButton {
+#progressLoading {
 
-    width: 40px;
-    height: 40px;
+    color: var(--gray-600);
 
-    color: #ffffff;
+}
 
-    background: transparent;
+
+/* =========================================================
+   ADMIN
+   ========================================================= */
+
+.adminScreen {
+
+    max-width: 900px;
+
+}
+
+
+.adminCard h2 {
+
+    margin: 0 0 18px;
+
+    color: var(--navy-900);
+
+    font-size: 19px;
+
+    text-align: left;
+
+}
+
+
+#adminRequests > div,
+#approvedUsersList > div {
+
+    margin-bottom: 10px !important;
+
+    padding: 16px !important;
+
+    color: var(--gray-800);
+
+    background: #fbfcfd !important;
+
+    border: 1px solid var(--gray-200) !important;
+
+    border-radius: 9px !important;
+
+}
+
+
+#adminScreen hr {
 
     border: none;
 
-    border-radius: 7px;
+    border-top: 1px solid var(--gray-200);
+
+}
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+.searchCard {
+
+    display: grid;
+
+    grid-template-columns: 1fr 230px;
+
+    gap: 10px;
+
+}
+
+
+.searchCard #searchInput {
+
+    margin: 0;
+
+}
+
+
+.searchCard #searchQuestionsBtn {
+
+    grid-column: 1 / -1;
+
+}
+
+
+#searchResults {
+
+    margin-top: 20px;
+
+}
+
+
+#searchResults > div,
+#markedQuestionsList > div {
+
+    margin-bottom: 12px !important;
+
+    padding: 18px !important;
+
+    color: var(--gray-800);
+
+    background: white !important;
+
+    border: 1px solid var(--gray-200) !important;
+
+    border-radius: 10px !important;
+
+    box-shadow: var(--shadow-sm);
+
+}
+
+
+/* =========================================================
+   MARKED QUESTIONS
+   ========================================================= */
+
+.markedQuizGrid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 10px;
+
+    margin-bottom: 22px;
+
+}
+
+
+.markedQuizCard {
+
+    min-height: 80px;
+
+    padding: 14px;
+
+    color: var(--navy-800);
+
+    background: white;
+
+    border: 1px solid var(--gray-200);
+
+    border-radius: 10px;
 
     cursor: pointer;
 
-    font-size: 23px;
+    box-shadow: var(--shadow-sm);
+
 }
 
 
-.mobileHeaderTitle {
+.markedQuizCard:hover {
 
-    flex: 1;
+    color: var(--blue-700);
 
-    text-align: center;
+    border-color: #acd4e7;
 
-    font-size: 15px;
+    background: var(--blue-100);
 
-    font-weight: 800;
-
-    letter-spacing: 0.7px;
 }
 
 
-.mobileHeaderSpacer {
+.markedQuizCard span {
 
-    width: 40px;
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 20px;
+
+}
+
+
+.markedQuizCard strong {
+
+    font-size: 12px;
+
 }
 
 
 /* =========================================================
-   36. DESKTOP FULL-SCREEN QUESTION MODE
+   RESET
    ========================================================= */
 
-/*
-   This is the important part.
+#resetProgressSection {
 
-   When .quizMode is added to #mainApplication,
-   the sidebar disappears and the question screen uses
-   the entire browser width.
-*/
+    margin-top: 25px;
 
-#mainApplication.quizMode .sidebar {
+    padding: 18px;
 
-    display: none !important;
+    background: var(--red-light);
+
+    border: 1px solid #f0c9c5;
+
+    border-radius: 10px;
+
 }
 
 
-#mainApplication.quizMode .mobileHeader {
+#resetProgressSection h3 {
 
-    display: none !important;
+    margin-top: 0;
+
+    color: #a5261e;
+
 }
 
 
-#mainApplication.quizMode .mainContent {
-
-    width: 100% !important;
-
-    margin-left: 0 !important;
-
-    padding: 30px 6% !important;
-}
-
-
-#mainApplication.quizMode #quizScreen {
+.resetButton {
 
     width: 100%;
 
-    max-width: 1200px;
+    min-height: 46px;
 
-    margin: 0 auto;
-}
+    color: white;
 
+    font-weight: 750;
 
-#mainApplication.quizMode .questionCard {
+    background:
+        linear-gradient(
+            135deg,
+            #b5221b,
+            #d93025
+        );
 
-    max-width: 1200px;
+    border: none;
 
-    margin-left: auto;
+    border-radius: 8px;
 
-    margin-right: auto;
-}
+    cursor: pointer;
 
-
-#mainApplication.quizMode .questionNavigator {
-
-    max-width: 1200px;
-
-    margin-left: auto;
-
-    margin-right: auto;
 }
 
 
 /* =========================================================
-   37. FOCUS
+   FOCUS
    ========================================================= */
 
 button:focus-visible,
@@ -2098,29 +2405,29 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
 
-    outline: 3px solid rgba(14, 125, 170, 0.25);
+    outline: 3px solid rgba(11,125,184,.25);
 
     outline-offset: 2px;
+
 }
 
 
 /* =========================================================
-   38. DISABLED
+   DISABLED
    ========================================================= */
 
 button:disabled,
 select:disabled {
 
-    opacity: 0.5;
+    opacity: .5;
 
     cursor: not-allowed;
 
-    transform: none !important;
 }
 
 
 /* =========================================================
-   39. SCROLLBAR
+   SCROLLBAR
    ========================================================= */
 
 ::-webkit-scrollbar {
@@ -2128,413 +2435,626 @@ select:disabled {
     width: 8px;
 
     height: 8px;
+
 }
 
 
 ::-webkit-scrollbar-track {
 
     background: #edf1f4;
+
 }
 
 
 ::-webkit-scrollbar-thumb {
 
-    background: #a6b6c0;
+    background: #a5b4be;
 
     border-radius: 10px;
+
 }
 
 
 ::-webkit-scrollbar-thumb:hover {
 
-    background: #8296a3;
+    background: #7d909d;
+
 }
 
 
 /* =========================================================
-   40. TABLET
+   TABLET
    ========================================================= */
 
 @media (max-width: 1000px) {
 
-    .dashboardCards {
+    .sidebar {
 
-        grid-template-columns:
-            1fr 1fr;
+        width: 230px;
+
     }
 
 
-    .dashboardCard:last-child {
+    .mainContent {
 
-        grid-column:
-            1 / -1;
+        margin-left: 230px;
+
+        padding: 30px;
+
+    }
+
+
+    .dashboardCards,
+    .quickActions {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
     }
 
 
     .secondaryActions {
 
         grid-template-columns:
-            1fr 1fr;
+            repeat(2, 1fr);
+
     }
 
 
     .markedQuizGrid {
 
         grid-template-columns:
-            1fr 1fr;
+            repeat(2, 1fr);
+
     }
 
 }
 
 
 /* =========================================================
-   41. MOBILE
+   MOBILE
    ========================================================= */
 
 @media (max-width: 768px) {
 
-    #mainApplication {
+    body {
 
-        display: block;
+        background: #f4f7f9;
+
     }
 
 
+    /* SIDEBAR */
+
     .sidebar {
 
-        width: 275px;
+        width: 270px;
 
         transform: translateX(-100%);
 
         transition:
-            transform 0.25s ease;
+            transform .25s ease;
 
         box-shadow:
-            8px 0 30px rgba(0,0,0,0.25);
+            8px 0 30px rgba(0,0,0,.18);
+
     }
 
 
     .sidebar.mobileOpen {
 
         transform: translateX(0);
+
     }
 
+
+    /* MOBILE HEADER */
 
     .mobileHeader {
 
+        position: sticky;
+
+        top: 0;
+
+        z-index: 900;
+
+        height: 60px;
+
         display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        padding: 0 15px;
+
+        color: white;
+
+        background:
+            linear-gradient(
+                135deg,
+                #071522,
+                #0b4568
+            );
+
+        box-shadow:
+            0 3px 12px rgba(0,0,0,.12);
+
     }
 
 
-    .mainContent {
+    .mobileMenuButton {
 
-        width: 100%;
+        width: 40px;
+
+        height: 40px;
+
+        color: white;
+
+        font-size: 23px;
+
+        background: transparent;
+
+        border: none;
+
+        cursor: pointer;
+
+    }
+
+
+    .mobileHeaderTitle {
+
+        font-size: 15px;
+
+        font-weight: 800;
+
+        letter-spacing: .7px;
+
+    }
+
+
+    .mobileHeaderSpacer {
+
+        width: 40px;
+
+    }
+
+
+    /* MAIN */
+
+    .mainContent {
 
         margin-left: 0;
 
-        padding:
-            85px 15px 25px;
+        padding: 25px 16px 45px;
+
+    }
+
+
+    .contentScreen {
+
+        width: 100%;
+
+    }
+
+
+    /* HEADERS */
+
+    .pageHeader {
+
+        margin-bottom: 23px;
+
     }
 
 
     .pageHeader h1 {
 
         font-size: 25px;
+
     }
 
+
+    /* DASHBOARD */
 
     .dashboardCards {
 
         grid-template-columns: 1fr;
+
     }
 
 
-    .dashboardCard:last-child {
+    .quickActions {
 
-        grid-column: auto;
+        grid-template-columns: 1fr;
+
     }
 
 
     .secondaryActions {
 
         grid-template-columns:
-            1fr 1fr;
+            repeat(2, 1fr);
+
     }
 
 
-    .markedQuizGrid {
-
-        grid-template-columns:
-            1fr 1fr;
-    }
-
+    /* SETUP */
 
     .setupCard,
     .searchCard,
     .adminCard,
     .markedListCard,
-    .progressCard,
-    .resultsCard {
+    .progressCard {
 
         padding: 20px;
+
     }
 
 
-    /* Question screen */
+    /* QUESTION */
 
-    #mainApplication.quizMode .mobileHeader {
+    .questionCard {
 
-        display: none !important;
-    }
-
-
-    #mainApplication.quizMode .mainContent {
-
-        padding:
-            12px 10px !important;
-    }
-
-
-    #mainApplication.quizMode #quizScreen {
-
-        min-height: 100vh;
-
-        padding: 0;
-    }
-
-
-    #mainApplication.quizMode .questionCard {
-
-        padding: 18px;
+        padding: 20px;
 
         border-radius: 12px;
+
     }
 
 
-    #mainApplication.quizMode .question {
+    .question {
 
         font-size: 18px;
 
         line-height: 1.55;
+
     }
 
 
-    #mainApplication.quizMode .option {
+    .option {
+
+        font-size: 15px;
 
         padding: 14px;
 
-        font-size: 15px;
     }
 
 
-    #mainApplication.quizMode .questionNavigator {
+    .questionNavigator {
 
-        max-height: 130px;
+        max-height: 120px;
 
-        padding: 9px;
     }
 
 
-    #mainApplication.quizMode .navigation {
+    .navigation {
 
-        gap: 6px;
+        gap: 7px;
+
     }
 
 
-    #mainApplication.quizMode .navigation button {
+    .navigation button {
 
-        min-height: 47px;
-
-        padding: 9px 5px;
+        min-height: 46px;
 
         font-size: 12px;
+
+        padding: 10px 5px;
+
     }
 
 
-    #mainApplication.quizMode .question-figure {
+    /* SEARCH */
 
-        max-height: 350px;
+    .searchCard {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .searchCard #searchQuestionsBtn {
+
+        grid-column: auto;
+
+    }
+
+
+    /* MARKED */
+
+    .markedQuizGrid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    /* QUIZ FULLSCREEN */
+
+    #mainApplication:has(
+        #quizScreen[style*="display: block"]
+    ) .mainContent {
+
+        padding:
+            15px
+            10px
+            35px;
+
+    }
+
+
+    #mainApplication:has(
+        #quizScreen[style*="display: block"]
+    ) .questionCard {
+
+        border-radius: 10px;
+
+        box-shadow:
+            0 4px 15px rgba(0,0,0,.07);
+
+    }
+
+
+    #mainApplication:has(
+        #quizScreen[style*="display: block"]
+    ) .questionNavigator {
+
+        margin-top: 5px;
+
     }
 
 }
 
 
 /* =========================================================
-   42. SMALL PHONES
+   SMALL PHONE
    ========================================================= */
 
-@media (max-width: 430px) {
+@media (max-width: 480px) {
 
     #loginArea {
 
-        padding: 15px 10px;
+        padding: 12px;
+
+        background:
+            #f3f6f8;
+
     }
 
 
     .authCard {
 
         padding: 28px 20px;
+
+        border-radius: 15px;
+
     }
 
 
     .authLogo {
 
-        width: 64px;
-        height: 64px;
+        width: 65px;
+
+        height: 65px;
 
         font-size: 29px;
+
     }
 
 
     .authCard h1 {
 
         font-size: 24px;
+
     }
 
 
-    .pageHeader {
+    .authCard h2 {
 
-        margin-bottom: 22px;
+        font-size: 22px;
+
+    }
+
+
+    .mainContent {
+
+        padding:
+            20px
+            11px
+            35px;
+
     }
 
 
     .pageHeader h1 {
 
         font-size: 22px;
+
     }
 
 
     .pageDescription {
 
         font-size: 13px;
+
+    }
+
+
+    .dashboardCard {
+
+        min-height: auto;
+
+        padding: 16px;
+
     }
 
 
     .secondaryActions {
 
-        grid-template-columns:
-            1fr;
+        grid-template-columns: 1fr;
+
     }
 
 
     .markedQuizGrid {
 
-        grid-template-columns:
-            1fr;
+        grid-template-columns: 1fr 1fr;
+
     }
 
 
-    .questionSubject {
+    .questionCard {
 
-        font-size: 19px;
+        padding: 16px;
+
     }
 
 
-    #mainApplication.quizMode .questionCard {
-
-        padding: 14px;
-    }
-
-
-    #mainApplication.quizMode .question {
+    .question {
 
         font-size: 17px;
+
     }
 
 
-    #mainApplication.quizMode .option {
+    .option {
 
-        min-height: 48px;
+        min-height: 50px;
 
         padding: 13px;
 
-        font-size: 14px;
+        font-size: 15px;
+
     }
 
 
-    #mainApplication.quizMode .navigation button {
+    .navigation {
 
-        font-size: 11px;
+        display: grid;
+
+        grid-template-columns:
+            1fr 1fr;
+
     }
 
 
-    #mainApplication.quizMode .question-figure {
+    .navigation button:last-child {
 
-        max-height: 280px;
+        grid-column:
+            1 / -1;
+
     }
 
 
     #resultScore {
 
-        width: 135px;
-        height: 135px;
+        width: 130px;
+
+        height: 130px;
+
+    }
+
+
+    #resultScore h1 {
+
+        font-size: 32px;
+
     }
 
 }
 
 
 /* =========================================================
-   43. VERY SMALL PHONES
+   VERY SMALL PHONE
    ========================================================= */
 
 @media (max-width: 350px) {
 
+    .mobileHeaderTitle {
+
+        font-size: 13px;
+
+    }
+
+
     .mainContent {
 
-        padding-left: 10px;
+        padding-left: 8px;
 
-        padding-right: 10px;
+        padding-right: 8px;
+
     }
 
 
-    .authCard {
+    .questionCard {
 
-        padding: 25px 15px;
+        padding: 13px;
+
     }
 
 
-    #mainApplication.quizMode .navigation {
+    .navigation {
 
-        flex-direction: column;
+        grid-template-columns: 1fr;
+
     }
 
 
-    #mainApplication.quizMode .navigation button {
+    .navigation button:last-child {
 
-        width: 100%;
+        grid-column: auto;
+
+    }
+
+
+    .markedQuizGrid {
+
+        grid-template-columns: 1fr;
+
     }
 
 }
 
 
 /* =========================================================
-   44. PRINT
+   PRINT
    ========================================================= */
 
 @media print {
 
     body {
 
-        background: #ffffff;
+        background: white;
+
     }
 
 
     .sidebar,
     .mobileHeader,
-    .navigation,
-    .backButton,
-    .markButton {
+    button {
 
         display: none !important;
+
     }
 
 
     .mainContent {
 
-        width: 100%;
-
         margin: 0;
 
         padding: 0;
+
+    }
+
+
+    .questionCard {
+
+        box-shadow: none;
+
+        border: none;
+
     }
 
 }
