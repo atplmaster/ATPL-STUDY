@@ -2310,6 +2310,24 @@ supabaseClient
                 session.user
             ) {
 
+                const mainApp =
+                    document.getElementById(
+                        "mainApplication"
+                    );
+
+                const alreadyLoggedIn =
+                    mainApp &&
+                    mainApp.style.display !== "none";
+
+                if (alreadyLoggedIn) {
+
+                    // Session was just refreshed (e.g. tab
+                    // regained focus) — don't reset the screen
+                    // back to the dashboard.
+                    return;
+
+                }
+
                 await showMainApplication();
 
                 await updateAdminSidebar();
