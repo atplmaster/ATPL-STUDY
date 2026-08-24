@@ -1,7 +1,7 @@
 // ========================================
 // ATPL STUDY PLATFORM
-// CLEAN STABLE VERSION
-// WITH SESSION RESTORE
+// COMPLETE STABLE VERSION
+// WITH STRONG SESSION RESTORE
 // ========================================
 
 
@@ -51,7 +51,9 @@ function saveActiveSession() {
 
     try {
 
-        // Only save an actual study session
+        // Only save when there is an actual
+        // question session in progress.
+
         if (
             !questions ||
             !questions.length ||
@@ -138,15 +140,35 @@ async function restoreActiveSession() {
 
         }
 
-        const session =
-            JSON.parse(saved);
+        let session;
 
-        // Ignore very old sessions
-        // Older than 24 hours
+        try {
+
+            session =
+                JSON.parse(saved);
+
+        } catch (parseError) {
+
+            console.error(
+                "Invalid saved session:",
+                parseError
+            );
+
+            clearActiveSession();
+
+            return false;
+
+        }
+
+
+        // ========================================
+        // SESSION AGE CHECK
+        // ========================================
 
         if (
             !session.savedAt ||
-            Date.now() - session.savedAt >
+            Date.now() -
+            session.savedAt >
             24 * 60 * 60 * 1000
         ) {
 
@@ -156,9 +178,16 @@ async function restoreActiveSession() {
 
         }
 
+
+        // ========================================
+        // BASIC SESSION VALIDATION
+        // ========================================
+
         if (
             session.screen !== "quizScreen" ||
-            !Array.isArray(session.questions) ||
+            !Array.isArray(
+                session.questions
+            ) ||
             !session.questions.length
         ) {
 
@@ -168,26 +197,54 @@ async function restoreActiveSession() {
 
         }
 
+
+        // ========================================
+        // RESTORE QUESTIONS
+        // ========================================
+
         questions =
             session.questions;
 
+
+        // ========================================
+        // RESTORE CURRENT QUESTION
+        // ========================================
+
         current =
-            Number.isInteger(session.current)
+            Number.isInteger(
+                session.current
+            )
                 ? session.current
                 : 0;
 
+
+        // ========================================
+        // RESTORE STATUS
+        // ========================================
+
         status =
-            Array.isArray(session.status)
+            Array.isArray(
+                session.status
+            )
                 ? session.status
                 : new Array(
                     questions.length
-                ).fill("notAttempted");
+                ).fill(
+                    "notAttempted"
+                );
+
+
+        // ========================================
+        // RESTORE QUIZ MODE
+        // ========================================
 
         quizMode =
             session.quizMode === true;
 
-        // Make sure current question
-        // is within valid range
+
+        // ========================================
+        // VALIDATE CURRENT QUESTION
+        // ========================================
 
         if (
             current < 0 ||
@@ -198,8 +255,10 @@ async function restoreActiveSession() {
 
         }
 
-        // Make sure status array has
-        // same length as questions
+
+        // ========================================
+        // FIX STATUS ARRAY LENGTH
+        // ========================================
 
         if (
             status.length !==
@@ -209,10 +268,15 @@ async function restoreActiveSession() {
             const newStatus =
                 new Array(
                     questions.length
-                ).fill("notAttempted");
+                ).fill(
+                    "notAttempted"
+                );
 
             status.forEach(
-                function (value, index) {
+                function (
+                    value,
+                    index
+                ) {
 
                     if (
                         index <
@@ -227,9 +291,15 @@ async function restoreActiveSession() {
                 }
             );
 
-            status = newStatus;
+            status =
+                newStatus;
 
         }
+
+
+        // ========================================
+        // RESTORE SCREEN
+        // ========================================
 
         currentScreen =
             "quizScreen";
@@ -238,11 +308,17 @@ async function restoreActiveSession() {
             "quizScreen"
         );
 
+
+        // ========================================
+        // RESTORE SUBJECT TITLE
+        // ========================================
+
         const question =
             questions[current];
 
         let subjectTitle =
             "Review";
+
 
         if (
             question &&
@@ -257,13 +333,19 @@ async function restoreActiveSession() {
 
         }
 
+
         if (quizMode) {
 
             if (
+                questions.length &&
                 questions.every(
                     function (q) {
-                        return q.subject ===
-                            questions[0].subject;
+
+                        return (
+                            q.subject ===
+                            questions[0].subject
+                        );
+
                     }
                 )
             ) {
@@ -281,6 +363,7 @@ async function restoreActiveSession() {
 
         }
 
+
         const subjectElement =
             document.getElementById(
                 "subject"
@@ -293,23 +376,43 @@ async function restoreActiveSession() {
 
         }
 
+
+        // ========================================
+        // DRAW QUESTION
+        // ========================================
+
         createNavigator();
 
         showQuestion();
 
-        // Restore latest server progress
-        // without destroying the current
-        // local session
+
+        // ========================================
+        // LOAD SERVER PROGRESS
+        // ========================================
 
         await loadSavedProgress();
 
+
+        // ========================================
+        // REDRAW AFTER SERVER PROGRESS
+        // ========================================
+
         createNavigator();
 
         showQuestion();
+
+
+        // ========================================
+        // SAVE THE RESTORED SESSION AGAIN
+        // ========================================
+
+        saveActiveSession();
+
 
         console.log(
             "Active ATPL study session restored."
         );
+
 
         return true;
 
@@ -333,40 +436,61 @@ async function restoreActiveSession() {
 // SCREEN CONTROL
 // ========================================
 
-function showOnly(screenId) {
+function showOnly(
+    screenId
+) {
 
     const screens = [
+
         "loginScreen",
+
         "accessRequestScreen",
+
         "homeScreen",
+
         "adminScreen",
+
         "practiceSetup",
+
         "quizSetup",
+
         "combinedQuizSetup",
+
         "quizScreen",
+
         "resultsScreen",
+
         "searchScreen",
+
         "markedScreen"
+
     ];
 
-    screens.forEach(function (id) {
 
-        const element =
-            document.getElementById(id);
+    screens.forEach(
+        function (id) {
 
-        if (element) {
+            const element =
+                document.getElementById(
+                    id
+                );
 
-            element.style.display =
-                "none";
+            if (element) {
+
+                element.style.display =
+                    "none";
+
+            }
 
         }
+    );
 
-    });
 
     const selected =
         document.getElementById(
             screenId
         );
+
 
     if (selected) {
 
@@ -375,11 +499,13 @@ function showOnly(screenId) {
 
     }
 
+
     currentScreen =
         screenId;
 
-    // Save whenever we are inside
-    // an active question session
+
+    // Save active question session
+    // whenever we are on quiz screen.
 
     if (
         screenId === "quizScreen"
@@ -417,16 +543,19 @@ document.getElementById(
 ).onclick =
 function () {
 
-    quizMode = false;
+    quizMode =
+        false;
 
     const subjectFile =
         document.getElementById(
             "practiceSubjectSelect"
         ).value;
 
+
     showOnly(
         "quizScreen"
     );
+
 
     loadPracticeQuestions(
         subjectFile
@@ -476,21 +605,26 @@ document.getElementById(
 ).onclick =
 function () {
 
-    quizMode = true;
+    quizMode =
+        true;
+
 
     const subjectFile =
         document.getElementById(
             "subjectSelect"
         ).value;
 
+
     const numberOfQuestions =
         document.getElementById(
             "questionCount"
         ).value;
 
+
     showOnly(
         "quizScreen"
     );
+
 
     loadSubjectQuiz(
         subjectFile,
@@ -556,7 +690,9 @@ function () {
 
 async function loadCombinedQuestionCount() {
 
-    let totalQuestions = 0;
+    let totalQuestions =
+        0;
+
 
     try {
 
@@ -571,6 +707,7 @@ async function loadCombinedQuestionCount() {
                     ".json"
                 );
 
+
             if (!response.ok) {
 
                 throw new Error(
@@ -581,24 +718,37 @@ async function loadCombinedQuestionCount() {
 
             }
 
+
             const data =
                 await response.json();
+
 
             totalQuestions +=
                 data.length;
 
         }
 
-        document.getElementById(
-            "availableQuestions"
-        ).innerHTML =
-            "Available questions: <strong>" +
-            totalQuestions +
-            "</strong>";
+
+        const available =
+            document.getElementById(
+                "availableQuestions"
+            );
+
+
+        if (available) {
+
+            available.innerHTML =
+                "Available questions: <strong>" +
+                totalQuestions +
+                "</strong>";
+
+        }
+
 
         updateCombinedQuestionOptions(
             totalQuestions
         );
+
 
     } catch (error) {
 
@@ -607,10 +757,19 @@ async function loadCombinedQuestionCount() {
             error
         );
 
-        document.getElementById(
-            "availableQuestions"
-        ).innerHTML =
-            "Unable to load questions.";
+
+        const available =
+            document.getElementById(
+                "availableQuestions"
+            );
+
+
+        if (available) {
+
+            available.innerHTML =
+                "Unable to load questions.";
+
+        }
 
     }
 
@@ -630,11 +789,13 @@ function updateCombinedQuestionOptions(
             "combinedQuestionCount"
         );
 
+
     if (!select) {
 
         return;
 
     }
+
 
     select.querySelectorAll(
         "option"
@@ -650,11 +811,13 @@ function updateCombinedQuestionOptions(
 
             }
 
+
             const number =
                 parseInt(
                     option.value,
                     10
                 );
+
 
             option.disabled =
                 number >
@@ -680,6 +843,7 @@ function () {
             "combinedQuestionCount"
         ).value;
 
+
     loadCombinedQuiz(
         questionCount
     );
@@ -704,6 +868,7 @@ async function loadPracticeQuestions(
                 ".json"
             );
 
+
         if (!response.ok) {
 
             throw new Error(
@@ -712,8 +877,10 @@ async function loadPracticeQuestions(
 
         }
 
+
         questions =
             await response.json();
+
 
         questions.forEach(
             function (question) {
@@ -724,6 +891,7 @@ async function loadPracticeQuestions(
             }
         );
 
+
         status =
             new Array(
                 questions.length
@@ -731,7 +899,10 @@ async function loadPracticeQuestions(
                 "notAttempted"
             );
 
-        current = 0;
+
+        current =
+            0;
+
 
         document.getElementById(
             "subject"
@@ -740,19 +911,23 @@ async function loadPracticeQuestions(
                 subjectFile
             ];
 
+
         createNavigator();
 
         showQuestion();
 
         saveActiveSession();
+
 
         await loadSavedProgress();
 
+
         createNavigator();
 
         showQuestion();
 
         saveActiveSession();
+
 
     } catch (error) {
 
@@ -760,6 +935,7 @@ async function loadPracticeQuestions(
             "Practice loading error:",
             error
         );
+
 
         alert(
             "Error loading practice questions."
@@ -788,6 +964,7 @@ async function loadSubjectQuiz(
                 ".json"
             );
 
+
         if (!response.ok) {
 
             throw new Error(
@@ -796,8 +973,10 @@ async function loadSubjectQuiz(
 
         }
 
+
         let allQuestions =
             await response.json();
+
 
         allQuestions.forEach(
             function (question) {
@@ -808,7 +987,8 @@ async function loadSubjectQuiz(
             }
         );
 
-        // Randomize questions
+
+        // Randomize
 
         allQuestions.sort(
             function () {
@@ -819,7 +999,8 @@ async function loadSubjectQuiz(
             }
         );
 
-        // Select number of questions
+
+        // Select number
 
         if (
             numberOfQuestions ===
@@ -842,6 +1023,7 @@ async function loadSubjectQuiz(
 
         }
 
+
         status =
             new Array(
                 questions.length
@@ -849,7 +1031,10 @@ async function loadSubjectQuiz(
                 "notAttempted"
             );
 
-        current = 0;
+
+        current =
+            0;
+
 
         document.getElementById(
             "subject"
@@ -859,19 +1044,23 @@ async function loadSubjectQuiz(
             ] +
             " QUIZ";
 
+
         createNavigator();
 
         showQuestion();
 
         saveActiveSession();
+
 
         await loadSavedProgress();
 
+
         createNavigator();
 
         showQuestion();
 
         saveActiveSession();
+
 
     } catch (error) {
 
@@ -879,6 +1068,7 @@ async function loadSubjectQuiz(
             "Subject quiz loading error:",
             error
         );
+
 
         alert(
             "Error loading subject quiz."
@@ -897,7 +1087,9 @@ async function loadCombinedQuiz(
     questionCount
 ) {
 
-    const combinedQuestions = [];
+    const combinedQuestions =
+        [];
+
 
     try {
 
@@ -912,6 +1104,7 @@ async function loadCombinedQuiz(
                     ".json"
                 );
 
+
             if (!response.ok) {
 
                 throw new Error(
@@ -922,8 +1115,10 @@ async function loadCombinedQuiz(
 
             }
 
+
             const data =
                 await response.json();
+
 
             data.forEach(
                 function (question) {
@@ -940,7 +1135,8 @@ async function loadCombinedQuiz(
 
         }
 
-        // Randomize all questions
+
+        // Randomize
 
         combinedQuestions.sort(
             function () {
@@ -951,7 +1147,8 @@ async function loadCombinedQuiz(
             }
         );
 
-        // Select number of questions
+
+        // Select number
 
         if (
             questionCount ===
@@ -974,6 +1171,7 @@ async function loadCombinedQuiz(
 
         }
 
+
         status =
             new Array(
                 questions.length
@@ -981,32 +1179,42 @@ async function loadCombinedQuiz(
                 "notAttempted"
             );
 
-        current = 0;
 
-        quizMode = true;
+        current =
+            0;
+
+
+        quizMode =
+            true;
+
 
         showOnly(
             "quizScreen"
         );
+
 
         document.getElementById(
             "subject"
         ).innerHTML =
             "COMBINED ATPL QUIZ";
 
+
         createNavigator();
 
         showQuestion();
 
         saveActiveSession();
+
 
         await loadSavedProgress();
 
+
         createNavigator();
 
         showQuestion();
 
         saveActiveSession();
+
 
     } catch (error) {
 
@@ -1014,6 +1222,7 @@ async function loadCombinedQuiz(
             "Combined quiz error:",
             error
         );
+
 
         alert(
             "Error loading combined quiz."
@@ -1035,13 +1244,17 @@ function createNavigator() {
             "navigator"
         );
 
+
     if (!nav) {
 
         return;
 
     }
 
-    nav.innerHTML = "";
+
+    nav.innerHTML =
+        "";
+
 
     questions.forEach(
         function (
@@ -1054,12 +1267,18 @@ function createNavigator() {
                     "button"
                 );
 
+
             button.innerHTML =
                 index + 1;
 
+
             button.className =
                 "navButton " +
-                status[index];
+                (
+                    status[index] ||
+                    "notAttempted"
+                );
+
 
             if (
                 question.id &&
@@ -1074,17 +1293,20 @@ function createNavigator() {
 
             }
 
+
             button.onclick =
                 function () {
 
                     current =
                         index;
 
+
                     showQuestion();
 
                     saveActiveSession();
 
                 };
+
 
             nav.appendChild(
                 button
@@ -1102,34 +1324,101 @@ function createNavigator() {
 
 function showQuestion() {
 
-    if (!questions.length) {
+    if (
+        !questions ||
+        !questions.length
+    ) {
 
         return;
 
     }
 
+
+    if (
+        current < 0 ||
+        current >= questions.length
+    ) {
+
+        current =
+            0;
+
+    }
+
+
     const question =
         questions[current];
 
-    document.getElementById(
-        "counter"
-    ).innerHTML =
-        "Question " +
-        (current + 1) +
-        " of " +
-        questions.length;
 
-    document.getElementById(
-        "question"
-    ).innerHTML =
-        question.question;
+    if (!question) {
+
+        return;
+
+    }
+
+
+    const counter =
+        document.getElementById(
+            "counter"
+        );
+
+
+    if (counter) {
+
+        counter.innerHTML =
+            "Question " +
+            (current + 1) +
+            " of " +
+            questions.length;
+
+    }
+
+
+    const questionElement =
+        document.getElementById(
+            "question"
+        );
+
+
+    if (questionElement) {
+
+        questionElement.innerHTML =
+            question.question;
+
+    }
+
 
     const answers =
         document.getElementById(
             "answers"
         );
 
-    answers.innerHTML = "";
+
+    if (!answers) {
+
+        return;
+
+    }
+
+
+    answers.innerHTML =
+        "";
+
+
+    if (
+        !Array.isArray(
+            question.options
+        )
+    ) {
+
+        console.error(
+            "Question has no options:",
+            question
+        );
+
+        return;
+
+    }
+
 
     question.options.forEach(
         function (
@@ -1142,13 +1431,18 @@ function showQuestion() {
                     "button"
                 );
 
+
             button.className =
                 "option";
+
 
             button.innerHTML =
                 option;
 
-            // Already answered
+
+            // ========================================
+            // RESTORE CORRECT ANSWER
+            // ========================================
 
             if (
                 status[current] ===
@@ -1168,6 +1462,11 @@ function showQuestion() {
 
             }
 
+
+            // ========================================
+            // RESTORE WRONG ANSWER
+            // ========================================
+
             if (
                 status[current] ===
                 "wrong"
@@ -1186,6 +1485,7 @@ function showQuestion() {
 
             }
 
+
             button.onclick =
                 async function () {
 
@@ -1202,7 +1502,13 @@ function showQuestion() {
 
                     }
 
+
                     let questionStatus;
+
+
+                    // ========================================
+                    // CORRECT
+                    // ========================================
 
                     if (
                         index ===
@@ -1213,28 +1519,41 @@ function showQuestion() {
                             "correct"
                         );
 
+
                         status[current] =
                             "correct";
+
 
                         questionStatus =
                             "correct";
 
-                    } else {
+                    }
+
+
+                    // ========================================
+                    // WRONG
+                    // ========================================
+
+                    else {
 
                         button.classList.add(
                             "wrong"
                         );
 
+
                         status[current] =
                             "wrong";
 
+
                         questionStatus =
                             "wrong";
+
 
                         const allButtons =
                             answers.querySelectorAll(
                                 ".option"
                             );
+
 
                         if (
                             allButtons[
@@ -1252,11 +1571,17 @@ function showQuestion() {
 
                     }
 
-                    // Save locally immediately
+
+                    // ========================================
+                    // SAVE IMMEDIATELY
+                    // ========================================
 
                     saveActiveSession();
 
-                    // Save to Supabase
+
+                    // ========================================
+                    // SAVE TO SUPABASE
+                    // ========================================
 
                     await saveProgress(
                         question,
@@ -1264,11 +1589,14 @@ function showQuestion() {
                         questionStatus
                     );
 
+
                     createNavigator();
+
 
                     saveActiveSession();
 
                 };
+
 
             answers.appendChild(
                 button
@@ -1277,7 +1605,15 @@ function showQuestion() {
         }
     );
 
+
     updateMarkButtonUI();
+
+
+    // ========================================
+    // IMPORTANT:
+    // SAVE CURRENT QUESTION EVERY TIME
+    // IT IS DISPLAYED.
+    // ========================================
 
     saveActiveSession();
 
@@ -1327,7 +1663,8 @@ document.getElementById(
 function () {
 
     if (
-        current > 0
+        current >
+        0
     ) {
 
         current--;
@@ -1353,7 +1690,9 @@ function () {
     status[current] =
         "skipped";
 
+
     saveActiveSession();
+
 
     if (
         current <
@@ -1364,11 +1703,14 @@ function () {
 
         showQuestion();
 
-    } else if (quizMode) {
+    } else if (
+        quizMode
+    ) {
 
         showResults();
 
     }
+
 
     createNavigator();
 
@@ -1388,9 +1730,11 @@ function () {
 
     clearActiveSession();
 
+
     showOnly(
         "homeScreen"
     );
+
 
     checkAdminAccess();
 
@@ -1416,19 +1760,26 @@ function showResults() {
                 )
                 .filter(Boolean);
 
+
         clearProgressByQuestionIds(
             questionIds
         );
 
     }
 
-    // Quiz is finished
 
     clearActiveSession();
 
-    let correct = 0;
-    let wrong = 0;
-    let skipped = 0;
+
+    let correct =
+        0;
+
+    let wrong =
+        0;
+
+    let skipped =
+        0;
+
 
     status.forEach(
         function (result) {
@@ -1442,6 +1793,7 @@ function showResults() {
 
             }
 
+
             if (
                 result ===
                 "wrong"
@@ -1450,6 +1802,7 @@ function showResults() {
                 wrong++;
 
             }
+
 
             if (
                 result ===
@@ -1463,8 +1816,10 @@ function showResults() {
         }
     );
 
+
     const total =
         questions.length;
+
 
     const percentage =
         total > 0
@@ -1477,9 +1832,11 @@ function showResults() {
             )
             : 0;
 
+
     showOnly(
         "resultsScreen"
     );
+
 
     document.getElementById(
         "resultScore"
@@ -1487,6 +1844,7 @@ function showResults() {
         "<h1>" +
         percentage +
         "%</h1>";
+
 
     document.getElementById(
         "resultDetails"
@@ -1516,11 +1874,14 @@ document.getElementById(
 ).onclick =
 function () {
 
-    current = 0;
+    current =
+        0;
+
 
     showOnly(
         "quizScreen"
     );
+
 
     showQuestion();
 
@@ -1540,9 +1901,11 @@ function () {
 
     clearActiveSession();
 
+
     showOnly(
         "homeScreen"
     );
+
 
     checkAdminAccess();
 
@@ -1563,15 +1926,18 @@ async function () {
             "loginEmail"
         ).value.trim();
 
+
     const password =
         document.getElementById(
             "loginPassword"
         ).value;
 
+
     const message =
         document.getElementById(
             "loginMessage"
         );
+
 
     if (
         !email ||
@@ -1585,6 +1951,7 @@ async function () {
 
     }
 
+
     if (
         password.length <
         6
@@ -1597,8 +1964,10 @@ async function () {
 
     }
 
+
     message.innerHTML =
         "Creating account...";
+
 
     try {
 
@@ -1615,6 +1984,7 @@ async function () {
 
             });
 
+
         if (error) {
 
             console.error(
@@ -1622,15 +1992,19 @@ async function () {
                 error
             );
 
+
             message.innerHTML =
                 error.message;
+
 
             return;
 
         }
 
+
         message.innerHTML =
             "Account created successfully. You can now log in.";
+
 
     } catch (error) {
 
@@ -1638,6 +2012,7 @@ async function () {
             "Unexpected signup error:",
             error
         );
+
 
         message.innerHTML =
             "Unable to create account.";
@@ -1661,15 +2036,18 @@ async function () {
             "loginEmail"
         ).value.trim();
 
+
     const password =
         document.getElementById(
             "loginPassword"
         ).value;
 
+
     const message =
         document.getElementById(
             "loginMessage"
         );
+
 
     if (
         !email ||
@@ -1683,8 +2061,10 @@ async function () {
 
     }
 
+
     message.innerHTML =
         "Logging in...";
+
 
     try {
 
@@ -1703,6 +2083,7 @@ async function () {
 
                 });
 
+
         if (error) {
 
             console.error(
@@ -1710,12 +2091,15 @@ async function () {
                 error
             );
 
+
             message.innerHTML =
                 error.message;
+
 
             return;
 
         }
+
 
         if (
             !data ||
@@ -1728,6 +2112,7 @@ async function () {
             return;
 
         }
+
 
         const {
             data: approvedUser,
@@ -1742,6 +2127,7 @@ async function () {
                 )
                 .maybeSingle();
 
+
         if (approvalError) {
 
             console.error(
@@ -1749,38 +2135,48 @@ async function () {
                 approvalError
             );
 
+
             await supabaseClient.auth
                 .signOut();
+
 
             message.innerHTML =
                 "Unable to verify account approval.";
 
+
             return;
 
         }
+
 
         if (!approvedUser) {
 
             await supabaseClient.auth
                 .signOut();
 
+
             message.innerHTML =
                 "Your account has not been approved yet. Please request access.";
+
 
             return;
 
         }
 
+
         message.innerHTML =
             "Login successful.";
+
 
         showOnly(
             "homeScreen"
         );
 
+
         await checkAdminAccess();
 
         await refreshMarkedIds();
+
 
     } catch (error) {
 
@@ -1788,6 +2184,7 @@ async function () {
             "Unexpected login error:",
             error
         );
+
 
         message.innerHTML =
             "Login failed. Please try again.";
@@ -1798,7 +2195,7 @@ async function () {
 
 
 // ========================================
-// CLEAR PROGRESS
+// CLEAR PROGRESS BY QUESTION IDS
 // ========================================
 
 async function clearProgressByQuestionIds(
@@ -1815,11 +2212,13 @@ async function clearProgressByQuestionIds(
             await supabaseClient.auth
                 .getUser();
 
+
         if (!user) {
 
             return;
 
         }
+
 
         if (
             !questionIds ||
@@ -1829,6 +2228,7 @@ async function clearProgressByQuestionIds(
             return;
 
         }
+
 
         const {
             error
@@ -1844,6 +2244,7 @@ async function clearProgressByQuestionIds(
                     "question_id",
                     questionIds
                 );
+
 
         if (error) {
 
@@ -1866,6 +2267,10 @@ async function clearProgressByQuestionIds(
 }
 
 
+// ========================================
+// CLEAR PROGRESS BY SUBJECT
+// ========================================
+
 async function clearProgressBySubject(
     subjectFile
 ) {
@@ -1880,6 +2285,7 @@ async function clearProgressBySubject(
             await supabaseClient.auth
                 .getUser();
 
+
         if (!user) {
 
             alert(
@@ -1889,6 +2295,7 @@ async function clearProgressBySubject(
             return;
 
         }
+
 
         const {
             data,
@@ -1907,6 +2314,7 @@ async function clearProgressBySubject(
                 )
                 .select();
 
+
         if (error) {
 
             console.error(
@@ -1914,25 +2322,30 @@ async function clearProgressBySubject(
                 error
             );
 
+
             alert(
                 "Could not reset progress: " +
                 error.message
             );
 
+
             return;
 
         }
+
 
         const deletedCount =
             data ?
                 data.length :
                 0;
 
+
         console.log(
             "Progress reset - rows deleted:",
             deletedCount,
             data
         );
+
 
         alert(
             "Progress reset for " +
@@ -1946,12 +2359,14 @@ async function clearProgressBySubject(
             deletedCount
         );
 
+
     } catch (error) {
 
         console.error(
             "Progress reset error:",
             error
         );
+
 
         alert(
             "Could not reset progress. Please try again."
@@ -1963,7 +2378,7 @@ async function clearProgressBySubject(
 
 
 // ========================================
-// RESET PRACTICE PROGRESS BUTTON
+// RESET PRACTICE PROGRESS
 // ========================================
 
 document.getElementById(
@@ -1975,6 +2390,7 @@ async function () {
         document.getElementById(
             "practiceSubjectSelect"
         ).value;
+
 
     const confirmed =
         confirm(
@@ -1988,11 +2404,13 @@ async function () {
             "? This cannot be undone."
         );
 
+
     if (!confirmed) {
 
         return;
 
     }
+
 
     await clearProgressBySubject(
         subjectFile
@@ -2013,7 +2431,10 @@ async function getAllQuestionsCached() {
 
     }
 
-    const all = [];
+
+    const all =
+        [];
+
 
     for (
         const file of subjectFiles
@@ -2028,14 +2449,17 @@ async function getAllQuestionsCached() {
                     ".json"
                 );
 
+
             if (!response.ok) {
 
                 continue;
 
             }
 
+
             const data =
                 await response.json();
+
 
             data.forEach(
                 function (question) {
@@ -2043,12 +2467,14 @@ async function getAllQuestionsCached() {
                     question.subject =
                         file;
 
+
                     all.push(
                         question
                     );
 
                 }
             );
+
 
         } catch (error) {
 
@@ -2061,8 +2487,10 @@ async function getAllQuestionsCached() {
 
     }
 
+
     questionCache =
         all;
+
 
     return all;
 
@@ -2081,6 +2509,7 @@ async function openQuestionSet(
     questions =
         list;
 
+
     status =
         new Array(
             list.length
@@ -2088,20 +2517,25 @@ async function openQuestionSet(
             "notAttempted"
         );
 
+
     current =
         index;
 
+
     quizMode =
         false;
+
 
     showOnly(
         "quizScreen"
     );
 
+
     document.getElementById(
         "subject"
     ).innerHTML =
         "Review";
+
 
     createNavigator();
 
@@ -2109,7 +2543,9 @@ async function openQuestionSet(
 
     saveActiveSession();
 
+
     await loadSavedProgress();
+
 
     createNavigator();
 
@@ -2133,21 +2569,27 @@ async function () {
         "searchScreen"
     );
 
+
     document.getElementById(
         "searchInput"
-    ).value = "";
+    ).value =
+        "";
+
 
     document.getElementById(
         "searchResults"
     ).innerHTML =
         "Loading questions...";
 
+
     await getAllQuestionsCached();
+
 
     document.getElementById(
         "searchResults"
     ).innerHTML =
         "Type at least 2 characters to search.";
+
 
     document.getElementById(
         "searchInput"
@@ -2155,6 +2597,10 @@ async function () {
 
 };
 
+
+// ========================================
+// SEARCH BACK
+// ========================================
 
 document.getElementById(
     "searchBackBtn"
@@ -2172,6 +2618,10 @@ let searchDebounceTimer =
     null;
 
 
+// ========================================
+// SEARCH INPUT
+// ========================================
+
 document.getElementById(
     "searchInput"
 ).oninput =
@@ -2182,9 +2632,11 @@ function () {
             .trim()
             .toLowerCase();
 
+
     clearTimeout(
         searchDebounceTimer
     );
+
 
     searchDebounceTimer =
         setTimeout(
@@ -2195,6 +2647,7 @@ function () {
                         "searchResults"
                     );
 
+
                 if (
                     term.length <
                     2
@@ -2203,12 +2656,15 @@ function () {
                     container.innerHTML =
                         "Type at least 2 characters to search.";
 
+
                     return;
 
                 }
 
+
                 const allQuestions =
                     await getAllQuestionsCached();
+
 
                 const matches =
                     allQuestions
@@ -2217,9 +2673,13 @@ function () {
                                 question
                             ) {
 
-                                return question.question
-                                    .toLowerCase()
-                                    .includes(term);
+                                return (
+                                    question.question
+                                        .toLowerCase()
+                                        .includes(
+                                            term
+                                        )
+                                );
 
                             }
                         )
@@ -2228,20 +2688,24 @@ function () {
                             100
                         );
 
+
                 if (!matches.length) {
 
                     container.innerHTML =
                         "No questions found.";
 
+
                     return;
 
                 }
+
 
                 renderResultList(
                     "searchResults",
                     matches,
                     false
                 );
+
 
             },
             150
@@ -2263,10 +2727,15 @@ async function () {
         "markedScreen"
     );
 
+
     await loadMarkedQuestionsList();
 
 };
 
+
+// ========================================
+// MARKED BACK
+// ========================================
 
 document.getElementById(
     "markedBackBtn"
@@ -2280,6 +2749,10 @@ function () {
 };
 
 
+// ========================================
+// LOAD MARKED QUESTIONS
+// ========================================
+
 async function loadMarkedQuestionsList() {
 
     const container =
@@ -2287,8 +2760,10 @@ async function loadMarkedQuestionsList() {
             "markedResults"
         );
 
+
     container.innerHTML =
         "Loading marked questions...";
+
 
     try {
 
@@ -2300,6 +2775,7 @@ async function loadMarkedQuestionsList() {
             await supabaseClient.auth
                 .getUser();
 
+
         if (!user) {
 
             container.innerHTML =
@@ -2308,6 +2784,7 @@ async function loadMarkedQuestionsList() {
             return;
 
         }
+
 
         const {
             data,
@@ -2330,6 +2807,7 @@ async function loadMarkedQuestionsList() {
                     }
                 );
 
+
         if (error) {
 
             console.error(
@@ -2337,15 +2815,18 @@ async function loadMarkedQuestionsList() {
                 error
             );
 
+
             container.innerHTML =
                 "Unable to load marked questions: " +
                 escapeHTML(
                     error.message
                 );
 
+
             return;
 
         }
+
 
         if (
             !data ||
@@ -2355,14 +2836,19 @@ async function loadMarkedQuestionsList() {
             container.innerHTML =
                 "No marked questions yet. Tap \"Mark for Review\" on any question to add it here.";
 
+
             return;
 
         }
 
+
         const allQuestions =
             await getAllQuestionsCached();
 
-        const found = [];
+
+        const found =
+            [];
+
 
         data.forEach(
             function (row) {
@@ -2381,6 +2867,7 @@ async function loadMarkedQuestionsList() {
                         }
                     );
 
+
                 if (match) {
 
                     found.push(
@@ -2392,14 +2879,17 @@ async function loadMarkedQuestionsList() {
             }
         );
 
+
         if (!found.length) {
 
             container.innerHTML =
                 "No marked questions yet.";
 
+
             return;
 
         }
+
 
         renderResultList(
             "markedResults",
@@ -2407,12 +2897,14 @@ async function loadMarkedQuestionsList() {
             true
         );
 
+
     } catch (error) {
 
         console.error(
             "Marked questions error:",
             error
         );
+
 
         container.innerHTML =
             "Unable to load marked questions.";
@@ -2437,7 +2929,10 @@ function renderResultList(
             containerId
         );
 
-    container.innerHTML = "";
+
+    container.innerHTML =
+        "";
+
 
     list.forEach(
         function (
@@ -2450,16 +2945,20 @@ function renderResultList(
                     "div"
                 );
 
+
             row.className =
                 "resultItem";
+
 
             const textSpan =
                 document.createElement(
                     "span"
                 );
 
+
             textSpan.className =
                 "resultText";
+
 
             textSpan.innerHTML =
                 "<strong>" +
@@ -2474,6 +2973,7 @@ function renderResultList(
                     question.question
                 );
 
+
             textSpan.onclick =
                 function () {
 
@@ -2484,9 +2984,11 @@ function renderResultList(
 
                 };
 
+
             row.appendChild(
                 textSpan
             );
+
 
             if (showUnmark) {
 
@@ -2495,11 +2997,14 @@ function renderResultList(
                         "button"
                     );
 
+
                 unmarkBtn.className =
                     "unmarkBtn";
 
+
                 unmarkBtn.innerHTML =
                     "✕";
+
 
                 unmarkBtn.onclick =
                     async function (
@@ -2508,20 +3013,24 @@ function renderResultList(
 
                         event.stopPropagation();
 
+
                         await setMarked(
                             question,
                             false
                         );
 
+
                         await loadMarkedQuestionsList();
 
                     };
+
 
                 row.appendChild(
                     unmarkBtn
                 );
 
             }
+
 
             container.appendChild(
                 row
@@ -2534,7 +3043,7 @@ function renderResultList(
 
 
 // ========================================
-// MARK / UNMARK QUESTION
+// REFRESH MARKED IDS
 // ========================================
 
 async function refreshMarkedIds() {
@@ -2549,6 +3058,7 @@ async function refreshMarkedIds() {
             await supabaseClient.auth
                 .getUser();
 
+
         if (!user) {
 
             markedIds =
@@ -2557,6 +3067,7 @@ async function refreshMarkedIds() {
             return;
 
         }
+
 
         const {
             data,
@@ -2572,6 +3083,7 @@ async function refreshMarkedIds() {
                     user.id
                 );
 
+
         if (error) {
 
             console.error(
@@ -2582,6 +3094,7 @@ async function refreshMarkedIds() {
             return;
 
         }
+
 
         markedIds =
             new Set(
@@ -2596,6 +3109,7 @@ async function refreshMarkedIds() {
                 )
             );
 
+
     } catch (error) {
 
         console.error(
@@ -2607,6 +3121,10 @@ async function refreshMarkedIds() {
 
 }
 
+
+// ========================================
+// SET MARKED
+// ========================================
 
 async function setMarked(
     question,
@@ -2623,21 +3141,25 @@ async function setMarked(
             await supabaseClient.auth
                 .getUser();
 
+
         if (!user) {
 
             alert(
                 "You must be logged in to mark questions."
             );
 
+
             return;
 
         }
+
 
         if (!question.id) {
 
             return;
 
         }
+
 
         if (shouldMark) {
 
@@ -2660,6 +3182,7 @@ async function setMarked(
 
                     });
 
+
             if (
                 error &&
                 error.code !==
@@ -2671,18 +3194,22 @@ async function setMarked(
                     error
                 );
 
+
                 alert(
                     "Unable to mark question: " +
                     error.message
                 );
 
+
                 return;
 
             }
 
+
             markedIds.add(
                 question.id
             );
+
 
         } else {
 
@@ -2701,6 +3228,7 @@ async function setMarked(
                         question.id
                     );
 
+
             if (error) {
 
                 console.error(
@@ -2708,20 +3236,24 @@ async function setMarked(
                     error
                 );
 
+
                 alert(
                     "Unable to unmark question: " +
                     error.message
                 );
 
+
                 return;
 
             }
+
 
             markedIds.delete(
                 question.id
             );
 
         }
+
 
     } catch (error) {
 
@@ -2735,6 +3267,10 @@ async function setMarked(
 }
 
 
+// ========================================
+// MARK TOGGLE BUTTON
+// ========================================
+
 document.getElementById(
     "markToggleBtn"
 ).onclick =
@@ -2746,18 +3282,22 @@ async function () {
 
     }
 
+
     const question =
         questions[current];
+
 
     const isMarked =
         markedIds.has(
             question.id
         );
 
+
     await setMarked(
         question,
         !isMarked
     );
+
 
     updateMarkButtonUI();
 
@@ -2768,12 +3308,17 @@ async function () {
 };
 
 
+// ========================================
+// UPDATE MARK BUTTON UI
+// ========================================
+
 function updateMarkButtonUI() {
 
     const btn =
         document.getElementById(
             "markToggleBtn"
         );
+
 
     if (
         !btn ||
@@ -2784,8 +3329,10 @@ function updateMarkButtonUI() {
 
     }
 
+
     const question =
         questions[current];
+
 
     if (
         markedIds.has(
@@ -2796,14 +3343,17 @@ function updateMarkButtonUI() {
         btn.innerHTML =
             "★ Marked for Review";
 
+
         btn.classList.add(
             "marked"
         );
+
 
     } else {
 
         btn.innerHTML =
             "🔖 Mark for Review";
+
 
         btn.classList.remove(
             "marked"
@@ -2834,11 +3384,13 @@ async function saveProgress(
             await supabaseClient.auth
                 .getUser();
 
+
         if (!user) {
 
             return;
 
         }
+
 
         if (!question.id) {
 
@@ -2847,16 +3399,20 @@ async function saveProgress(
                 question
             );
 
+
             return;
 
         }
 
+
         const questionId =
             question.id;
+
 
         const subject =
             question.subject ||
             "unknown";
+
 
         const {
             data: existing,
@@ -2875,6 +3431,7 @@ async function saveProgress(
                 )
                 .maybeSingle();
 
+
         if (findError) {
 
             console.error(
@@ -2882,9 +3439,11 @@ async function saveProgress(
                 findError
             );
 
+
             return;
 
         }
+
 
         if (existing) {
 
@@ -2914,6 +3473,7 @@ async function saveProgress(
                         existing.id
                     );
 
+
             if (error) {
 
                 console.error(
@@ -2922,6 +3482,7 @@ async function saveProgress(
                 );
 
             }
+
 
         } else {
 
@@ -2949,6 +3510,7 @@ async function saveProgress(
 
                     });
 
+
             if (error) {
 
                 console.error(
@@ -2959,6 +3521,7 @@ async function saveProgress(
             }
 
         }
+
 
     } catch (error) {
 
@@ -2988,11 +3551,13 @@ async function loadSavedProgress() {
             await supabaseClient.auth
                 .getUser();
 
+
         if (!user) {
 
             return;
 
         }
+
 
         const questionIds =
             questions
@@ -3005,11 +3570,13 @@ async function loadSavedProgress() {
                 )
                 .filter(Boolean);
 
+
         if (!questionIds.length) {
 
             return;
 
         }
+
 
         const {
             data,
@@ -3029,6 +3596,7 @@ async function loadSavedProgress() {
                     questionIds
                 );
 
+
         if (error) {
 
             console.error(
@@ -3036,9 +3604,11 @@ async function loadSavedProgress() {
                 error
             );
 
+
             return;
 
         }
+
 
         if (data) {
 
@@ -3059,8 +3629,10 @@ async function loadSavedProgress() {
                             }
                         );
 
+
                     if (
-                        index !== -1
+                        index !==
+                        -1
                     ) {
 
                         status[index] =
@@ -3073,9 +3645,11 @@ async function loadSavedProgress() {
 
         }
 
+
         createNavigator();
 
         saveActiveSession();
+
 
     } catch (error) {
 
@@ -3135,20 +3709,24 @@ async function () {
             "requestName"
         ).value.trim();
 
+
     const email =
         document.getElementById(
             "requestEmail"
         ).value.trim();
+
 
     const reason =
         document.getElementById(
             "requestReason"
         ).value.trim();
 
+
     const message =
         document.getElementById(
             "accessRequestMessage"
         );
+
 
     if (
         !name ||
@@ -3158,12 +3736,15 @@ async function () {
         message.innerHTML =
             "Please enter your name and email.";
 
+
         return;
 
     }
 
+
     message.innerHTML =
         "Submitting request...";
+
 
     try {
 
@@ -3185,6 +3766,7 @@ async function () {
 
                 });
 
+
         if (error) {
 
             console.error(
@@ -3192,27 +3774,37 @@ async function () {
                 error
             );
 
+
             message.innerHTML =
                 "Unable to submit request. Please try again.";
+
 
             return;
 
         }
 
+
         message.innerHTML =
             "Request submitted successfully. Your access will be reviewed.";
 
+
         document.getElementById(
             "requestName"
-        ).value = "";
+        ).value =
+            "";
+
 
         document.getElementById(
             "requestEmail"
-        ).value = "";
+        ).value =
+            "";
+
 
         document.getElementById(
             "requestReason"
-        ).value = "";
+        ).value =
+            "";
+
 
     } catch (error) {
 
@@ -3220,6 +3812,7 @@ async function () {
             "Unexpected request error:",
             error
         );
+
 
         message.innerHTML =
             "Unable to submit request. Please try again.";
@@ -3240,14 +3833,17 @@ async function checkAdminAccess() {
             "adminBtn"
         );
 
+
     if (!adminButton) {
 
         return;
 
     }
 
+
     adminButton.style.display =
         "none";
+
 
     try {
 
@@ -3260,6 +3856,7 @@ async function checkAdminAccess() {
             await supabaseClient.auth
                 .getUser();
 
+
         if (
             error ||
             !user
@@ -3268,6 +3865,7 @@ async function checkAdminAccess() {
             return;
 
         }
+
 
         const {
             data: adminUser,
@@ -3282,6 +3880,7 @@ async function checkAdminAccess() {
                 )
                 .maybeSingle();
 
+
         if (adminError) {
 
             console.error(
@@ -3289,9 +3888,11 @@ async function checkAdminAccess() {
                 adminError
             );
 
+
             return;
 
         }
+
 
         if (adminUser) {
 
@@ -3299,6 +3900,7 @@ async function checkAdminAccess() {
                 "block";
 
         }
+
 
     } catch (error) {
 
@@ -3325,6 +3927,7 @@ async function () {
         "adminScreen"
     );
 
+
     await loadAdminRequests();
 
     await loadApprovedUsers();
@@ -3345,6 +3948,7 @@ function () {
         "homeScreen"
     );
 
+
     checkAdminAccess();
 
 };
@@ -3361,8 +3965,10 @@ async function loadAdminRequests() {
             "adminRequests"
         );
 
+
     container.innerHTML =
         "Loading requests...";
+
 
     try {
 
@@ -3381,6 +3987,7 @@ async function loadAdminRequests() {
                     }
                 );
 
+
         if (error) {
 
             console.error(
@@ -3388,12 +3995,15 @@ async function loadAdminRequests() {
                 error
             );
 
+
             container.innerHTML =
                 "Unable to load access requests.";
+
 
             return;
 
         }
+
 
         if (
             !data ||
@@ -3403,11 +4013,15 @@ async function loadAdminRequests() {
             container.innerHTML =
                 "No access requests.";
 
+
             return;
 
         }
 
-        container.innerHTML = "";
+
+        container.innerHTML =
+            "";
+
 
         data.forEach(
             function (request) {
@@ -3417,17 +4031,22 @@ async function loadAdminRequests() {
                         "div"
                     );
 
+
                 box.style.border =
                     "1px solid #ccc";
+
 
                 box.style.padding =
                     "15px";
 
+
                 box.style.marginBottom =
                     "10px";
 
+
                 box.style.borderRadius =
                     "8px";
+
 
                 box.innerHTML =
                     "<strong>Name:</strong> " +
@@ -3452,16 +4071,20 @@ async function loadAdminRequests() {
                     ).toLocaleString() +
                     "<br><br>";
 
+
                 const approveButton =
                     document.createElement(
                         "button"
                     );
 
+
                 approveButton.innerHTML =
                     "Approve";
 
+
                 approveButton.className =
                     "modeButton";
+
 
                 approveButton.onclick =
                     function () {
@@ -3472,16 +4095,20 @@ async function loadAdminRequests() {
 
                     };
 
+
                 const rejectButton =
                     document.createElement(
                         "button"
                     );
 
+
                 rejectButton.innerHTML =
                     "Reject";
 
+
                 rejectButton.className =
                     "backButton";
+
 
                 rejectButton.onclick =
                     function () {
@@ -3492,13 +4119,16 @@ async function loadAdminRequests() {
 
                     };
 
+
                 box.appendChild(
                     approveButton
                 );
 
+
                 box.appendChild(
                     rejectButton
                 );
+
 
                 container.appendChild(
                     box
@@ -3507,12 +4137,14 @@ async function loadAdminRequests() {
             }
         );
 
+
     } catch (error) {
 
         console.error(
             "Unexpected admin request error:",
             error
         );
+
 
         container.innerHTML =
             "Unable to load access requests.";
@@ -3542,6 +4174,7 @@ async function approveUser(
 
     }
 
+
     try {
 
         const {
@@ -3556,6 +4189,7 @@ async function approveUser(
 
                 });
 
+
         if (error) {
 
             console.error(
@@ -3563,14 +4197,17 @@ async function approveUser(
                 error
             );
 
+
             alert(
                 "Unable to approve user: " +
                 error.message
             );
 
+
             return;
 
         }
+
 
         const {
             error: deleteError
@@ -3583,6 +4220,7 @@ async function approveUser(
                     request.id
                 );
 
+
         if (deleteError) {
 
             console.error(
@@ -3592,13 +4230,16 @@ async function approveUser(
 
         }
 
+
         alert(
             "User approved successfully."
         );
 
+
         await loadAdminRequests();
 
         await loadApprovedUsers();
+
 
     } catch (error) {
 
@@ -3606,6 +4247,7 @@ async function approveUser(
             "Unexpected approval error:",
             error
         );
+
 
         alert(
             "Unable to approve user."
@@ -3634,6 +4276,7 @@ async function rejectRequest(
 
     }
 
+
     try {
 
         const {
@@ -3647,6 +4290,7 @@ async function rejectRequest(
                     request.id
                 );
 
+
         if (error) {
 
             console.error(
@@ -3654,16 +4298,20 @@ async function rejectRequest(
                 error
             );
 
+
             alert(
                 "Unable to reject request: " +
                 error.message
             );
 
+
             return;
 
         }
 
+
         await loadAdminRequests();
+
 
     } catch (error) {
 
@@ -3671,6 +4319,7 @@ async function rejectRequest(
             "Unexpected reject error:",
             error
         );
+
 
         alert(
             "Unable to reject request."
@@ -3692,8 +4341,10 @@ async function loadApprovedUsers() {
             "approvedUsersList"
         );
 
+
     container.innerHTML =
         "Loading approved users...";
+
 
     try {
 
@@ -3712,6 +4363,7 @@ async function loadApprovedUsers() {
                     }
                 );
 
+
         if (error) {
 
             console.error(
@@ -3719,15 +4371,18 @@ async function loadApprovedUsers() {
                 error
             );
 
+
             container.innerHTML =
                 "Unable to load approved users: " +
                 escapeHTML(
                     error.message
                 );
 
+
             return;
 
         }
+
 
         if (
             !data ||
@@ -3737,11 +4392,15 @@ async function loadApprovedUsers() {
             container.innerHTML =
                 "No approved users.";
 
+
             return;
 
         }
 
-        container.innerHTML = "";
+
+        container.innerHTML =
+            "";
+
 
         data.forEach(
             function (user) {
@@ -3751,17 +4410,22 @@ async function loadApprovedUsers() {
                         "div"
                     );
 
+
                 box.style.border =
                     "1px solid #ccc";
+
 
                 box.style.padding =
                     "10px";
 
+
                 box.style.marginBottom =
                     "8px";
 
+
                 box.style.borderRadius =
                     "8px";
+
 
                 box.innerHTML =
                     "<strong>" +
@@ -3775,6 +4439,7 @@ async function loadApprovedUsers() {
                         user.approved_at
                     ).toLocaleString();
 
+
                 container.appendChild(
                     box
                 );
@@ -3782,12 +4447,14 @@ async function loadApprovedUsers() {
             }
         );
 
+
     } catch (error) {
 
         console.error(
             "Unexpected approved users error:",
             error
         );
+
 
         container.innerHTML =
             "Unable to load approved users.";
@@ -3814,23 +4481,29 @@ function escapeHTML(
 
     }
 
+
     return String(value)
+
         .replace(
             /&/g,
             "&amp;"
         )
+
         .replace(
             /</g,
             "&lt;"
         )
+
         .replace(
             />/g,
             "&gt;"
         )
+
         .replace(
             /"/g,
             "&quot;"
         )
+
         .replace(
             /'/g,
             "&#039;"
@@ -3843,8 +4516,20 @@ function escapeHTML(
 // PAGE VISIBILITY / TAB HANDLING
 // ========================================
 
-// Save immediately when the browser
-// hides the page.
+// IMPORTANT:
+//
+// Switching browser tabs does NOT change
+// the current screen.
+//
+// We ONLY save the current session.
+//
+// We DO NOT:
+// - reload the page
+// - go home
+// - go to login
+// - clear the session
+//
+// This is safe when changing tabs.
 
 document.addEventListener(
     "visibilitychange",
@@ -3863,8 +4548,89 @@ document.addEventListener(
 );
 
 
-// Save before the browser unloads
-// the page.
+// ========================================
+// WINDOW BLUR
+// ========================================
+
+// Save when the browser window loses focus.
+//
+// IMPORTANT:
+// We do NOT change screens here.
+
+window.addEventListener(
+    "blur",
+    function () {
+
+        saveActiveSession();
+
+    }
+);
+
+
+// ========================================
+// WINDOW FOCUS
+// ========================================
+
+// IMPORTANT:
+//
+// Do NOT call showOnly() here.
+// Do NOT reload the page here.
+//
+// If the browser returns to this tab,
+// simply leave the current screen alone.
+
+window.addEventListener(
+    "focus",
+    function () {
+
+        if (
+            currentScreen ===
+            "quizScreen"
+        ) {
+
+            saveActiveSession();
+
+        }
+
+    }
+);
+
+
+// ========================================
+// PAGE SHOW
+// ========================================
+
+// Handles browsers that restore a page
+// from their back-forward cache.
+//
+// We NEVER send the user home here.
+
+window.addEventListener(
+    "pageshow",
+    function () {
+
+        if (
+            currentScreen ===
+            "quizScreen" &&
+            questions &&
+            questions.length
+        ) {
+
+            showQuestion();
+
+            createNavigator();
+
+            saveActiveSession();
+
+        }
+
+    }
+);
+
+
+// ========================================
+// BEFORE UNLOAD
+// ========================================
 
 window.addEventListener(
     "beforeunload",
@@ -3882,36 +4648,98 @@ window.addEventListener(
 
 async function initializeApplication() {
 
-    // Default screen
+    console.log(
+        "Initializing ATPL Study..."
+    );
+
+
+    // ========================================
+    // IMPORTANT FIX
+    // ========================================
+    //
+    // DO NOT immediately call:
+    //
+    // showOnly("loginScreen");
+    //
+    // because if the browser has reloaded
+    // the page while the user was studying,
+    // we must first check whether an active
+    // study session exists.
+    // ========================================
+
+
+    let hasSavedSession =
+        false;
+
+
+    try {
+
+        hasSavedSession =
+            !!localStorage.getItem(
+                SESSION_KEY
+            );
+
+    } catch (error) {
+
+        console.error(
+            "Unable to access localStorage:",
+            error
+        );
+
+    }
+
+
+    // ========================================
+    // TRY TO RESTORE STUDY SESSION FIRST
+    // ========================================
+
+    if (hasSavedSession) {
+
+        console.log(
+            "Saved ATPL study session found."
+        );
+
+
+        const restored =
+            await restoreActiveSession();
+
+
+        if (restored) {
+
+            console.log(
+                "ATPL study session restored successfully."
+            );
+
+
+            await checkAdminAccess();
+
+            await refreshMarkedIds();
+
+
+            return;
+
+        }
+
+    }
+
+
+    // ========================================
+    // NO VALID STUDY SESSION
+    // ========================================
 
     showOnly(
         "loginScreen"
     );
 
-    // Check if there is a saved
-    // question session.
-
-    const restored =
-        await restoreActiveSession();
-
-    if (restored) {
-
-        // The user was already studying.
-        // Do not send them home.
-
-        await checkAdminAccess();
-
-        await refreshMarkedIds();
-
-        return;
-
-    }
-
-    // No active study session
 
     await checkAdminAccess();
 
     await refreshMarkedIds();
+
+
+    console.log(
+        "ATPL Study initialized normally."
+    );
 
 }
 
