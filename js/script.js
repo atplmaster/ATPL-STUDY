@@ -638,6 +638,9 @@ async function loadSubjectQuiz(
             ).fill("notAttempted");
 
         current = 0;
+        selectedAnswers = new Array(questions.length).fill(null);
+        quizCompletedSaved = false;
+        reviewingHistoryAttempt = false;
 
         currentSubject =
             subjectFile;
@@ -1113,14 +1116,45 @@ function showQuestion() {
             button.onclick =
                 async function() {
 
+                    // Quiz answers remain editable until the quiz is submitted.
+                    // Practice answers keep their existing one-attempt behaviour.
                     if (
-                        status[current] ===
-                        "correct" ||
-                        status[current] ===
-                        "wrong"
+                        !quizMode &&
+                        (
+                            status[current] ===
+                            "correct" ||
+                            status[current] ===
+                            "wrong"
+                        )
                     ) {
 
                         return;
+
+                    }
+
+                    // Clear the previous visual selection before applying
+                    // a new answer in an active quiz.
+                    if (quizMode && !reviewingHistoryAttempt) {
+
+                        const allButtons =
+                            answers.querySelectorAll(
+                                ".option"
+                            );
+
+                        allButtons.forEach(
+                            function(answerButton) {
+
+                                answerButton.classList.remove(
+                                    "correct",
+                                    "wrong",
+                                    "selectedAnswer"
+                                );
+
+                                answerButton.style.outline = "";
+                                answerButton.style.outlineOffset = "";
+
+                            }
+                        );
 
                     }
 
@@ -1197,6 +1231,35 @@ function showQuestion() {
                     }
 
                     createNavigator();
+
+                    // In Practice mode, automatically continue when
+                    // the student selects the correct answer.
+                    if (
+                        !quizMode &&
+                        questionStatus === "correct" &&
+                        current < questions.length - 1
+                    ) {
+
+                        const answeredQuestionIndex = current;
+
+                        setTimeout(
+                            function() {
+
+                                // Only advance if the user has not already
+                                // moved to another question manually.
+                                if (current === answeredQuestionIndex) {
+
+                                    current++;
+                                    showQuestion();
+                                    createNavigator();
+
+                                }
+
+                            },
+                            650
+                        );
+
+                    }
 
                 };
 
