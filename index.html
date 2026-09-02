@@ -513,6 +513,19 @@
 
 
 
+                <!-- ACTIVE QUIZ RESUME -->
+
+                <div id="activeQuizCard" class="dashboardSection" style="display:none;">
+                    <div class="setupCard">
+                        <h2>▶ Unfinished Quiz</h2>
+                        <p id="activeQuizSummary">You have an unfinished quiz.</p>
+                        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                            <button id="resumeQuizBtn" class="modeButton primaryButton">▶ Resume Quiz</button>
+                            <button id="discardQuizBtn" class="backButton">🗑 Discard Quiz</button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- DASHBOARD STAT CARDS -->
 
                 <div class="dashboardCards">
@@ -749,6 +762,20 @@
 
                             <span>
                                 My Progress
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            id="quizHistoryBtn"
+                            class="secondaryAction"
+                        >
+
+                            🕘
+
+                            <span>
+                                Quiz History
                             </span>
 
                         </button>
@@ -1179,6 +1206,28 @@
                     </select>
 
 
+                    <label for="subjectQuizMode">
+                        Quiz Mode
+                    </label>
+
+                    <select id="subjectQuizMode">
+                        <option value="normal">Normal Quiz — No Timer</option>
+                        <option value="timed">Timed Quiz</option>
+                    </select>
+
+                    <div id="subjectTimeLimitWrap" style="display:none;">
+                        <label for="subjectTimeLimit">Time Limit</label>
+                        <select id="subjectTimeLimit">
+                            <option value="15">15 Minutes</option>
+                            <option value="30">30 Minutes</option>
+                            <option value="45">45 Minutes</option>
+                            <option value="60" selected>60 Minutes</option>
+                            <option value="90">90 Minutes</option>
+                            <option value="120">120 Minutes</option>
+                        </select>
+                    </div>
+
+
                     <button
                         id="startQuizBtn"
                         class="modeButton primaryButton"
@@ -1277,6 +1326,28 @@
                         </option>
 
                     </select>
+
+
+                    <label for="combinedQuizMode">
+                        Quiz Mode
+                    </label>
+
+                    <select id="combinedQuizMode">
+                        <option value="normal">Normal Quiz — No Timer</option>
+                        <option value="timed">Timed Quiz</option>
+                    </select>
+
+                    <div id="combinedTimeLimitWrap" style="display:none;">
+                        <label for="combinedTimeLimit">Time Limit</label>
+                        <select id="combinedTimeLimit">
+                            <option value="15">15 Minutes</option>
+                            <option value="30">30 Minutes</option>
+                            <option value="45">45 Minutes</option>
+                            <option value="60" selected>60 Minutes</option>
+                            <option value="90">90 Minutes</option>
+                            <option value="120">120 Minutes</option>
+                        </select>
+                    </div>
 
 
                     <button
@@ -1550,6 +1621,10 @@
                         class="questionCounter"
                     ></div>
 
+                    <div id="quizTimer" class="questionCounter" style="display:none;font-weight:700;">
+                        ⏱ 00:00
+                    </div>
+
 
                 </div>
 
@@ -1623,6 +1698,25 @@
 
             </div>
 
+
+
+            <!-- =================================================
+                 QUIZ HISTORY
+                 ================================================= -->
+
+            <div id="quizHistoryScreen" class="contentScreen" style="display:none;">
+                <div class="pageHeader">
+                    <div>
+                        <p class="pageEyebrow">QUIZ ATTEMPTS</p>
+                        <h1>🕘 Quiz History</h1>
+                        <p class="pageDescription">Review or redo your previously completed quizzes.</p>
+                    </div>
+                </div>
+                <div class="progressCard">
+                    <div id="quizHistoryList">Loading quiz history...</div>
+                </div>
+                <button id="quizHistoryBackBtn" class="backButton">← Back to Dashboard</button>
+            </div>
 
 
             <!-- =================================================
@@ -1763,6 +1857,7 @@ function openDashboard() {
         "combinedQuizSetup",
         "searchScreen",
         "markedScreen",
+        "quizHistoryScreen",
         "quizScreen",
         "resultsScreen"
 
