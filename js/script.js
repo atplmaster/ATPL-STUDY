@@ -30,6 +30,7 @@ let activeQuizTimerInterval = null;
 let activeQuizSaveTimer = null;
 let quizCompletedSaved = false;
 let reviewingHistoryAttempt = false;
+let showCorrectAnswerDuringQuiz = true;
 
 
 // ============================================================
@@ -299,6 +300,7 @@ document.getElementById("startQuizBtn").onclick = function() {
     currentSubject = subjectFile;
 
     const mode = document.getElementById("subjectQuizMode")?.value || "normal";
+    showCorrectAnswerDuringQuiz = (document.getElementById("subjectShowCorrectAnswer")?.value || "yes") === "yes";
     activeQuizType = "subject";
     activeQuizIsTimed = mode === "timed";
     activeQuizTimeLimitMinutes = activeQuizIsTimed
@@ -463,6 +465,7 @@ function() {
         ).value;
 
     const mode = document.getElementById("combinedQuizMode")?.value || "normal";
+    showCorrectAnswerDuringQuiz = (document.getElementById("combinedShowCorrectAnswer")?.value || "yes") === "yes";
     activeQuizType = "combined";
     activeQuizIsTimed = mode === "timed";
     activeQuizTimeLimitMinutes = activeQuizIsTimed
@@ -823,9 +826,22 @@ function createNavigator() {
             button.innerHTML =
                 index + 1;
 
+            const navigatorStatus =
+                quizMode &&
+                !reviewingHistoryAttempt &&
+                !showCorrectAnswerDuringQuiz &&
+                (status[index] === "correct" || status[index] === "wrong")
+                    ? "answered"
+                    : status[index];
+
             button.className =
                 "navButton " +
-                status[index];
+                navigatorStatus;
+
+            if (navigatorStatus === "answered") {
+                button.style.fontWeight = "700";
+                button.style.textDecoration = "underline";
+            }
 
             button.onclick =
                 function() {
@@ -1015,6 +1031,11 @@ function showQuestion() {
         return;
     }
 
+    const shouldRevealAnswers =
+        !quizMode ||
+        reviewingHistoryAttempt ||
+        showCorrectAnswerDuringQuiz;
+
     question.options.forEach(
         function(option, index) {
 
@@ -1031,10 +1052,16 @@ function showQuestion() {
 
             // Restore the student's selected answer when resuming/reviewing.
             if (selectedAnswers[current] === index) {
-                if (status[current] === "correct") {
-                    button.classList.add("correct");
-                } else if (status[current] === "wrong") {
-                    button.classList.add("wrong");
+                if (shouldRevealAnswers) {
+                    if (status[current] === "correct") {
+                        button.classList.add("correct");
+                    } else if (status[current] === "wrong") {
+                        button.classList.add("wrong");
+                    }
+                } else {
+                    button.classList.add("selectedAnswer");
+                    button.style.outline = "2px solid currentColor";
+                    button.style.outlineOffset = "2px";
                 }
             }
 
@@ -1044,6 +1071,7 @@ function showQuestion() {
 
 
             if (
+                shouldRevealAnswers &&
                 status[current] ===
                 "correct"
             ) {
@@ -1063,6 +1091,7 @@ function showQuestion() {
 
 
             if (
+                shouldRevealAnswers &&
                 status[current] ===
                 "wrong"
             ) {
@@ -1103,8 +1132,12 @@ function showQuestion() {
                     ) {
 
                         button.classList.add(
-                            "correct"
+                            shouldRevealAnswers ? "correct" : "selectedAnswer"
                         );
+                        if (!shouldRevealAnswers) {
+                            button.style.outline = "2px solid currentColor";
+                            button.style.outlineOffset = "2px";
+                        }
 
                         status[current] =
                             "correct";
@@ -1115,8 +1148,12 @@ function showQuestion() {
                     } else {
 
                         button.classList.add(
-                            "wrong"
+                            shouldRevealAnswers ? "wrong" : "selectedAnswer"
                         );
+                        if (!shouldRevealAnswers) {
+                            button.style.outline = "2px solid currentColor";
+                            button.style.outlineOffset = "2px";
+                        }
 
                         status[current] =
                             "wrong";
@@ -1124,23 +1161,25 @@ function showQuestion() {
                         questionStatus =
                             "wrong";
 
-                        const allButtons =
-                            answers.querySelectorAll(
-                                ".option"
-                            );
+                        if (shouldRevealAnswers) {
+                            const allButtons =
+                                answers.querySelectorAll(
+                                    ".option"
+                                );
 
-                        if (
-                            allButtons[
-                                question.answer
-                            ]
-                        ) {
+                            if (
+                                allButtons[
+                                    question.answer
+                                ]
+                            ) {
 
-                            allButtons[
-                                question.answer
-                            ].classList.add(
-                                "correct"
-                            );
+                                allButtons[
+                                    question.answer
+                                ].classList.add(
+                                    "correct"
+                                );
 
+                            }
                         }
 
                     }
@@ -4928,7 +4967,8 @@ async function saveActiveQuizToSupabase() {
     // Store selected answers inside each saved question without changing the question bank files.
     payload.questions = questions.map((q, i) => ({
         ...q,
-        _selectedAnswer: selectedAnswers[i] ?? null
+        _selectedAnswer: selectedAnswers[i] ?? null,
+        _showCorrectAnswer: showCorrectAnswerDuringQuiz
     }));
 
     const { error } = await supabaseClient
@@ -4984,9 +5024,11 @@ async function resumeActiveQuiz() {
         return;
     }
 
+    showCorrectAnswerDuringQuiz = (active.questions || [])[0]?._showCorrectAnswer !== false;
     questions = (active.questions || []).map(q => {
         const copy = { ...q };
         delete copy._selectedAnswer;
+        delete copy._showCorrectAnswer;
         return copy;
     });
     selectedAnswers = (active.questions || []).map(q => q._selectedAnswer ?? null);
@@ -5095,7 +5137,8 @@ async function saveQuizHistory(summary) {
     const timeTakenSeconds = Math.max(0, Math.round((completedAt - started) / 1000));
     const savedQuestions = questions.map((q, i) => ({
         ...q,
-        _selectedAnswer: selectedAnswers[i] ?? null
+        _selectedAnswer: selectedAnswers[i] ?? null,
+        _showCorrectAnswer: showCorrectAnswerDuringQuiz
     }));
 
     const { error } = await supabaseClient.from("quiz_history").insert({
@@ -5177,9 +5220,11 @@ async function loadQuizHistory() {
 }
 
 async function reviewHistoryAttempt(attempt) {
+    showCorrectAnswerDuringQuiz = true;
     questions = (attempt.questions || []).map(q => {
         const copy = { ...q };
         delete copy._selectedAnswer;
+        delete copy._showCorrectAnswer;
         return copy;
     });
     selectedAnswers = (attempt.questions || []).map(q => q._selectedAnswer ?? null);
@@ -5198,9 +5243,11 @@ async function reviewHistoryAttempt(attempt) {
 }
 
 async function redoHistoryAttempt(attempt) {
+    showCorrectAnswerDuringQuiz = (attempt.questions || [])[0]?._showCorrectAnswer !== false;
     questions = (attempt.questions || []).map(q => {
         const copy = { ...q };
         delete copy._selectedAnswer;
+        delete copy._showCorrectAnswer;
         return copy;
     });
     selectedAnswers = new Array(questions.length).fill(null);
