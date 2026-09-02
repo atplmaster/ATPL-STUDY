@@ -19,6 +19,18 @@ let currentSubject = null;
 
 let wrongQuestionsForRedo = [];
 
+// Persistent quiz / history / timer state
+let selectedAnswers = [];
+let activeQuizType = null;
+let activeQuizIsTimed = false;
+let activeQuizTimeLimitMinutes = null;
+let activeQuizStartedAt = null;
+let activeQuizEndTime = null;
+let activeQuizTimerInterval = null;
+let activeQuizSaveTimer = null;
+let quizCompletedSaved = false;
+let reviewingHistoryAttempt = false;
+
 
 // ============================================================
 // SUBJECTS
@@ -54,6 +66,7 @@ function showOnly(screenId) {
         "combinedQuizSetup",
         "searchScreen",
         "markedScreen",
+        "quizHistoryScreen",
         "quizScreen",
         "resultsScreen"
     ];
@@ -285,6 +298,14 @@ document.getElementById("startQuizBtn").onclick = function() {
 
     currentSubject = subjectFile;
 
+    const mode = document.getElementById("subjectQuizMode")?.value || "normal";
+    activeQuizType = "subject";
+    activeQuizIsTimed = mode === "timed";
+    activeQuizTimeLimitMinutes = activeQuizIsTimed
+        ? parseInt(document.getElementById("subjectTimeLimit")?.value || "60", 10)
+        : null;
+    prepareNewQuizTiming();
+
     showOnly("quizScreen");
 
     loadSubjectQuiz(
@@ -441,6 +462,14 @@ function() {
             "combinedQuestionCount"
         ).value;
 
+    const mode = document.getElementById("combinedQuizMode")?.value || "normal";
+    activeQuizType = "combined";
+    activeQuizIsTimed = mode === "timed";
+    activeQuizTimeLimitMinutes = activeQuizIsTimed
+        ? parseInt(document.getElementById("combinedTimeLimit")?.value || "60", 10)
+        : null;
+    prepareNewQuizTiming();
+
     loadCombinedQuiz(questionCount);
 
 };
@@ -489,6 +518,9 @@ async function loadPracticeQuestions(subjectFile) {
             ).fill("notAttempted");
 
         current = 0;
+        selectedAnswers = new Array(questions.length).fill(null);
+        quizCompletedSaved = false;
+        reviewingHistoryAttempt = false;
 
         currentSubject =
             subjectFile;
@@ -618,6 +650,8 @@ async function loadSubjectQuiz(
         createNavigator();
 
         showQuestion();
+        await saveActiveQuizToSupabase();
+        startQuizTimer();
 
     } catch (error) {
 
@@ -721,6 +755,9 @@ async function loadCombinedQuiz(questionCount) {
             ).fill("notAttempted");
 
         current = 0;
+        selectedAnswers = new Array(questions.length).fill(null);
+        quizCompletedSaved = false;
+        reviewingHistoryAttempt = false;
 
         quizMode = true;
 
@@ -739,6 +776,8 @@ async function loadCombinedQuiz(questionCount) {
         createNavigator();
 
         showQuestion();
+        await saveActiveQuizToSupabase();
+        startQuizTimer();
 
     } catch (error) {
 
@@ -820,6 +859,10 @@ function showQuestion() {
 
     const question =
         questions[current];
+
+    if (quizMode && !reviewingHistoryAttempt) {
+        scheduleActiveQuizSave();
+    }
 
     document.getElementById(
         "counter"
@@ -986,6 +1029,19 @@ function showQuestion() {
             button.innerHTML =
                 option;
 
+            // Restore the student's selected answer when resuming/reviewing.
+            if (selectedAnswers[current] === index) {
+                if (status[current] === "correct") {
+                    button.classList.add("correct");
+                } else if (status[current] === "wrong") {
+                    button.classList.add("wrong");
+                }
+            }
+
+            if (reviewingHistoryAttempt) {
+                button.disabled = true;
+            }
+
 
             if (
                 status[current] ===
@@ -1089,11 +1145,17 @@ function showQuestion() {
 
                     }
 
+                    selectedAnswers[current] = index;
+
                     await saveProgress(
                         question,
                         current,
                         questionStatus
                     );
+
+                    if (quizMode && !reviewingHistoryAttempt) {
+                        scheduleActiveQuizSave();
+                    }
 
                     createNavigator();
 
@@ -2358,6 +2420,11 @@ async function() {
 
     status[current] =
         "skipped";
+    selectedAnswers[current] = null;
+
+    if (quizMode && !reviewingHistoryAttempt) {
+        scheduleActiveQuizSave();
+    }
 
     await saveProgress(
         questions[current],
@@ -2400,7 +2467,7 @@ document.getElementById(
 // SHOW RESULTS
 // ============================================================
 
-function showResults() {
+async function showResults() {
 
     let correct = 0;
 
@@ -2510,6 +2577,15 @@ function showResults() {
 
     }
 
+    stopQuizTimer();
+
+    if (quizMode && !reviewingHistoryAttempt && !quizCompletedSaved) {
+        quizCompletedSaved = true;
+        await saveQuizHistory({ correct, wrong, skipped, total, percentage });
+        await deleteActiveQuizFromSupabase();
+        refreshResumeCard();
+    }
+
 }
 
 
@@ -2551,10 +2627,17 @@ document.getElementById(
         new Array(
             questions.length
         ).fill("notAttempted");
+    selectedAnswers = new Array(questions.length).fill(null);
 
     current = 0;
 
     quizMode = true;
+    activeQuizType = "redo";
+    activeQuizIsTimed = false;
+    activeQuizTimeLimitMinutes = null;
+    prepareNewQuizTiming();
+    quizCompletedSaved = false;
+    reviewingHistoryAttempt = false;
 
     showOnly("quizScreen");
 
@@ -2566,6 +2649,7 @@ document.getElementById(
     createNavigator();
 
     showQuestion();
+    saveActiveQuizToSupabase();
 
 };
 
@@ -4792,3 +4876,374 @@ showOnly(
 );
 
 checkAdminAccess();
+
+// ============================================================
+// PERSISTENT QUIZ, HISTORY AND TIMER SYSTEM
+// ============================================================
+
+function prepareNewQuizTiming() {
+    activeQuizStartedAt = new Date().toISOString();
+    activeQuizEndTime = activeQuizIsTimed
+        ? new Date(Date.now() + activeQuizTimeLimitMinutes * 60000).toISOString()
+        : null;
+    stopQuizTimer();
+}
+
+function scheduleActiveQuizSave() {
+    if (!quizMode || reviewingHistoryAttempt || !questions.length) return;
+    clearTimeout(activeQuizSaveTimer);
+    activeQuizSaveTimer = setTimeout(saveActiveQuizToSupabase, 250);
+}
+
+async function getCurrentUserSafe() {
+    try {
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        return user || null;
+    } catch (error) {
+        console.error("Unable to get current user:", error);
+        return null;
+    }
+}
+
+async function saveActiveQuizToSupabase() {
+    if (!quizMode || reviewingHistoryAttempt || !questions.length) return;
+    const user = await getCurrentUserSafe();
+    if (!user) return;
+
+    if (!activeQuizStartedAt) activeQuizStartedAt = new Date().toISOString();
+
+    const payload = {
+        user_id: user.id,
+        quiz_type: activeQuizType || (currentSubject === "combined" ? "combined" : "subject"),
+        subject: currentSubject || null,
+        questions: questions,
+        status: status,
+        current_question: current,
+        is_timed: !!activeQuizIsTimed,
+        started_at: activeQuizStartedAt,
+        end_time: activeQuizEndTime,
+        updated_at: new Date().toISOString()
+    };
+
+    // Store selected answers inside each saved question without changing the question bank files.
+    payload.questions = questions.map((q, i) => ({
+        ...q,
+        _selectedAnswer: selectedAnswers[i] ?? null
+    }));
+
+    const { error } = await supabaseClient
+        .from("active_quizzes")
+        .upsert(payload, { onConflict: "user_id" });
+
+    if (error) console.error("Active quiz save error:", error);
+}
+
+async function loadActiveQuizFromSupabase() {
+    const user = await getCurrentUserSafe();
+    if (!user) return null;
+
+    const { data, error } = await supabaseClient
+        .from("active_quizzes")
+        .select("*")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+    if (error) {
+        console.error("Active quiz load error:", error);
+        return null;
+    }
+    return data || null;
+}
+
+async function refreshResumeCard() {
+    const card = document.getElementById("activeQuizCard");
+    if (!card) return;
+
+    const active = await loadActiveQuizFromSupabase();
+    if (!active) {
+        card.style.display = "none";
+        return;
+    }
+
+    card.style.display = "block";
+    const summary = document.getElementById("activeQuizSummary");
+    const subjectLabel = active.subject === "combined"
+        ? "Combined ATPL Quiz"
+        : (subjectNames[active.subject] || "Quiz");
+    const total = Array.isArray(active.questions) ? active.questions.length : 0;
+    const position = Math.min((active.current_question || 0) + 1, total || 1);
+    const timerText = active.is_timed ? " • Timed" : "";
+    summary.textContent = `${subjectLabel} — Question ${position} of ${total}${timerText}`;
+}
+
+async function resumeActiveQuiz() {
+    const active = await loadActiveQuizFromSupabase();
+    if (!active) {
+        alert("No unfinished quiz was found.");
+        refreshResumeCard();
+        return;
+    }
+
+    questions = (active.questions || []).map(q => {
+        const copy = { ...q };
+        delete copy._selectedAnswer;
+        return copy;
+    });
+    selectedAnswers = (active.questions || []).map(q => q._selectedAnswer ?? null);
+    status = Array.isArray(active.status)
+        ? active.status
+        : new Array(questions.length).fill("notAttempted");
+    current = Math.max(0, Math.min(active.current_question || 0, Math.max(questions.length - 1, 0)));
+    quizMode = true;
+    currentSubject = active.subject;
+    activeQuizType = active.quiz_type;
+    activeQuizIsTimed = !!active.is_timed;
+    activeQuizStartedAt = active.started_at;
+    activeQuizEndTime = active.end_time;
+    activeQuizTimeLimitMinutes = active.end_time && active.started_at
+        ? Math.max(1, Math.round((new Date(active.end_time) - new Date(active.started_at)) / 60000))
+        : null;
+    quizCompletedSaved = false;
+    reviewingHistoryAttempt = false;
+
+    if (activeQuizIsTimed && activeQuizEndTime && new Date(activeQuizEndTime).getTime() <= Date.now()) {
+        showOnly("quizScreen");
+        await finishQuizBecauseTimeExpired();
+        return;
+    }
+
+    showOnly("quizScreen");
+    document.getElementById("subject").innerHTML = currentSubject === "combined"
+        ? "COMBINED ATPL QUIZ"
+        : (subjectNames[currentSubject] || "QUIZ") + " QUIZ";
+    await loadMarkedQuestions();
+    createNavigator();
+    showQuestion();
+    startQuizTimer();
+}
+
+async function discardActiveQuiz() {
+    if (!confirm("Discard this unfinished quiz? This cannot be undone.")) return;
+    await deleteActiveQuizFromSupabase();
+    stopQuizTimer();
+    refreshResumeCard();
+}
+
+async function deleteActiveQuizFromSupabase() {
+    const user = await getCurrentUserSafe();
+    if (!user) return;
+    const { error } = await supabaseClient
+        .from("active_quizzes")
+        .delete()
+        .eq("user_id", user.id);
+    if (error) console.error("Active quiz delete error:", error);
+}
+
+function startQuizTimer() {
+    stopQuizTimer();
+    const timer = document.getElementById("quizTimer");
+    if (!timer) return;
+
+    if (!activeQuizIsTimed || !activeQuizEndTime || reviewingHistoryAttempt) {
+        timer.style.display = "none";
+        return;
+    }
+
+    timer.style.display = "block";
+    updateQuizTimerDisplay();
+    activeQuizTimerInterval = setInterval(updateQuizTimerDisplay, 1000);
+}
+
+function stopQuizTimer() {
+    if (activeQuizTimerInterval) clearInterval(activeQuizTimerInterval);
+    activeQuizTimerInterval = null;
+}
+
+async function updateQuizTimerDisplay() {
+    const timer = document.getElementById("quizTimer");
+    if (!timer || !activeQuizEndTime) return;
+    const remaining = new Date(activeQuizEndTime).getTime() - Date.now();
+    if (remaining <= 0) {
+        timer.textContent = "⏱ 00:00";
+        stopQuizTimer();
+        await finishQuizBecauseTimeExpired();
+        return;
+    }
+    const totalSeconds = Math.floor(remaining / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    timer.textContent = hours > 0
+        ? `⏱ ${String(hours).padStart(2,"0")}:${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`
+        : `⏱ ${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
+}
+
+async function finishQuizBecauseTimeExpired() {
+    if (!quizMode || reviewingHistoryAttempt || quizCompletedSaved) return;
+    status = status.map(value => value === "notAttempted" ? "skipped" : value);
+    createNavigator();
+    alert("Time is up. Your quiz has been submitted automatically.");
+    await showResults();
+}
+
+async function saveQuizHistory(summary) {
+    const user = await getCurrentUserSafe();
+    if (!user) return;
+
+    const completedAt = new Date();
+    const started = activeQuizStartedAt ? new Date(activeQuizStartedAt) : completedAt;
+    const timeTakenSeconds = Math.max(0, Math.round((completedAt - started) / 1000));
+    const savedQuestions = questions.map((q, i) => ({
+        ...q,
+        _selectedAnswer: selectedAnswers[i] ?? null
+    }));
+
+    const { error } = await supabaseClient.from("quiz_history").insert({
+        user_id: user.id,
+        quiz_type: activeQuizType || "subject",
+        subject: currentSubject || null,
+        questions: savedQuestions,
+        status: status,
+        total_questions: summary.total,
+        correct_answers: summary.correct,
+        wrong_answers: summary.wrong,
+        skipped_answers: summary.skipped,
+        percentage: summary.percentage,
+        is_timed: !!activeQuizIsTimed,
+        time_limit_minutes: activeQuizTimeLimitMinutes,
+        started_at: activeQuizStartedAt,
+        completed_at: completedAt.toISOString(),
+        time_taken_seconds: timeTakenSeconds
+    });
+
+    if (error) console.error("Quiz history save error:", error);
+}
+
+async function loadQuizHistory() {
+    const list = document.getElementById("quizHistoryList");
+    if (!list) return;
+    list.innerHTML = "Loading quiz history...";
+    const user = await getCurrentUserSafe();
+    if (!user) {
+        list.innerHTML = "Please log in first.";
+        return;
+    }
+
+    const { data, error } = await supabaseClient
+        .from("quiz_history")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("completed_at", { ascending: false })
+        .limit(100);
+
+    if (error) {
+        console.error("Quiz history load error:", error);
+        list.innerHTML = "Unable to load quiz history.";
+        return;
+    }
+    if (!data || !data.length) {
+        list.innerHTML = "<p>No completed quizzes yet.</p>";
+        return;
+    }
+
+    list.innerHTML = "";
+    data.forEach(attempt => {
+        const card = document.createElement("div");
+        card.style.borderBottom = "1px solid #ddd";
+        card.style.padding = "16px 0";
+        const subjectLabel = attempt.subject === "combined"
+            ? "Combined ATPL Quiz"
+            : (subjectNames[attempt.subject] || attempt.quiz_type || "Quiz");
+        const when = attempt.completed_at ? new Date(attempt.completed_at).toLocaleString() : "";
+        const timed = attempt.is_timed ? ` • Timed (${attempt.time_limit_minutes || "?"} min)` : "";
+        card.innerHTML = `<strong>${escapeHTML(subjectLabel)}</strong><br>` +
+            `${attempt.percentage ?? 0}% • ${attempt.correct_answers ?? 0}/${attempt.total_questions ?? 0} correct${timed}<br>` +
+            `<small>${escapeHTML(when)}</small>`;
+
+        const actions = document.createElement("div");
+        actions.style.cssText = "display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;";
+        const review = document.createElement("button");
+        review.className = "modeButton secondaryButton";
+        review.textContent = "👁 Review";
+        review.onclick = () => reviewHistoryAttempt(attempt);
+        const redo = document.createElement("button");
+        redo.className = "modeButton primaryButton";
+        redo.textContent = "🔁 Redo Same Quiz";
+        redo.onclick = () => redoHistoryAttempt(attempt);
+        actions.append(review, redo);
+        card.appendChild(actions);
+        list.appendChild(card);
+    });
+}
+
+async function reviewHistoryAttempt(attempt) {
+    questions = (attempt.questions || []).map(q => {
+        const copy = { ...q };
+        delete copy._selectedAnswer;
+        return copy;
+    });
+    selectedAnswers = (attempt.questions || []).map(q => q._selectedAnswer ?? null);
+    status = Array.isArray(attempt.status) ? attempt.status : [];
+    current = 0;
+    quizMode = true;
+    currentSubject = attempt.subject;
+    reviewingHistoryAttempt = true;
+    activeQuizIsTimed = false;
+    stopQuizTimer();
+    showOnly("quizScreen");
+    document.getElementById("subject").innerHTML = "QUIZ REVIEW";
+    await loadMarkedQuestions();
+    createNavigator();
+    showQuestion();
+}
+
+async function redoHistoryAttempt(attempt) {
+    questions = (attempt.questions || []).map(q => {
+        const copy = { ...q };
+        delete copy._selectedAnswer;
+        return copy;
+    });
+    selectedAnswers = new Array(questions.length).fill(null);
+    status = new Array(questions.length).fill("notAttempted");
+    current = 0;
+    quizMode = true;
+    currentSubject = attempt.subject;
+    activeQuizType = "redo";
+    activeQuizIsTimed = !!attempt.is_timed;
+    activeQuizTimeLimitMinutes = attempt.time_limit_minutes || null;
+    prepareNewQuizTiming();
+    quizCompletedSaved = false;
+    reviewingHistoryAttempt = false;
+    showOnly("quizScreen");
+    document.getElementById("subject").innerHTML = "🔁 REDO PREVIOUS QUIZ";
+    await loadMarkedQuestions();
+    createNavigator();
+    showQuestion();
+    await saveActiveQuizToSupabase();
+    startQuizTimer();
+}
+
+// UI wiring for new controls.
+document.getElementById("subjectQuizMode")?.addEventListener("change", function() {
+    document.getElementById("subjectTimeLimitWrap").style.display = this.value === "timed" ? "block" : "none";
+});
+document.getElementById("combinedQuizMode")?.addEventListener("change", function() {
+    document.getElementById("combinedTimeLimitWrap").style.display = this.value === "timed" ? "block" : "none";
+});
+document.getElementById("resumeQuizBtn")?.addEventListener("click", resumeActiveQuiz);
+document.getElementById("discardQuizBtn")?.addEventListener("click", discardActiveQuiz);
+document.getElementById("quizHistoryBtn")?.addEventListener("click", async function() {
+    showOnly("quizHistoryScreen");
+    await loadQuizHistory();
+});
+document.getElementById("quizHistoryBackBtn")?.addEventListener("click", function() {
+    showOnly("homeScreen");
+});
+
+// Refresh resume availability whenever Supabase establishes a signed-in session.
+supabaseClient.auth.onAuthStateChange(function(event, session) {
+    if (session && session.user) {
+        setTimeout(refreshResumeCard, 0);
+    }
+});
+setTimeout(refreshResumeCard, 500);
